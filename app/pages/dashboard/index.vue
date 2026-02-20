@@ -77,33 +77,54 @@ const recentActivities = [
           </div>
         </div>
 
-        <!-- Recent Activities -->
+        <!-- Quick Actions / Sections -->
         <div class="mt-8">
-          <div class="bg-white shadow overflow-hidden sm:rounded-md">
-            <div class="px-4 py-5 sm:px-6">
-              <h3 class="text-lg leading-6 font-medium text-gray-900">Recent Activities</h3>
-              <p class="mt-1 max-w-2xl text-sm text-gray-500">Latest updates from your clients and projects.</p>
-            </div>
-            <ul role="list" class="divide-y divide-gray-200">
-              <li v-for="activity in recentActivities" :key="activity.client">
-                <div class="px-4 py-4 sm:px-6">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                      <div class="flex-shrink-0 h-10 w-10">
-                        <div class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
-                          <span class="text-sm font-medium text-gray-700">{{ activity.client.charAt(0) }}</span>
-                        </div>
-                      </div>
-                      <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-900">{{ activity.client }}</div>
-                        <div class="text-sm text-gray-500">{{ activity.action }}</div>
-                      </div>
-                    </div>
-                    <div class="text-sm text-gray-500">{{ activity.time }}</div>
-                  </div>
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Manage</h3>
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <NuxtLink
+              to="/employees"
+              class="relative block w-full bg-white rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-200"
+            >
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="text-4xl">👥</div>
                 </div>
-              </li>
-            </ul>
+                <div class="ml-4">
+                  <h4 class="text-lg font-medium text-gray-900">Employees</h4>
+                  <p class="text-sm text-gray-500">Manage your team members</p>
+                </div>
+              </div>
+            </NuxtLink>
+
+            <NuxtLink
+              to="/clients"
+              class="relative block w-full bg-white rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-200"
+            >
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="text-4xl">🤝</div>
+                </div>
+                <div class="ml-4">
+                  <h4 class="text-lg font-medium text-gray-900">Clients</h4>
+                  <p class="text-sm text-gray-500">View and manage clients</p>
+                </div>
+              </div>
+            </NuxtLink>
+
+            <NuxtLink
+              to="/corporations"
+              class="relative block w-full bg-white rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-200"
+            >
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="text-4xl">🏢</div>
+                </div>
+                <div class="ml-4">
+                  <h4 class="text-lg font-medium text-gray-900">Corporations</h4>
+                  <p class="text-sm text-gray-500">Handle corporate accounts</p>
+                </div>
+              </div>
+            </NuxtLink>
           </div>
         </div>
       </div>
