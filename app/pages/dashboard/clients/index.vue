@@ -53,30 +53,32 @@ const clients = [
           </div>
           <ul role="list" class="divide-y divide-gray-200">
             <li v-for="client in clients" :key="client.id">
-              <div class="px-4 py-4 sm:px-6">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center">
-                    <div class="flex-shrink-0 h-10 w-10">
-                      <div class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center">
-                        <span class="text-sm font-medium text-white">{{ client.name.charAt(0) }}</span>
+              <NuxtLink :to="`/dashboard/clients/${client.id}`" class="block hover:bg-gray-50">
+                <div class="px-4 py-4 sm:px-6">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10">
+                        <div class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center">
+                          <span class="text-sm font-medium text-white">{{ client.name.charAt(0) }}</span>
+                        </div>
+                      </div>
+                      <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-900">{{ client.name }}</div>
+                        <div class="text-sm text-gray-500">{{ client.type }} • {{ client.email }}</div>
                       </div>
                     </div>
-                    <div class="ml-4">
-                      <div class="text-sm font-medium text-gray-900">{{ client.name }}</div>
-                      <div class="text-sm text-gray-500">{{ client.type }} • {{ client.email }}</div>
+                    <div class="flex items-center space-x-4">
+                      <div class="text-sm text-gray-500">Last contact: {{ client.lastContact }}</div>
+                      <span
+                        :class="client.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'"
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                      >
+                        {{ client.status }}
+                      </span>
                     </div>
                   </div>
-                  <div class="flex items-center space-x-4">
-                    <div class="text-sm text-gray-500">Last contact: {{ client.lastContact }}</div>
-                    <span
-                      :class="client.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'"
-                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                    >
-                      {{ client.status }}
-                    </span>
-                  </div>
                 </div>
-              </div>
+              </NuxtLink>
             </li>
           </ul>
         </div>
