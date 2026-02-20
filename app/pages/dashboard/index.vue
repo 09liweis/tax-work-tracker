@@ -82,7 +82,7 @@ const recentActivities = [
           <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Manage</h3>
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <NuxtLink
-              to="/employees"
+              to="/dashboard/employees"
               class="relative block w-full bg-white rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-200"
             >
               <div class="flex items-center">
@@ -97,7 +97,7 @@ const recentActivities = [
             </NuxtLink>
 
             <NuxtLink
-              to="/clients"
+              to="/dashboard/clients"
               class="relative block w-full bg-white rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-200"
             >
               <div class="flex items-center">
@@ -112,7 +112,7 @@ const recentActivities = [
             </NuxtLink>
 
             <NuxtLink
-              to="/corporations"
+              to="/dashboard/corporations"
               class="relative block w-full bg-white rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-200"
             >
               <div class="flex items-center">
