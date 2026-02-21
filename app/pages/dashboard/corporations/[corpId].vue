@@ -166,139 +166,49 @@ const logout = () => {
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-      <div class="px-4 py-6 sm:px-0">
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-          <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">Corporation Information</h3>
-            <p class="mt-1 max-w-2xl text-sm text-gray-500">Detailed information about this corporate client.</p>
+        <!-- Corporation Card -->
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden mt-8">
+          <div class="flex items-center px-6 py-6">
+            <div class="flex-shrink-0 h-16 w-16 rounded-full bg-indigo-600 flex items-center justify-center">
+              <span class="text-2xl font-bold text-white">{{ corporation.name.charAt(0) }}</span>
+            </div>
+            <div class="ml-6">
+              <h2 class="text-2xl font-bold text-gray-900">{{ corporation.name }}</h2>
+              <div class="mt-1 text-sm text-gray-500">{{ corporation.industry }}</div>
+            </div>
           </div>
-          <div class="border-t border-gray-200">
-            <dl>
-              <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium text-gray-500">Company Name</dt>
-                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ corporation.name }}</dd>
+          <div class="px-6 pb-6">
+            <div class="flex flex-wrap gap-4">
+              <div class="w-full">
+                <span class="text-xs font-semibold text-gray-500">Tax ID:</span>
+                <span class="ml-2 text-sm text-gray-900">{{ corporation.taxId }}</span>
               </div>
-              <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium text-gray-500">Industry</dt>
-                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ corporation.industry }}</dd>
+              <div class="w-full">
+                <span class="text-xs font-semibold text-gray-500">Status:</span>
+                <span :class="corporation.status === 'Active' ? 'bg-green-100 text-green-800' : corporation.status === 'Under Review' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ml-2">
+                  {{ corporation.status }}
+                </span>
               </div>
-              <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium text-gray-500">Tax ID</dt>
-                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ corporation.taxId }}</dd>
+              <div class="w-full">
+                <span class="text-xs font-semibold text-gray-500">Annual Revenue:</span>
+                <span class="ml-2 text-sm text-gray-900">{{ corporation.revenue }}</span>
               </div>
-              <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium text-gray-500">Phone</dt>
-                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ corporation.phone }}</dd>
+              <div class="w-full">
+                <span class="text-xs font-semibold text-gray-500">Phone:</span>
+                <span class="ml-2 text-sm text-gray-900">{{ corporation.phone }}</span>
               </div>
-              <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium text-gray-500">Address</dt>
-                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ corporation.address }}</dd>
+              <div class="w-full">
+                <span class="text-xs font-semibold text-gray-500">Address:</span>
+                <span class="ml-2 text-sm text-gray-900">{{ corporation.address }}</span>
               </div>
-              <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium text-gray-500">Founded</dt>
-                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ corporation.founded }}</dd>
-              </div>
-              <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium text-gray-500">Employees</dt>
-                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ corporation.employees }}</dd>
-              </div>
-              <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium text-gray-500">Annual Revenue</dt>
-                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ corporation.revenue }}</dd>
-              </div>
-              <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium text-gray-500">Status</dt>
-                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  <span
-                    :class="corporation.status === 'Active' ? 'bg-green-100 text-green-800' : corporation.status === 'Under Review' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'"
-                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                  >
-                    {{ corporation.status }}
-                  </span>
-                </dd>
-              </div>
-              <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium text-gray-500">Notes</dt>
-                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ corporation.notes }}</dd>
-              </div>
-            </dl>
-          </div>
-        </div>
-
-        <!-- Corporate Tax Returns Section -->
-        <div v-if="corporation.taxReturns && corporation.taxReturns.length > 0" class="bg-white shadow overflow-hidden sm:rounded-lg mt-6">
-          <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">Corporate Tax Returns</h3>
-            <p class="mt-1 max-w-2xl text-sm text-gray-500">Tax filing history by year.</p>
-          </div>
-          <div class="border-t border-gray-200">
-            <div class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tax Year</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Filed Date</th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tax Amount</th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                  <tr v-for="taxReturn in corporation.taxReturns" :key="taxReturn.year">
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ taxReturn.year }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <span
-                        :class="taxReturn.status === 'Filed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'"
-                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                      >
-                        {{ taxReturn.status }}
-                      </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ taxReturn.dueDate }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ taxReturn.filedDate }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ taxReturn.amount.toLocaleString() }}</td>
-                  </tr>
-                </tbody>
-              </table>
             </div>
           </div>
         </div>
 
-        <!-- Owners/Directors Section -->
-        <div v-if="corporation.owners && corporation.owners.length > 0" class="bg-white shadow overflow-hidden sm:rounded-lg mt-6">
-          <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">Owners & Directors</h3>
-            <p class="mt-1 max-w-2xl text-sm text-gray-500">Key individuals associated with this corporation.</p>
-          </div>
-          <div class="border-t border-gray-200">
-            <ul role="list" class="divide-y divide-gray-200">
-              <li v-for="owner in corporation.owners" :key="owner.id">
-                <div class="px-4 py-4 sm:px-6">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                      <div class="flex-shrink-0 h-10 w-10">
-                        <div class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center">
-                          <span class="text-sm font-medium text-white">{{ owner.name.charAt(0) }}</span>
-                        </div>
-                      </div>
-                      <div class="ml-4">
-                        <NuxtLink :to="`/dashboard/clients/${owner.id}`" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                          {{ owner.name }}
-                        </NuxtLink>
-                        <div class="text-sm text-gray-500">{{ owner.role }}</div>
-                      </div>
-                    </div>
-                    <div class="text-sm text-gray-500">
-                      Ownership: {{ owner.ownership }}
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </main>
+        <!-- Corporate Tax Returns Section (optional, can be removed for minimalism) -->
+        <!-- ...existing code... -->
+
+        <!-- Owners/Directors Section (optional, can be removed for minimalism) -->
+        <!-- ...existing code... -->
   </div>
 </template>
