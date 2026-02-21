@@ -61,12 +61,8 @@
 </template>
 
 <script setup>
-useHead({
-  title: 'Login - Tax Work Tracker',
-  meta: [
-    { name: 'description', content: 'Sign in to your Tax Work Tracker account to manage clients and projects.' },
-    { name: 'robots', content: 'noindex, nofollow' }
-  ]
+definePageMeta({
+  layout: 'auth'
 })
 
 const email = ref('')

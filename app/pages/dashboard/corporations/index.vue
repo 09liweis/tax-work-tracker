@@ -1,5 +1,6 @@
 <script setup>
 definePageMeta({
+  layout: 'default',
   middleware: 'auth'
 })
 
@@ -144,53 +145,25 @@ const closeModal = () => {
   step.value = 1
   isModalOpen.value = false
 }
-
-const logout = () => {
-  if (process.client) {
-    localStorage.removeItem('authenticated')
-    navigateTo('/login')
-  }
-}
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-100">
-    <!-- Header -->
-    <header class="bg-white shadow-sm border-b">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-4">
-          <div class="flex items-center">
-            <NuxtLink to="/dashboard" class="text-indigo-600 hover:text-indigo-500 mr-4">
-              ← Back to Dashboard
-            </NuxtLink>
-            <h1 class="text-2xl font-bold text-gray-900">Corporations</h1>
-          </div>
-          <div class="flex items-center space-x-4">
-            <button
-              @click="openAddModal"
-              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Add Corporation
-            </button>
-            <button
-              @click="logout"
-              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-      <div class="px-4 py-6 sm:px-0">
-        <div class="bg-white shadow overflow-hidden sm:rounded-md">
-          <div class="px-4 py-5 sm:px-6">
+  <div class="px-4 py-6 sm:px-0">
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+      <div class="px-4 py-5 sm:px-6">
+        <div class="flex justify-between items-center">
+          <div>
             <h3 class="text-lg leading-6 font-medium text-gray-900">Corporate Accounts</h3>
             <p class="mt-1 max-w-2xl text-sm text-gray-500">Manage your corporate clients and their tax information.</p>
           </div>
+          <button
+            @click="openAddModal"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Add Corporation
+          </button>
+        </div>
+      </div>
           <ul role="list" class="divide-y divide-gray-200">
             <li v-for="corp in corporations" :key="corp.id">
               <NuxtLink :to="`/dashboard/corporations/${corp.id}`" class="block hover:bg-gray-50">
@@ -224,7 +197,6 @@ const logout = () => {
           </ul>
         </div>
       </div>
-    </main>
 
     <!-- Modal -->
     <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300 p-4">
@@ -433,5 +405,4 @@ const logout = () => {
         </div>
       </div>
     </div>
-  </div>
 </template>

@@ -1,5 +1,6 @@
 <script setup>
 definePageMeta({
+  layout: 'default',
   middleware: 'auth'
 })
 
@@ -95,100 +96,68 @@ const deleteEmployee = (employeeId) => {
     employees.value = employees.value.filter(emp => emp.id !== employeeId)
   }
 }
-
-const logout = () => {
-  if (process.client) {
-    localStorage.removeItem('authenticated')
-    navigateTo('/login')
-  }
-}
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-100">
-    <!-- Header -->
-    <header class="bg-white shadow-sm border-b">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-4">
-          <div class="flex items-center">
-            <NuxtLink to="/dashboard" class="text-indigo-600 hover:text-indigo-500 mr-4">
-              ← Back to Dashboard
-            </NuxtLink>
-            <h1 class="text-2xl font-bold text-gray-900">Employees</h1>
+  <div class="px-4 py-6 sm:px-0">
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+      <div class="px-4 py-5 sm:px-6">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Team Members</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">Manage your employees and their roles.</p>
           </div>
           <button
-            @click="logout"
-            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            @click="openAddModal"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            Logout
+            <svg class="-ml-1 mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            Add Employee
           </button>
         </div>
       </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-      <div class="px-4 py-6 sm:px-0">
-        <div class="bg-white shadow overflow-hidden sm:rounded-md">
-          <div class="px-4 py-5 sm:px-6">
-            <div class="flex justify-between items-center">
-              <div>
-                <h3 class="text-lg leading-6 font-medium text-gray-900">Team Members</h3>
-                <p class="mt-1 max-w-2xl text-sm text-gray-500">Manage your employees and their roles.</p>
-              </div>
-              <button
-                @click="openAddModal"
-                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                <svg class="-ml-1 mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                </svg>
-                Add Employee
-              </button>
-            </div>
-          </div>
-          <ul role="list" class="divide-y divide-gray-200">
-            <li v-for="employee in employees" :key="employee.id">
-              <div class="px-4 py-4 sm:px-6">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center">
-                    <div class="flex-shrink-0 h-10 w-10">
-                      <div class="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center">
-                        <span class="text-sm font-medium text-white">{{ employee.name.charAt(0) }}</span>
-                      </div>
-                    </div>
-                    <div class="ml-4">
-                      <div class="text-sm font-medium text-gray-900">{{ employee.name }}</div>
-                      <div class="text-sm text-gray-500">{{ employee.role }} • {{ employee.email }}</div>
-                    </div>
-                  </div>
-                  <div class="flex items-center space-x-3">
-                    <span
-                      :class="employee.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'"
-                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                    >
-                      {{ employee.status }}
-                    </span>
-                    <button
-                      @click="openEditModal(employee)"
-                      class="text-indigo-600 hover:text-indigo-900 text-sm font-medium"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      @click="deleteEmployee(employee.id)"
-                      class="text-red-600 hover:text-red-900 text-sm font-medium"
-                    >
-                      Delete
-                    </button>
+      <ul role="list" class="divide-y divide-gray-200">
+        <li v-for="employee in employees" :key="employee.id">
+          <div class="px-4 py-4 sm:px-6">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10">
+                  <div class="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center">
+                    <span class="text-sm font-medium text-white">{{ employee.name.charAt(0) }}</span>
                   </div>
                 </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">{{ employee.name }}</div>
+                  <div class="text-sm text-gray-500">{{ employee.role }} • {{ employee.email }}</div>
+                </div>
               </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </main>
+              <div class="flex items-center space-x-3">
+                <span
+                  :class="employee.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'"
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                >
+                  {{ employee.status }}
+                </span>
+                <button
+                  @click="openEditModal(employee)"
+                  class="text-indigo-600 hover:text-indigo-900 text-sm font-medium"
+                >
+                  Edit
+                </button>
+                <button
+                  @click="deleteEmployee(employee.id)"
+                  class="text-red-600 hover:text-red-900 text-sm font-medium"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
 
     <!-- Modal -->
     <div v-if="showModal" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -369,16 +338,3 @@ const logout = () => {
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  methods: {
-    logout() {
-      if (process.client) {
-        localStorage.removeItem('authenticated')
-        navigateTo('/login')
-      }
-    }
-  }
-}
-</script>
