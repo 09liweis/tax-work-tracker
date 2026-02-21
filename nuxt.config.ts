@@ -2,7 +2,11 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss'],
+  modules: ['@nuxtjs/tailwindcss', 'nuxt-mongoose'],
+  mongoose:{
+    uri: process.env.MONGODB_URI,
+    modelsDir: 'models'
+  },
   app: {
     head: {
       charset: 'utf-8',
