@@ -22,30 +22,45 @@ const clients = ref([
 // Modal state
 const isModalOpen = ref(false)
 const isEditing = ref(false)
-const currentClient = ref({ id: null, name: '', type: 'Individual', email: '', status: 'Active', lastContact: '' })
+const currentClient = ref({ id: null, name: '', dob: '', sin: '', telephone: '', email: '', city: '', province: '', maritalStatus: '', gender: '', status: 'Active' })
 
 // Modal functions
 const openAddModal = () => {
   isEditing.value = false
-  currentClient.value = { id: null, name: '', type: 'Individual', email: '', status: 'Active', lastContact: '' }
+  currentClient.value = { id: null, name: '', dob: '', sin: '', telephone: '', email: '', city: '', province: '', maritalStatus: '', gender: '', status: 'Active' }
   isModalOpen.value = true
 }
 
 const openEditModal = (client) => {
   isEditing.value = true
-  currentClient.value = { ...client }
+  // map server _id to id if present
+  const mapped = { ...client, id: client.id || client._id }
+  currentClient.value = mapped
   isModalOpen.value = true
 }
 
-const saveClient = () => {
-  if (isEditing.value) {
-    const index = clients.value.findIndex(c => c.id === currentClient.value.id)
-    clients.value[index] = { ...currentClient.value }
-  } else {
-    const newId = Math.max(...clients.value.map(c => c.id)) + 1
-    clients.value.push({ ...currentClient.value, id: newId })
+const saveClient = async () => {
+  try {
+    const payload = { ...currentClient.value }
+    const res = await $fetch('/api/clients/upsert', { method: 'POST', body: payload })
+    if (!res.success) throw res.error || 'Save failed'
+
+    const saved = res.client
+    const clientObj = { ...saved, id: saved._id || saved.id }
+
+    if (isEditing.value) {
+      const idx = clients.value.findIndex(c => String(c.id) === String(clientObj.id))
+      if (idx !== -1) clients.value[idx] = clientObj
+      else clients.value.push(clientObj)
+    } else {
+      clients.value.push(clientObj)
+    }
+
+    isModalOpen.value = false
+  } catch (err) {
+    // basic error handling
+    alert(err?.toString ? err.toString() : 'Error saving client')
   }
-  isModalOpen.value = false
 }
 
 const closeModal = () => {
@@ -111,35 +126,77 @@ const closeModal = () => {
         <p class="text-sm text-gray-600 mt-1">{{ isEditing ? 'Update client information' : 'Enter client details' }}</p>
       </div>
       <form @submit.prevent="saveClient" class="px-6 py-6">
-        <div class="space-y-6">
+        <div class="space-y-4">
           <div>
             <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
-            <input id="name" v-model="currentClient.name" type="text"
+            <input id="name" v-model="currentClient.name" type="text" required
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 placeholder-gray-400"
-              placeholder="Enter client's full name" required>
+              placeholder="Enter client's full name">
           </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="dob" class="block text-sm font-semibold text-gray-700 mb-2">DOB</label>
+              <input id="dob" v-model="currentClient.dob" type="date"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" />
+            </div>
+            <div>
+              <label for="sin" class="block text-sm font-semibold text-gray-700 mb-2">SIN</label>
+              <input id="sin" v-model="currentClient.sin" type="text"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="SIN">
+            </div>
+          </div>
+
+          <div>
+            <label for="telephone" class="block text-sm font-semibold text-gray-700 mb-2">Telephone No.</label>
+            <input id="telephone" v-model="currentClient.telephone" type="text"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="e.g., +1 555-555-5555">
+          </div>
+
           <div>
             <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
             <input id="email" v-model="currentClient.email" type="email"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 placeholder-gray-400"
-              placeholder="client@example.com" required>
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="client@example.com">
           </div>
-          <div>
-            <label for="status" class="block text-sm font-semibold text-gray-700 mb-2">Status</label>
-            <select id="status" v-model="currentClient.status"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 bg-white">
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-            </select>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="city" class="block text-sm font-semibold text-gray-700 mb-2">City</label>
+              <input id="city" v-model="currentClient.city" type="text"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" />
+            </div>
+            <div>
+              <label for="province" class="block text-sm font-semibold text-gray-700 mb-2">Province</label>
+              <input id="province" v-model="currentClient.province" type="text"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" />
+            </div>
           </div>
-          <div>
-            <label for="lastContact" class="block text-sm font-semibold text-gray-700 mb-2">Last Contact</label>
-            <input id="lastContact" v-model="currentClient.lastContact" type="text"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 placeholder-gray-400"
-              placeholder="e.g., 2 days ago">
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="maritalStatus" class="block text-sm font-semibold text-gray-700 mb-2">Marital Status</label>
+              <select id="maritalStatus" v-model="currentClient.maritalStatus"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white">
+                <option value="">Select</option>
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Widowed">Widowed</option>
+              </select>
+            </div>
+            <div>
+              <label for="gender" class="block text-sm font-semibold text-gray-700 mb-2">Gender</label>
+              <select id="gender" v-model="currentClient.gender"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white">
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
           </div>
         </div>
-        <div class="flex justify-end space-x-3 mt-8">
+        <div class="flex justify-end space-x-3 mt-6">
           <button type="button" @click="closeModal"
             class="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
             Cancel
