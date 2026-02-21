@@ -1,22 +1,18 @@
 import { defineEventHandler, readBody } from 'h3';
-import { z } from 'zod';
 import { User } from '../../models/user.schema';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string(),
-});
-
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
+  const { email, password } = body;
 
-  const { success, data, error } = loginSchema.safeParse(body);
-
-  if (!success) {
-    return { success: false, error: error.issues };
+  // Basic validation
+  if (!email || !password) {
+    return { success: false, error: 'Email and password are required' };
   }
+
+  const data = { email, password };
 
   const user = await User.findOne({ email: data.email });
 

@@ -1,15 +1,7 @@
 import { defineEventHandler, readBody } from 'h3';
-import { z } from 'zod';
 import { User } from '../../models/user.schema';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-
-const updateUserSchema = z.object({
-  email: z.string().email().optional(),
-  password: z.string().min(8).optional(),
-  name: z.string().optional(),
-  role: z.string().optional(),
-});
 
 export default defineEventHandler(async (event) => {
   const token = event.node.req.headers.authorization?.split(' ')[1];
@@ -27,11 +19,18 @@ export default defineEventHandler(async (event) => {
   }
 
   const body = await readBody(event);
-  const { success, data, error } = updateUserSchema.safeParse(body);
+  const { email, password, name, role } = body;
 
-  if (!success) {
-    return { success: false, error: error.issues };
+  // Basic validation - at least one field must be provided
+  if (!email && !password && !name && !role) {
+    return { success: false, error: 'At least one field must be provided for update' };
   }
+
+  if (password && password.length < 8) {
+    return { success: false, error: 'Password must be at least 8 characters' };
+  }
+
+  const data = { email, password, name, role }
 
   const { userId } = event.context.params;
 
