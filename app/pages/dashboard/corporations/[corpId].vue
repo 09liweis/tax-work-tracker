@@ -124,6 +124,8 @@ const corporations = [
 ]
 
 const corporation = corporations.find(c => c.id === parseInt(corpId))
+console.log('Corporation ID from route:', corpId)
+console.log('Found corporation:', corporation)
 
 // If corporation not found, redirect to corporations list
 if (!corporation) {
