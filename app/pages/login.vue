@@ -13,6 +13,9 @@
         </p>
       </div>
       <form class="mt-8 space-y-6 bg-white py-8 px-6 shadow-lg rounded-lg" @submit.prevent="login">
+        <div v-if="error" class="rounded-md bg-red-50 p-4">
+          <p class="text-sm text-red-700">{{ error }}</p>
+        </div>
         <div class="space-y-4">
           <div>
             <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
@@ -25,6 +28,7 @@
               class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Enter your email"
               v-model="email"
+              :disabled="loading"
             />
           </div>
           <div>
@@ -38,21 +42,18 @@
               class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Enter your password"
               v-model="password"
+              :disabled="loading"
             />
           </div>
         </div>
         <div>
           <button
             type="submit"
-            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+            :disabled="loading"
           >
-            Sign in
+            {{ loading ? 'Signing in...' : 'Sign in' }}
           </button>
-        </div>
-        <div class="text-center">
-          <p class="text-sm text-gray-600">
-            Demo: Use any email and password to login
-          </p>
         </div>
       </form>
     </div>
@@ -70,15 +71,37 @@ useHead({
 
 const email = ref('')
 const password = ref('')
+const loading = ref(false)
+const error = ref('')
 
-const login = () => {
-  // Simple auth: check if email and password are not empty
-  if (email.value && password.value) {
-    // For demo, any email/pass works
-    localStorage.setItem('authenticated', 'true')
-    navigateTo('/dashboard')
-  } else {
-    alert('Please enter email and password')
+const login = async () => {
+  error.value = ''
+  if (!email.value || !password.value) {
+    error.value = 'Please enter email and password'
+    return
+  }
+
+  loading.value = true
+  try {
+    const response = await $fetch('/api/users/login', {
+      method: 'POST',
+      body: {
+        email: email.value,
+        password: password.value
+      }
+    })
+
+    if (response.success) {
+      localStorage.setItem('token', response.token)
+      localStorage.setItem('authenticated', 'true')
+      navigateTo('/dashboard')
+    } else {
+      error.value = response.error || 'Login failed'
+    }
+  } catch (e) {
+    error.value = e.data?.error || 'An error occurred during login'
+  } finally {
+    loading.value = false
   }
 }
 </script>
