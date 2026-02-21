@@ -12,12 +12,28 @@ useHead({
   ]
 })
 
-// Sample client data
-const clients = ref([
-  { id: 1, name: 'John Doe', type: 'Individual', email: 'john.doe@email.com', status: 'Active', lastContact: '2 days ago' },
-  { id: 2, name: 'Jane Smith', type: 'Individual', email: 'jane.smith@email.com', status: 'Active', lastContact: '1 week ago' },
-  { id: 5, name: 'Mike Johnson', type: 'Individual', email: 'mike.j@email.com', status: 'Active', lastContact: '5 days ago' }
-])
+const clients = ref([])
+const isLoading = ref(true)
+const fetchError = ref('')
+
+const fetchClients = async () => {
+  isLoading.value = true
+  fetchError.value = ''
+  try {
+    const token = localStorage.getItem('token')
+    const res = await $fetch('/api/clients', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    if (!res.success) throw new Error(res.error || 'Failed to load clients')
+    clients.value = res.clients.map(c => ({ ...c, id: c._id || c.id }))
+  } catch (err) {
+    fetchError.value = err?.message || 'An error occurred while loading clients'
+  } finally {
+    isLoading.value = false
+  }
+}
+
+onMounted(fetchClients)
 
 // Modal state
 const isModalOpen = ref(false)
@@ -33,33 +49,34 @@ const openAddModal = () => {
 
 const openEditModal = (client) => {
   isEditing.value = true
-  // map server _id to id if present
-  const mapped = { ...client, id: client.id || client._id }
-  currentClient.value = mapped
+  currentClient.value = { ...client, id: client.id || client._id }
   isModalOpen.value = true
 }
 
 const saveClient = async () => {
   try {
+    const token = localStorage.getItem('token')
     const payload = { ...currentClient.value }
-    const res = await $fetch('/api/clients/upsert', { method: 'POST', body: payload })
-    if (!res.success) throw res.error || 'Save failed'
+    const res = await $fetch('/api/clients/upsert', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: payload
+    })
+    if (!res.success) throw new Error(res.error || 'Save failed')
 
-    const saved = res.client
-    const clientObj = { ...saved, id: saved._id || saved.id }
+    const saved = { ...res.client, id: res.client._id || res.client.id }
 
     if (isEditing.value) {
-      const idx = clients.value.findIndex(c => String(c.id) === String(clientObj.id))
-      if (idx !== -1) clients.value[idx] = clientObj
-      else clients.value.push(clientObj)
+      const idx = clients.value.findIndex(c => String(c.id) === String(saved.id))
+      if (idx !== -1) clients.value[idx] = saved
+      else clients.value.push(saved)
     } else {
-      clients.value.push(clientObj)
+      clients.value.push(saved)
     }
 
     isModalOpen.value = false
   } catch (err) {
-    // basic error handling
-    alert(err?.toString ? err.toString() : 'Error saving client')
+    alert(err?.message || 'Error saving client')
   }
 }
 
@@ -83,7 +100,31 @@ const closeModal = () => {
           </button>
         </div>
       </div>
-      <ul role="list" class="divide-y divide-gray-200">
+
+      <!-- Loading state -->
+      <div v-if="isLoading" class="px-4 py-10 text-center text-gray-500">
+        <svg class="animate-spin h-8 w-8 mx-auto mb-3 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+        Loading clients...
+      </div>
+
+      <!-- Error state -->
+      <div v-else-if="fetchError" class="px-4 py-6">
+        <div class="rounded-md bg-red-50 p-4 flex items-center justify-between">
+          <p class="text-sm text-red-700">{{ fetchError }}</p>
+          <button @click="fetchClients" class="text-sm text-red-600 font-medium hover:text-red-500 underline ml-4">Retry</button>
+        </div>
+      </div>
+
+      <!-- Empty state -->
+      <div v-else-if="clients.length === 0" class="px-4 py-10 text-center text-gray-500 text-sm">
+        No clients found. Add your first client to get started.
+      </div>
+
+      <!-- Client list -->
+      <ul v-else role="list" class="divide-y divide-gray-200">
         <li v-for="client in clients" :key="client.id">
           <NuxtLink :to="`/dashboard/clients/${client.id}`" class="block hover:bg-gray-50">
             <div class="px-4 py-4 sm:px-6">
@@ -96,11 +137,10 @@ const closeModal = () => {
                   </div>
                   <div class="ml-4">
                     <div class="text-sm font-medium text-gray-900">{{ client.name }}</div>
-                    <div class="text-sm text-gray-500">{{ client.type }} • {{ client.email }}</div>
+                    <div class="text-sm text-gray-500">{{ client.email || '—' }}</div>
                   </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                  <div class="text-sm text-gray-500">Last contact: {{ client.lastContact }}</div>
                   <span
                     :class="client.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'"
                     class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
