@@ -7,6 +7,10 @@ const props = defineProps({
   corporation: {
     type: Object,
     default: null
+  },
+  clientId: {
+    type: [String, Number],
+    default: null
   }
 })
 
@@ -15,6 +19,7 @@ const emit = defineEmits(["close", "save"])
 // local state mirrors props.corporation or defaults for new record
 const defaultCorp = () => ({
   id: null,
+  clientId: props.clientId || null,
   name: '',
   status: 'Active',
   incorporatedDate: '',
@@ -63,6 +68,16 @@ watch(
   { immediate: true }
 )
 
+// also watch clientId so new records pick it up
+watch(
+  () => props.clientId,
+  (id) => {
+    if (!props.corporation) {
+      currentCorporation.clientId = id
+    }
+  }
+)
+
 // when the modal closes we should reset
 watch(
   () => props.visible,
@@ -81,7 +96,10 @@ const prevStep = () => {
 }
 
 const save = () => {
-  emit('save', { ...currentCorporation })
+  // include clientId if provided via prop
+  const payload = { ...currentCorporation }
+  if (props.clientId) payload.clientId = props.clientId
+  emit('save', payload)
 }
 </script>
 
@@ -93,6 +111,8 @@ const save = () => {
         <h2 class="text-2xl font-bold text-white">{{ editing ? 'Edit Corporation' : 'Add New Corporation' }}</h2>
         <p class="text-sm text-blue-100 mt-1">{{ editing ? 'Update corporation information' : 'Enter corporation details' }}</p>
       </div>
+      <!-- ensure clientId is included -->
+      <input v-if="props.clientId" type="hidden" :value="props.clientId" />
 
       <!-- Step Indicator -->
       <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">

@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
     return { success: false, error: 'Invalid credentials' };
   }
 
-  const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
+  const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET as string, { expiresIn: '1w' });
 
   return { success: true, token };
 });

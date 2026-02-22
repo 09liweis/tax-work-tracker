@@ -12,38 +12,29 @@ useHead({
   ]
 })
 
-// Sample corporation data
-const corporations = ref([
-  {
-    id: 1,
-    name: 'TechCorp Inc.',
-    status: 'Active',
-    incorporatedDate: '2015-01-01',
-    bnNumber: '123456789',
-    federalNo: 'FED123456',
-    isedAccountId: 'ISED123',
-    isedPassword: 'password123',
-    federalKey: 'FEDKEY123',
-    provincialNo: 'PROV123456',
-    companyKey: 'COMPKEY123',
-    endingPeriod: '2024-12-31',
-    contact: 'John Doe',
-    sinNumber: '123-456-789',
-    primaryContact: 'Jane Smith',
-    mainPhone: '(555) 123-4567',
-    industry: 'Technology',
-    mainEmail: 'info@techcorp.com',
-    oneKeyId: 'ONEKEY123',
-    onePassword: 'onepass123',
-    otherContactPerson: 'Mike Johnson',
-    phone: '(555) 987-6543',
-    wsibNo: 'WSIB123456',
-    accessCode: 'ACCESS123',
-    address: '123 Tech Blvd, Silicon Valley, CA',
-    note: 'Growing tech company, specializes in AI solutions.'
+// corporation list from server
+const corporations = ref([])
+const corporationsLoading = ref(false)
+const corporationsError = ref('')
+
+const fetchCorporations = async () => {
+  corporationsLoading.value = true
+  corporationsError.value = ''
+  try {
+    const token = localStorage.getItem('token')
+    const res = await $fetch('/api/corporations', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    if (!res.success) throw new Error(res.error || 'Failed to load corporations')
+    corporations.value = (res.corporations || []).map(c => ({ ...c, id: c._id || c.id }))
+  } catch (err) {
+    corporationsError.value = err?.message || 'An error occurred while loading corporations'
+  } finally {
+    corporationsLoading.value = false
   }
-  // Add more sample corporations as needed
-])
+}
+
+onMounted(fetchCorporations)
 
 // Modal state (now managed by component)
 const isModalOpen = ref(false)
@@ -62,14 +53,20 @@ const openEditModal = (corp) => {
   isModalOpen.value = true
 }
 
-const handleSave = (corp) => {
-  if (isEditing.value) {
-    const index = corporations.value.findIndex(c => c.id === corp.id)
-    corporations.value[index] = { ...corp }
-  } else {
-    const newId = Math.max(...corporations.value.map(c => c.id)) + 1
-    corporations.value.push({ ...corp, id: newId })
+const handleSave = async (corp) => {
+  try {
+    const token = localStorage.getItem('token')
+    const res = await $fetch('/api/corporations/upsert', {
+      method: 'POST',
+      body: corp,
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    if (!res.success) throw new Error(res.error || 'Failed to save corporation')
+  } catch (err) {
+    console.error('Error saving corporation', err)
   }
+
+  await fetchCorporations()
   isModalOpen.value = false
 }
 
