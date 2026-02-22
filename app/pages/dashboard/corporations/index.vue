@@ -45,106 +45,38 @@ const corporations = ref([
   // Add more sample corporations as needed
 ])
 
-// Modal state
+// Modal state (now managed by component)
 const isModalOpen = ref(false)
+const modalCorporation = ref(null)
 const isEditing = ref(false)
-const currentCorporation = ref({
-  id: null,
-  name: '',
-  status: '',
-  incorporatedDate: '',
-  bnNumber: '',
-  federalNo: '',
-  isedAccountId: '',
-  isedPassword: '',
-  federalKey: '',
-  provincialNo: '',
-  companyKey: '',
-  endingPeriod: '',
-  contact: '',
-  sinNumber: '',
-  primaryContact: '',
-  mainPhone: '',
-  industry: '',
-  mainEmail: '',
-  oneKeyId: '',
-  onePassword: '',
-  otherContactPerson: '',
-  phone: '',
-  wsibNo: '',
-  accessCode: '',
-  address: '',
-  note: ''
-})
 
-// Modal functions
 const openAddModal = () => {
   isEditing.value = false
-  currentCorporation.value = {
-    id: null,
-    name: '',
-    status: 'Active',
-    incorporatedDate: '',
-    bnNumber: '',
-    federalNo: '',
-    isedAccountId: '',
-    isedPassword: '',
-    federalKey: '',
-    provincialNo: '',
-    companyKey: '',
-    endingPeriod: '',
-    contact: '',
-    sinNumber: '',
-    primaryContact: '',
-    mainPhone: '',
-    industry: '',
-    mainEmail: '',
-    oneKeyId: '',
-    onePassword: '',
-    otherContactPerson: '',
-    phone: '',
-    wsibNo: '',
-    accessCode: '',
-    address: '',
-    note: ''
-  }
-  step.value = 1
+  modalCorporation.value = null
   isModalOpen.value = true
 }
 
 const openEditModal = (corp) => {
   isEditing.value = true
-  currentCorporation.value = { ...corp }
-  step.value = 1
+  modalCorporation.value = { ...corp }
   isModalOpen.value = true
 }
 
-const step = ref(1)
-const maxStep = 3
-
-const nextStep = () => {
-  if (step.value < maxStep) step.value++
-}
-const prevStep = () => {
-  if (step.value > 1) step.value--
-}
-
-const saveCorporation = () => {
+const handleSave = (corp) => {
   if (isEditing.value) {
-    const index = corporations.value.findIndex(c => c.id === currentCorporation.value.id)
-    corporations.value[index] = { ...currentCorporation.value }
+    const index = corporations.value.findIndex(c => c.id === corp.id)
+    corporations.value[index] = { ...corp }
   } else {
     const newId = Math.max(...corporations.value.map(c => c.id)) + 1
-    corporations.value.push({ ...currentCorporation.value, id: newId })
+    corporations.value.push({ ...corp, id: newId })
   }
-  step.value = 1
   isModalOpen.value = false
 }
 
 const closeModal = () => {
-  step.value = 1
   isModalOpen.value = false
 }
+import CorporationModal from '~/components/CorporationModal.vue'
 </script>
 
 <template>
@@ -198,8 +130,16 @@ const closeModal = () => {
         </div>
       </div>
 
+    <CorporationModal
+      :visible="isModalOpen"
+      :editing="isEditing"
+      :corporation="modalCorporation"
+      @close="closeModal"
+      @save="handleSave"
+    />
+
     <!-- Modal -->
-    <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300 p-4">
+    <div v-if="false" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300 p-4">
       <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden transform transition-all duration-300 scale-100">
         <!-- Header -->
         <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-700">
