@@ -14,6 +14,9 @@ useHead({
   ]
 })
 
+import CorporationTaxSection from '~/components/CorporationTaxSection.vue'
+import CorporationTaxModal from '~/components/CorporationTaxModal.vue'
+
 const route = useRoute()
 const corpId = route.params.corpId
 
@@ -21,6 +24,16 @@ const corpId = route.params.corpId
 const corporation = ref(null)
 const loading = ref(true)
 const fetchError = ref('')
+
+// corporation tax tasks
+const corpTaxes = ref([])
+const corpTaxesLoading = ref(false)
+const corpTaxesError = ref('')
+
+// modal state for tax tasks
+const showTaxModal = ref(false)
+const modalTax = ref(null)
+const taxEditing = ref(false)
 
 const fetchCorporation = async () => {
   loading.value = true
@@ -39,11 +52,49 @@ const fetchCorporation = async () => {
   }
 }
 
+const fetchTaxes = async () => {
+  corpTaxesLoading.value = true
+  corpTaxesError.value = ''
+  try {
+    const token = localStorage.getItem('token')
+    const res = await $fetch(`/api/corporationTax?corpId=${corpId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    if (!res.success) throw new Error(res.error || 'Failed to load tax tasks')
+    corpTaxes.value = (res.corporationTaxes || []).map(t => ({ ...t, id: t._id || t.id }))
+  } catch (err) {
+    corpTaxesError.value = err?.message || 'An error occurred while loading tax tasks'
+  } finally {
+    corpTaxesLoading.value = false
+  }
+}
+
+// tax task modal handlers
+const openAddTaxModal = () => {
+  taxEditing.value = false
+  modalTax.value = null
+  showTaxModal.value = true
+}
+const openEditTaxModal = (t) => {
+  taxEditing.value = true
+  modalTax.value = { ...t }
+  showTaxModal.value = true
+}
+const closeTaxModal = () => {
+  showTaxModal.value = false
+  modalTax.value = null
+}
+const handleTaxSave = async () => {
+  await fetchTaxes()
+  closeTaxModal()
+}
+
 onMounted(async () => {
   await fetchCorporation()
   if (!corporation.value) {
     throw createError({ statusCode: 404, statusMessage: 'Corporation not found' })
   }
+  await fetchTaxes()
 })
 </script>
 
@@ -94,8 +145,22 @@ onMounted(async () => {
           </div>
         </div>
 
-        <!-- Corporate Tax Returns Section (optional, can be removed for minimalism) -->
-        <!-- ...existing code... -->
+        <!-- Corporate Tax Tasks -->
+        <CorporationTaxSection
+          :tasks="corpTaxes"
+          :loading="corpTaxesLoading"
+          :error="corpTaxesError"
+          @new="openAddTaxModal"
+          @edit="openEditTaxModal"
+        />
+
+        <CorporationTaxModal
+          :visible="showTaxModal"
+          :corpId="corpId"
+          :task="modalTax"
+          @close="closeTaxModal"
+          @saved="handleTaxSave"
+        />
 
         <!-- Owners/Directors Section (optional, can be removed for minimalism) -->
         <!-- ...existing code... -->
