@@ -1,0 +1,30 @@
+import { defineMongooseModel } from '#nuxt/mongoose';
+
+export const CorporationPayroll = defineMongooseModel('CorporationPayroll', {
+  corpId: { type: String, required: true },
+  year: { type: String },
+  payrollFrequency: { type: String },
+  remittanceFrequency: { type: String },
+  authStatus: { type: Boolean, default: false },
+  webAccessCode: { type: String },
+  bnNumber: { type: String },
+  wsib: { type: Boolean, default: false },
+  payrollStatus: { type: String },
+  payrollNotes: { type: String },
+  nilRemiStatus: { type: String },
+  remittanceReconciliation: { type: String },
+  taxSlipsStatus: { type: String },
+  t4Gross: { type: Number },
+  t4: { type: Number },
+  t4aAmount: { type: Number },
+  t4a: { type: Number },
+  t5NetBox11: { type: Number },
+  t5: { type: Number },
+  taxSlipsNote: { type: String },
+  submitMethod: { type: String },
+  fillingMethod: { type: String },
+  submittedDate: { type: Date },
+  notes: { type: String },
+  ts: { type: Date, required: true, default: Date.now },
+  lts: { type: Date, required: true, default: Date.now }
+});

@@ -1,0 +1,255 @@
+<script setup>
+import { watch, computed, ref, reactive } from 'vue'
+
+const props = defineProps({
+  visible: Boolean,
+  corpId: {
+    type: [String, Number],
+    required: true
+  },
+  record: {
+    type: Object,
+    default: null
+  }
+})
+
+const emit = defineEmits(["close", "saved"])
+
+const selectedRecord = computed(() => props.record)
+
+const form = reactive({
+  corpId: props.corpId,
+  year: '',
+  payrollFrequency: '',
+  remittanceFrequency: '',
+  authStatus: false,
+  webAccessCode: '',
+  bnNumber: '',
+  wsib: false,
+  payrollStatus: '',
+  payrollNotes: '',
+  nilRemiStatus: '',
+  remittanceReconciliation: '',
+  taxSlipsStatus: '',
+  t4Gross: '',
+  t4: '',
+  t4aAmount: '',
+  t4a: '',
+  t5NetBox11: '',
+  t5: '',
+  taxSlipsNote: '',
+  submitMethod: '',
+  fillingMethod: '',
+  submittedDate: '',
+  notes: ''
+})
+
+const formError = ref('')
+const formSaving = ref(false)
+
+function normalizeDate(d) {
+  return d ? new Date(d).toISOString().substr(0,10) : ''
+}
+
+const resetForm = () => {
+  Object.assign(form, {
+    corpId: props.corpId,
+    year: '',
+    payrollFrequency: '',
+    remittanceFrequency: '',
+    authStatus: false,
+    webAccessCode: '',
+    bnNumber: '',
+    wsib: false,
+    payrollStatus: '',
+    payrollNotes: '',
+    nilRemiStatus: '',
+    remittanceReconciliation: '',
+    taxSlipsStatus: '',
+    t4Gross: '',
+    t4: '',
+    t4aAmount: '',
+    t4a: '',
+    t5NetBox11: '',
+    t5: '',
+    taxSlipsNote: '',
+    submitMethod: '',
+    fillingMethod: '',
+    submittedDate: '',
+    notes: ''
+  })
+  formError.value = ''
+}
+
+const editRecord = (r) => {
+  Object.assign(form, {
+    ...r,
+    submittedDate: normalizeDate(r.submittedDate)
+  })
+}
+
+watch(
+  () => props.record,
+  (r) => {
+    if (r) {
+      editRecord(r)
+    } else {
+      resetForm()
+    }
+  }
+)
+
+watch(
+  () => props.visible,
+  (v) => {
+    if (!v) resetForm()
+  }
+)
+
+const saveRecord = async () => {
+  formSaving.value = true
+  formError.value = ''
+  try {
+    const token = localStorage.getItem('token')
+    const payload = { ...form }
+    if (selectedRecord.value) payload.id = selectedRecord.value._id || selectedRecord.value.id
+    const res = await $fetch('/api/corporationPayroll/upsert', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: payload
+    })
+    if (!res.success) throw new Error(res.error || 'Failed to save record')
+    emit('saved')
+  } catch (err) {
+    formError.value = err?.message || 'An error occurred while saving record'
+  } finally {
+    formSaving.value = false
+  }
+}
+</script>
+
+<template>
+  <div v-if="visible" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdrop-blur-sm" @click="$emit('close')"></div>
+      <div class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full border border-gray-200">
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-white" id="modal-title">
+              {{ selectedRecord ? 'Edit Payroll' : 'New Payroll' }}
+            </h3>
+            <button type="button" class="text-white text-2xl leading-none" @click="$emit('close')">&times;</button>
+          </div>
+        </div>
+        <div class="px-6 py-6">
+          <div v-if="formError" class="mb-4 text-sm text-red-600">{{ formError }}</div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Year</label>
+              <input v-model="form.year" type="text" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Payroll Frequency</label>
+              <input v-model="form.payrollFrequency" type="text" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Remittance Frequency</label>
+              <input v-model="form.remittanceFrequency" type="text" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div class="flex items-center space-x-2">
+              <input v-model="form.authStatus" type="checkbox" id="authStatus" class="h-4 w-4" />
+              <label for="authStatus" class="text-sm font-medium text-gray-700">Auth Status</label>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Web Access Code</label>
+              <input v-model="form.webAccessCode" type="text" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">BN Number</label>
+              <input v-model="form.bnNumber" type="text" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div class="flex items-center space-x-2">
+              <input v-model="form.wsib" type="checkbox" id="wsib" class="h-4 w-4" />
+              <label for="wsib" class="text-sm font-medium text-gray-700">WSIB</label>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Payroll Status</label>
+              <input v-model="form.payrollStatus" type="text" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700">Payroll Notes</label>
+              <textarea v-model="form.payrollNotes" class="mt-1 block w-full border rounded p-2"></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Nil Remi Status</label>
+              <input v-model="form.nilRemiStatus" type="text" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Remittance Reconciliation</label>
+              <input v-model="form.remittanceReconciliation" type="text" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Tax Slips Status</label>
+              <input v-model="form.taxSlipsStatus" type="text" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">T4 Gross</label>
+              <input v-model="form.t4Gross" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">T4</label>
+              <input v-model="form.t4" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">T4A Amount</label>
+              <input v-model="form.t4aAmount" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">T4A</label>
+              <input v-model="form.t4a" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">T5 Net (BOX 11)</label>
+              <input v-model="form.t5NetBox11" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">T5</label>
+              <input v-model="form.t5" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700">Tax Slips Note</label>
+              <textarea v-model="form.taxSlipsNote" class="mt-1 block w-full border rounded p-2"></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Submit Method</label>
+              <input v-model="form.submitMethod" type="text" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Filling Method</label>
+              <input v-model="form.fillingMethod" type="text" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Submitted Date</label>
+              <input v-model="form.submittedDate" type="date" class="mt-1 block w-full border rounded p-2" />
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700">Notes</label>
+              <textarea v-model="form.notes" class="mt-1 block w-full border rounded p-2"></textarea>
+            </div>
+          </div>
+
+          <div class="mt-6 flex justify-end">
+            <button
+              type="button"
+              @click="saveRecord"
+              :disabled="formSaving"
+              class="px-6 py-2.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200 shadow-sm"
+            >
+              {{ selectedRecord ? 'Update' : 'Add' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

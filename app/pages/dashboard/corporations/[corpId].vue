@@ -16,6 +16,8 @@ useHead({
 
 import CorporationTaxSection from '~/components/CorporationTaxSection.vue'
 import CorporationTaxModal from '~/components/CorporationTaxModal.vue'
+import CorporationPayrollSection from '~/components/CorporationPayrollSection.vue'
+import CorporationPayrollModal from '~/components/CorporationPayrollModal.vue'
 
 const route = useRoute()
 const corpId = route.params.corpId
@@ -34,6 +36,16 @@ const corpTaxesError = ref('')
 const showTaxModal = ref(false)
 const modalTax = ref(null)
 const taxEditing = ref(false)
+
+// payroll records
+const corpPayrolls = ref([])
+const corpPayrollsLoading = ref(false)
+const corpPayrollsError = ref('')
+
+// modal state for payroll
+const showPayrollModal = ref(false)
+const modalPayroll = ref(null)
+const payrollEditing = ref(false)
 
 const fetchCorporation = async () => {
   loading.value = true
@@ -69,6 +81,23 @@ const fetchTaxes = async () => {
   }
 }
 
+const fetchPayrolls = async () => {
+  corpPayrollsLoading.value = true
+  corpPayrollsError.value = ''
+  try {
+    const token = localStorage.getItem('token')
+    const res = await $fetch(`/api/corporationPayroll?corpId=${corpId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    if (!res.success) throw new Error(res.error || 'Failed to load payroll records')
+    corpPayrolls.value = (res.corporationPayrolls || []).map(r => ({ ...r, id: r._id || r.id }))
+  } catch (err) {
+    corpPayrollsError.value = err?.message || 'An error occurred while loading payroll records'
+  } finally {
+    corpPayrollsLoading.value = false
+  }
+}
+
 // tax task modal handlers
 const openAddTaxModal = () => {
   taxEditing.value = false
@@ -89,12 +118,33 @@ const handleTaxSave = async () => {
   closeTaxModal()
 }
 
+// payroll modal handlers
+const openAddPayrollModal = () => {
+  payrollEditing.value = false
+  modalPayroll.value = null
+  showPayrollModal.value = true
+}
+const openEditPayrollModal = (r) => {
+  payrollEditing.value = true
+  modalPayroll.value = { ...r }
+  showPayrollModal.value = true
+}
+const closePayrollModal = () => {
+  showPayrollModal.value = false
+  modalPayroll.value = null
+}
+const handlePayrollSave = async () => {
+  await fetchPayrolls()
+  closePayrollModal()
+}
+
 onMounted(async () => {
   await fetchCorporation()
   if (!corporation.value) {
     throw createError({ statusCode: 404, statusMessage: 'Corporation not found' })
   }
   await fetchTaxes()
+  await fetchPayrolls()
 })
 </script>
 
@@ -160,6 +210,23 @@ onMounted(async () => {
           :task="modalTax"
           @close="closeTaxModal"
           @saved="handleTaxSave"
+        />
+
+        <!-- Payroll records -->
+        <CorporationPayrollSection
+          :tasks="corpPayrolls"
+          :loading="corpPayrollsLoading"
+          :error="corpPayrollsError"
+          @new="openAddPayrollModal"
+          @edit="openEditPayrollModal"
+        />
+
+        <CorporationPayrollModal
+          :visible="showPayrollModal"
+          :corpId="corpId"
+          :record="modalPayroll"
+          @close="closePayrollModal"
+          @saved="handlePayrollSave"
         />
 
         <!-- Owners/Directors Section (optional, can be removed for minimalism) -->
