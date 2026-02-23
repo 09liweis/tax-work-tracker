@@ -29,5 +29,5 @@ export default defineEventHandler(async (event) => {
 
   const token = await getLoginToken({userId: user._id});
 
-  return { success: true, token };
+  return { success: true, token, role: user.role };
 });

@@ -19,6 +19,11 @@ export const User = defineMongooseModel('User', {
     required: true,
     default: 'user',
   },
+  status: {
+    type: String,
+    required: true,
+    default: 'Active',
+  },
   ts: {
     type: Date,
     required: true,

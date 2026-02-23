@@ -90,6 +90,8 @@ const login = async () => {
     if (response.success) {
       localStorage.setItem('token', response.token)
       localStorage.setItem('authenticated', 'true')
+      // store role returned by server for quick checks
+      if (response.role) localStorage.setItem('role', response.role)
       navigateTo('/dashboard')
     } else {
       error.value = response.error || 'Login failed'

@@ -19,10 +19,10 @@ export default defineEventHandler(async (event) => {
   }
 
   const body = await readBody(event);
-  const { email, password, name, role } = body;
+  const { email, password, name, role, status } = body;
 
   // Basic validation - at least one field must be provided
-  if (!email && !password && !name && !role) {
+  if (!email && !password && !name && !role && !status) {
     return { success: false, error: 'At least one field must be provided for update' };
   }
 
@@ -30,9 +30,9 @@ export default defineEventHandler(async (event) => {
     return { success: false, error: 'Password must be at least 8 characters' };
   }
 
-  const data = { email, password, name, role }
+  const data = { email, password, name, role, status }
 
-  const { userId } = event.context.params;
+  const userId = event.context.params?.userId;
 
   try {
     const user = await User.findById(userId);

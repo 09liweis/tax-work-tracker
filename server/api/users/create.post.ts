@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const body = await readBody(event);
-  const { email, password, name, role } = body;
+  const { email, password, name, role, status } = body;
 
   // Basic validation
   if (!email || !password || !name) {
@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
     return { success: false, error: 'Password must be at least 8 characters' };
   }
 
-  const data = { email, password, name, role }
+  const data = { email, password, name, role, status }
 
   const hashedPassword = await bcrypt.hash(data.password, 10);
 

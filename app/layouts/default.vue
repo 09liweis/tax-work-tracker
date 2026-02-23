@@ -15,7 +15,12 @@
               <NuxtLink to="/dashboard" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" active-class="text-indigo-600">
                 Dashboard
               </NuxtLink>
-              <NuxtLink to="/dashboard/employees" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" active-class="text-indigo-600">
+              <NuxtLink
+                v-if="isAdmin"
+                to="/dashboard/employees"
+                class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                active-class="text-indigo-600"
+              >
                 Employees
               </NuxtLink>
               <NuxtLink to="/dashboard/clients" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" active-class="text-indigo-600">
@@ -48,10 +53,13 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const isAdmin = process.client && localStorage.getItem('role') === 'admin'
+
 const logout = () => {
   if (process.client) {
     localStorage.removeItem('authenticated')
     localStorage.removeItem('token')
+    localStorage.removeItem('role')
     navigateTo('/login')
   }
 }
