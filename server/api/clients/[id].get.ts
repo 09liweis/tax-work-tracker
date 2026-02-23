@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   if (!token) return { success: false, error: 'Unauthorized' };
 
   try {
-    await verifyToken(token);
+    const decoded = await verifyToken(token);
   } catch (err) {
     return { success: false, error: 'Invalid token' };
   }
