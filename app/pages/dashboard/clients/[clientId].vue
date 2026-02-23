@@ -19,6 +19,7 @@ import ClientInfoCard from '~/components/ClientInfoCard.vue'
 import PersonalTaxSection from '~/components/PersonalTaxSection.vue'
 import TaskModal from '~/components/TaskModal.vue'
 import CorporationModal from '~/components/CorporationModal.vue'
+import CorporationList from '~/components/CorporationList.vue'
 
 const client = ref(null)
 const isLoading = ref(true)
@@ -192,13 +193,7 @@ const handleCorpSave = async (corpData) => {
 
         <div v-if="corporationsLoading" class="text-sm text-gray-500">Loading...</div>
         <div v-else-if="corporationsError" class="text-sm text-red-500">{{ corporationsError }}</div>
-        <ul v-else class="divide-y divide-gray-200">
-          <li v-for="corp in corporations" :key="corp._id" class="py-2 flex justify-between items-center">
-            <span>{{ corp.name }}</span>
-            <button @click="openEditCorpModal(corp)" class="text-indigo-600 text-sm hover:underline">Edit</button>
-          </li>
-          <li v-if="corporations.length === 0" class="text-sm text-gray-500">No corporations added yet.</li>
-        </ul>
+        <CorporationList v-else :corporations="corporations" />
       </div>
     </template>
 
