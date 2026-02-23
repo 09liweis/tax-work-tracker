@@ -1,5 +1,7 @@
 <script setup>
 import { watch, ref } from 'vue'
+import BaseInput from '~/components/form/BaseInput.vue'
+import BaseSelect from '~/components/form/BaseSelect.vue'
 
 const props = defineProps({
   visible: Boolean,
@@ -117,69 +119,54 @@ const save = async () => {
             <div v-if="formErrors.general" class="text-sm text-red-600">{{ formErrors.general }}</div>
             <div class="space-y-5">
               <div>
-                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                <input
-                  type="text"
+                <BaseInput
                   id="name"
                   v-model="formData.name"
+                  label="Full Name"
                   placeholder="Enter full name"
-                  class="w-full pl-4 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50 focus:bg-white"
-                  :class="{ 'border-red-300 focus:ring-red-500 focus:border-red-500': formErrors.name }"
+                  :error="formErrors.name"
                 />
-                <p v-if="formErrors.name" class="mt-2 text-sm text-red-600">{{ formErrors.name }}</p>
               </div>
               <div>
-                <label for="role" class="block text-sm font-medium text-gray-700 mb-2">Job Role</label>
-                <input
-                  type="text"
+                <BaseInput
                   id="role"
                   v-model="formData.role"
+                  label="Job Role"
                   placeholder="e.g., Tax Accountant, CPA"
-                  class="w-full pl-4 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50 focus:bg-white"
-                  :class="{ 'border-red-300 focus:ring-red-500 focus:border-red-500': formErrors.role }"
+                  :error="formErrors.role"
                 />
-                <p v-if="formErrors.role" class="mt-2 text-sm text-red-600">{{ formErrors.role }}</p>
               </div>
               <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                <input
-                  type="email"
+                <BaseInput
                   id="email"
+                  type="email"
                   v-model="formData.email"
+                  label="Email Address"
                   placeholder="employee@company.com"
-                  class="w-full pl-4 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50 focus:bg-white"
-                  :class="{ 'border-red-300 focus:ring-red-500 focus:border-red-500': formErrors.email }"
+                  :error="formErrors.email"
                 />
-                <p v-if="formErrors.email" class="mt-2 text-sm text-red-600">{{ formErrors.email }}</p>
               </div>
               <div>
-                <label for="status" class="block text-sm font-medium text-gray-700 mb-2">Employment Status</label>
-                <select
+                <BaseSelect
                   id="status"
                   v-model="formData.status"
-                  class="w-full pl-4 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50 focus:bg-white appearance-none"
-                >
-                  <option value="Active">🟢 Active</option>
-                  <option value="On Leave">🟡 On Leave</option>
-                  <option value="Inactive">🔴 Inactive</option>
-                </select>
-                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                  <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
-                </div>
+                  label="Employment Status"
+                  :options="[
+                    { value: 'Active', label: '🟢 Active' },
+                    { value: 'On Leave', label: '🟡 On Leave' },
+                    { value: 'Inactive', label: '🔴 Inactive' }
+                  ]"
+                />
               </div>
               <div v-if="!isEditing">
-                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                <input
-                  type="password"
+                <BaseInput
                   id="password"
+                  type="password"
                   v-model="formData.password"
+                  label="Password"
                   placeholder="Create a password"
-                  class="w-full pl-4 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50 focus:bg-white"
-                  :class="{ 'border-red-300 focus:ring-red-500 focus:border-red-500': formErrors.password }"
+                  :error="formErrors.password"
                 />
-                <p v-if="formErrors.password" class="mt-2 text-sm text-red-600">{{ formErrors.password }}</p>
               </div>
             </div>
 

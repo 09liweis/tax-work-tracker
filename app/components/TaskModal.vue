@@ -1,5 +1,8 @@
 <script setup>
 import { watch, computed, ref, reactive } from 'vue'
+import BaseInput from '~/components/form/BaseInput.vue'
+import BaseTextarea from '~/components/form/BaseTextarea.vue'
+import BaseCheckbox from '~/components/form/BaseCheckbox.vue'
 
 const props = defineProps({
   visible: Boolean,
@@ -141,69 +144,47 @@ const saveTask = async () => {
           <div v-if="formError" class="mb-4 text-sm text-red-600">{{ formError }}</div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700">Task Description</label>
-              <input v-model="form.taskDescription" type="text" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.taskDescription" label="Task Description" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Tax Year</label>
-              <input v-model="form.taxYear" type="number" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.taxYear" label="Tax Year" type="number" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Case Worker</label>
-              <input v-model="form.caseWorker" type="text" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.caseWorker" label="Case Worker" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Start Date</label>
-              <input v-model="form.startDate" type="date" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.startDate" label="Start Date" type="date" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Documents From</label>
-              <input v-model="form.documentsFrom" type="text" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.documentsFrom" label="Documents From" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Target Due Date</label>
-              <input v-model="form.targetDueDate" type="date" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.targetDueDate" label="Target Due Date" type="date" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Actual Completed Date</label>
-              <input v-model="form.actualCompletedDate" type="date" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.actualCompletedDate" label="Actual Completed Date" type="date" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Status</label>
-              <input v-model="form.status" type="text" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.status" label="Status" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Blocker / Waiting For</label>
-              <input v-model="form.blocker" type="text" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.blocker" label="Blocker / Waiting For" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Priority</label>
-              <input v-model="form.priority" type="text" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.priority" label="Priority" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Receivable</label>
-              <input v-model="form.receivable" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.receivable" label="Receivable" type="number" step="0.01" />
             </div>
-            <div class="flex items-center space-x-2">
-              <input v-model="form.invoice" type="checkbox" id="invoice" class="h-4 w-4" />
-              <label for="invoice" class="text-sm font-medium text-gray-700">Invoice (Yes/No)</label>
-            </div>
-            <div class="flex items-center space-x-2">
-              <input v-model="form.paid" type="checkbox" id="paid" class="h-4 w-4" />
-              <label for="paid" class="text-sm font-medium text-gray-700">Paid (Yes/No)</label>
-            </div>
+            <BaseCheckbox v-model="form.invoice" id="invoice" label="Invoice (Yes/No)" />
+            <BaseCheckbox v-model="form.paid" id="paid" label="Paid (Yes/No)" />
             <div>
-              <label class="block text-sm font-medium text-gray-700">Payment</label>
-              <input v-model="form.payment" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.payment" label="Payment" type="number" step="0.01" />
             </div>
             <div class="md:col-span-2">
-              <label class="block text-sm font-medium text-gray-700">Notes</label>
-              <textarea v-model="form.notes" class="mt-1 block w-full border rounded p-2"></textarea>
+              <BaseTextarea v-model="form.notes" label="Notes" />
             </div>
-            <div class="flex items-center space-x-2">
-              <input v-model="form.completed" type="checkbox" id="completed" class="h-4 w-4" />
-              <label for="completed" class="text-sm font-medium text-gray-700">Completed</label>
-            </div>
+            <BaseCheckbox v-model="form.completed" id="completed" label="Completed" />
           </div>
           <div class="mt-4">
             <button @click="saveTask" :disabled="formSaving" class="px-4 py-2 bg-green-600 text-white rounded">

@@ -1,5 +1,8 @@
 <script setup>
 import { watch, computed, ref, reactive } from 'vue'
+import BaseInput from '~/components/form/BaseInput.vue'
+import BaseTextarea from '~/components/form/BaseTextarea.vue'
+import BaseCheckbox from '~/components/form/BaseCheckbox.vue'
 
 const props = defineProps({
   visible: Boolean,
@@ -203,40 +206,27 @@ const saveRecord = async () => {
           <!-- general info -->
           <div v-if="step === 1" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700">Year</label>
-              <input v-model="form.year" type="text" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.year" label="Year" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Payroll Frequency</label>
-              <input v-model="form.payrollFrequency" type="text" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.payrollFrequency" label="Payroll Frequency" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Remittance Frequency</label>
-              <input v-model="form.remittanceFrequency" type="text" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.remittanceFrequency" label="Remittance Frequency" />
             </div>
-            <div class="flex items-center space-x-2">
-              <input v-model="form.authStatus" type="checkbox" id="authStatus" class="h-4 w-4" />
-              <label for="authStatus" class="text-sm font-medium text-gray-700">Auth Status</label>
+            <BaseCheckbox v-model="form.authStatus" id="authStatus" label="Auth Status" />
+            <div>
+              <BaseInput v-model="form.webAccessCode" label="Web Access Code" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Web Access Code</label>
-              <input v-model="form.webAccessCode" type="text" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.bnNumber" label="BN Number" />
             </div>
+            <BaseCheckbox v-model="form.wsib" id="wsib" label="WSIB" />
             <div>
-              <label class="block text-sm font-medium text-gray-700">BN Number</label>
-              <input v-model="form.bnNumber" type="text" class="mt-1 block w-full border rounded p-2" />
-            </div>
-            <div class="flex items-center space-x-2">
-              <input v-model="form.wsib" type="checkbox" id="wsib" class="h-4 w-4" />
-              <label for="wsib" class="text-sm font-medium text-gray-700">WSIB</label>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Payroll Status</label>
-              <input v-model="form.payrollStatus" type="text" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.payrollStatus" label="Payroll Status" />
             </div>
             <div class="md:col-span-2">
-              <label class="block text-sm font-medium text-gray-700">Payroll Notes</label>
-              <textarea v-model="form.payrollNotes" class="mt-1 block w-full border rounded p-2"></textarea>
+              <BaseTextarea v-model="form.payrollNotes" label="Payroll Notes" />
             </div>
           </div>
 
@@ -244,63 +234,50 @@ const saveRecord = async () => {
           <div v-if="step === 2" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700">Nil Remi Status</label>
-              <input v-model="form.nilRemiStatus" type="text" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.nilRemiStatus" label="Nil Remi Status" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Remittance Reconciliation</label>
-              <input v-model="form.remittanceReconciliation" type="text" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.remittanceReconciliation" label="Remittance Reconciliation" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Tax Slips Status</label>
-              <input v-model="form.taxSlipsStatus" type="text" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.taxSlipsStatus" label="Tax Slips Status" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">T4 Gross</label>
-              <input v-model="form.t4Gross" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.t4Gross" label="T4 Gross" type="number" step="0.01" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">T4</label>
-              <input v-model="form.t4" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.t4" label="T4" type="number" step="0.01" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">T4A Amount</label>
-              <input v-model="form.t4aAmount" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.t4aAmount" label="T4A Amount" type="number" step="0.01" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">T4A</label>
-              <input v-model="form.t4a" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.t4a" label="T4A" type="number" step="0.01" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">T5 Net (BOX 11)</label>
-              <input v-model="form.t5NetBox11" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.t5NetBox11" label="T5 Net (BOX 11)" type="number" step="0.01" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">T5</label>
-              <input v-model="form.t5" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.t5" label="T5" type="number" step="0.01" />
             </div>
             <div class="md:col-span-2">
-              <label class="block text-sm font-medium text-gray-700">Tax Slips Note</label>
-              <textarea v-model="form.taxSlipsNote" class="mt-1 block w-full border rounded p-2"></textarea>
+              <BaseTextarea v-model="form.taxSlipsNote" label="Tax Slips Note" />
             </div>
           </div>
 
           <!-- submission -->
           <div v-if="step === 3" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700">Submit Method</label>
-              <input v-model="form.submitMethod" type="text" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.submitMethod" label="Submit Method" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Filling Method</label>
-              <input v-model="form.fillingMethod" type="text" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.fillingMethod" label="Filling Method" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Submitted Date</label>
-              <input v-model="form.submittedDate" type="date" class="mt-1 block w-full border rounded p-2" />
+              <BaseInput v-model="form.submittedDate" label="Submitted Date" type="date" />
             </div>
             <div class="md:col-span-2">
-              <label class="block text-sm font-medium text-gray-700">Notes</label>
-              <textarea v-model="form.notes" class="mt-1 block w-full border rounded p-2"></textarea>
+              <BaseTextarea v-model="form.notes" label="Notes" />
             </div>
           </div>
 

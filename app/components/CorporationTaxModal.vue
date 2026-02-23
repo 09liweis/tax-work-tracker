@@ -1,5 +1,8 @@
 <script setup>
 import { watch, computed, ref, reactive } from 'vue'
+import BaseInput from '~/components/form/BaseInput.vue'
+import BaseTextarea from '~/components/form/BaseTextarea.vue'
+import BaseCheckbox from '~/components/form/BaseCheckbox.vue'
 
 const props = defineProps({
   visible: Boolean,
@@ -216,34 +219,27 @@ const saveTask = async () => {
               <h4 class="text-md font-semibold text-gray-800 mb-2">General</h4>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Task Type</label>
-                  <input v-model="form.taskType" type="text" placeholder="e.g. PMS" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.taskType" label="Task Type" placeholder="e.g. PMS" />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Category</label>
-                  <input v-model="form.category" type="text" placeholder="PFS, Other" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.category" label="Category" placeholder="PFS, Other" />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Year Ending</label>
-                  <input v-model="form.yearEnding" type="text" placeholder="2023" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.yearEnding" label="Year Ending" placeholder="2023" />
                 </div>
                 <div class="md:col-span-2">
-                  <label class="block text-sm font-medium text-gray-700">Task Description</label>
-                  <input v-model="form.taskDescription" type="text" placeholder="e.g. Prepare corporate tax return" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.taskDescription" label="Task Description" placeholder="e.g. Prepare corporate tax return" />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Owner</label>
-                  <input v-model="form.owner" type="text" placeholder="John Doe" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.owner" label="Owner" placeholder="John Doe" />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Channel</label>
-                  <input v-model="form.channel" type="text" placeholder="Email/Phone" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.channel" label="Channel" placeholder="Email/Phone" />
                 </div>
               </div>
 
               <div class="mt-4">
-                <label class="block text-sm font-medium text-gray-700">Missing Items</label>
-                <textarea v-model="form.missingItems" placeholder="List missing documents" class="mt-1 block w-full border rounded p-2"></textarea>
+                <BaseTextarea v-model="form.missingItems" label="Missing Items" placeholder="List missing documents" />
               </div>
             </div>
 
@@ -252,20 +248,16 @@ const saveTask = async () => {
               <h4 class="text-md font-semibold text-gray-800 mt-6 mb-2">Dates</h4>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Docs Received</label>
-                  <input v-model="form.docsReceivedDate" type="date" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.docsReceivedDate" label="Docs Received" type="date" />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Start Date</label>
-                  <input v-model="form.startDate" type="date" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.startDate" label="Start Date" type="date" />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Due Date</label>
-                  <input v-model="form.dueDate" type="date" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.dueDate" label="Due Date" type="date" />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Completed Date</label>
-                  <input v-model="form.actualCompletedDate" type="date" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.actualCompletedDate" label="Completed Date" type="date" />
                 </div>
               </div>
             </div>
@@ -275,54 +267,37 @@ const saveTask = async () => {
               <h4 class="text-md font-semibold text-gray-800 mt-6 mb-2">Status / Finance</h4>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Status</label>
-                  <input v-model="form.status" type="text" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.status" label="Status" />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Priority</label>
-                  <input v-model="form.priority" type="text" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.priority" label="Priority" />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Blocker / Waiting For</label>
-                  <input v-model="form.blockerWaitingFor" type="text" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.blockerWaitingFor" label="Blocker / Waiting For" />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">HST Doc Status</label>
-                  <input v-model="form.hstDocStatus" type="text" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.hstDocStatus" label="HST Doc Status" />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">T2 Doc Status</label>
-                  <input v-model="form.t2DocStatus" type="text" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.t2DocStatus" label="T2 Doc Status" />
                 </div>
-                <div class="flex items-center space-x-2">
-                  <input v-model="form.completed" type="checkbox" id="completed" class="h-4 w-4" />
-                  <label for="completed" class="text-sm font-medium text-gray-700">Completed</label>
-                </div>
+                <BaseCheckbox v-model="form.completed" id="completed" label="Completed" />
               </div>
 
               <!-- finance details -->
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Receivable Amount</label>
-                  <input v-model="form.receivableAmount" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.receivableAmount" label="Receivable Amount" type="number" step="0.01" />
                 </div>
-                <div class="flex items-center space-x-2">
-                  <input v-model="form.invoice" type="checkbox" id="invoice" class="h-4 w-4" />
-                  <label for="invoice" class="text-sm font-medium text-gray-700">Invoice</label>
-                </div>
-                <div class="flex items-center space-x-2">
-                  <input v-model="form.paid" type="checkbox" id="paid" class="h-4 w-4" />
-                  <label for="paid" class="text-sm font-medium text-gray-700">Paid</label>
-                </div>
+                <BaseCheckbox v-model="form.invoice" id="invoice" label="Invoice" />
+                <BaseCheckbox v-model="form.paid" id="paid" label="Paid" />
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Payment Amount</label>
-                  <input v-model="form.payment" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+                  <BaseInput v-model="form.payment" label="Payment Amount" type="number" step="0.01" />
                 </div>
               </div>
 
               <div class="mt-4">
-                <label class="block text-sm font-medium text-gray-700">Notes</label>
-                <textarea v-model="form.notes" class="mt-1 block w-full border rounded p-2"></textarea>
+                <BaseTextarea v-model="form.notes" label="Notes" />
               </div>
             </div>
           </div>

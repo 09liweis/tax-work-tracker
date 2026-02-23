@@ -1,5 +1,8 @@
 <script setup>
 import { reactive, ref, watch } from 'vue'
+import BaseInput from '~/components/form/BaseInput.vue'
+import BaseTextarea from '~/components/form/BaseTextarea.vue'
+import BaseSelect from '~/components/form/BaseSelect.vue'
 
 const props = defineProps({
   visible: Boolean,
@@ -156,28 +159,19 @@ const save = () => {
           <div v-if="step === 1" class="space-y-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="sm:col-span-2">
-                <label for="corpName" class="block text-sm font-semibold text-gray-700 mb-2">Company Name *</label>
-                <input id="corpName" v-model="currentCorporation.name" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter company name" required>
+                <BaseInput id="corpName" v-model="currentCorporation.name" label="Company Name *" placeholder="Enter company name" required />
               </div>
               <div>
-                <label for="industry" class="block text-sm font-semibold text-gray-700 mb-2">Industry</label>
-                <input id="industry" v-model="currentCorporation.industry" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., Technology">
+                <BaseInput id="industry" v-model="currentCorporation.industry" label="Industry" placeholder="e.g., Technology" />
               </div>
               <div>
-                <label for="corpStatus" class="block text-sm font-semibold text-gray-700 mb-2">Status</label>
-                <select id="corpStatus" v-model="currentCorporation.status" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
-                  <option value="Active">Active</option>
-                  <option value="Under Review">Under Review</option>
-                  <option value="Inactive">Inactive</option>
-                </select>
+                <BaseSelect id="corpStatus" v-model="currentCorporation.status" label="Status" :options="[{ value: 'Active', label: 'Active' }, { value: 'Under Review', label: 'Under Review' }, { value: 'Inactive', label: 'Inactive' }]" />
               </div>
               <div>
-                <label for="incorporatedDate" class="block text-sm font-semibold text-gray-700 mb-2">Incorporated Date</label>
-                <input id="incorporatedDate" v-model="currentCorporation.incorporatedDate" type="date" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <BaseInput id="incorporatedDate" v-model="currentCorporation.incorporatedDate" label="Incorporated Date" type="date" />
               </div>
               <div>
-                <label for="endingPeriod" class="block text-sm font-semibold text-gray-700 mb-2">Year End</label>
-                <input id="endingPeriod" v-model="currentCorporation.endingPeriod" type="date" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <BaseInput id="endingPeriod" v-model="currentCorporation.endingPeriod" label="Year End" type="date" />
               </div>
             </div>
           </div>
@@ -186,44 +180,34 @@ const save = () => {
           <div v-if="step === 2" class="space-y-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label for="bnNumber" class="block text-sm font-semibold text-gray-700 mb-2">BN Number</label>
-                <input id="bnNumber" v-model="currentCorporation.bnNumber" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="123456789">
+                <BaseInput id="bnNumber" v-model="currentCorporation.bnNumber" label="BN Number" placeholder="123456789" />
               </div>
               <div>
-                <label for="federalNo" class="block text-sm font-semibold text-gray-700 mb-2">Federal No.</label>
-                <input id="federalNo" v-model="currentCorporation.federalNo" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="FED123456">
+                <BaseInput id="federalNo" v-model="currentCorporation.federalNo" label="Federal No." placeholder="FED123456" />
               </div>
               <div>
-                <label for="provincialNo" class="block text-sm font-semibold text-gray-700 mb-2">Provincial No.</label>
-                <input id="provincialNo" v-model="currentCorporation.provincialNo" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="PROV123456">
+                <BaseInput id="provincialNo" v-model="currentCorporation.provincialNo" label="Provincial No." placeholder="PROV123456" />
               </div>
               <div>
-                <label for="wsibNo" class="block text-sm font-semibold text-gray-700 mb-2">WSIB No.</label>
-                <input id="wsibNo" v-model="currentCorporation.wsibNo" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="WSIB123456">
+                <BaseInput id="wsibNo" v-model="currentCorporation.wsibNo" label="WSIB No." placeholder="WSIB123456" />
               </div>
               <div>
-                <label for="federalKey" class="block text-sm font-semibold text-gray-700 mb-2">Federal Key</label>
-                <input id="federalKey" v-model="currentCorporation.federalKey" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="FEDKEY123">
+                <BaseInput id="federalKey" v-model="currentCorporation.federalKey" label="Federal Key" placeholder="FEDKEY123" />
               </div>
               <div>
-                <label for="companyKey" class="block text-sm font-semibold text-gray-700 mb-2">Company Key</label>
-                <input id="companyKey" v-model="currentCorporation.companyKey" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="COMPKEY123">
+                <BaseInput id="companyKey" v-model="currentCorporation.companyKey" label="Company Key" placeholder="COMPKEY123" />
               </div>
               <div>
-                <label for="isedAccountId" class="block text-sm font-semibold text-gray-700 mb-2">ISED Account ID</label>
-                <input id="isedAccountId" v-model="currentCorporation.isedAccountId" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="ISED123">
+                <BaseInput id="isedAccountId" v-model="currentCorporation.isedAccountId" label="ISED Account ID" placeholder="ISED123" />
               </div>
               <div>
-                <label for="isedPassword" class="block text-sm font-semibold text-gray-700 mb-2">ISED Password</label>
-                <input id="isedPassword" v-model="currentCorporation.isedPassword" type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••">
+                <BaseInput id="isedPassword" type="password" v-model="currentCorporation.isedPassword" label="ISED Password" placeholder="••••••••" />
               </div>
               <div>
-                <label for="oneKeyId" class="block text-sm font-semibold text-gray-700 mb-2">One Key ID</label>
-                <input id="oneKeyId" v-model="currentCorporation.oneKeyId" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="ONEKEY123">
+                <BaseInput id="oneKeyId" v-model="currentCorporation.oneKeyId" label="One Key ID" placeholder="ONEKEY123" />
               </div>
               <div>
-                <label for="onePassword" class="block text-sm font-semibold text-gray-700 mb-2">One Password</label>
-                <input id="onePassword" v-model="currentCorporation.onePassword" type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••">
+                <BaseInput id="onePassword" type="password" v-model="currentCorporation.onePassword" label="One Password" placeholder="••••••••" />
               </div>
             </div>
           </div>
@@ -232,28 +216,22 @@ const save = () => {
           <div v-if="step === 3" class="space-y-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label for="contact" class="block text-sm font-semibold text-gray-700 mb-2">Contact Person</label>
-                <input id="contact" v-model="currentCorporation.contact" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <BaseInput id="contact" v-model="currentCorporation.contact" label="Contact Person" />
               </div>
               <div>
-                <label for="primaryContact" class="block text-sm font-semibold text-gray-700 mb-2">Primary Contact</label>
-                <input id="primaryContact" v-model="currentCorporation.primaryContact" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus;border-blue-500">
+                <BaseInput id="primaryContact" v-model="currentCorporation.primaryContact" label="Primary Contact" />
               </div>
               <div>
-                <label for="mainPhone" class="block text-sm font-semibold text-gray-700 mb-2">Main Phone</label>
-                <input id="mainPhone" v-model="currentCorporation.mainPhone" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus;border-blue-500">
+                <BaseInput id="mainPhone" v-model="currentCorporation.mainPhone" label="Main Phone" />
               </div>
               <div>
-                <label for="mainEmail" class="block text-sm font-semibold text-gray-700 mb-2">Main Email</label>
-                <input id="mainEmail" v-model="currentCorporation.mainEmail" type="email" class="w-full px-4 py-3 border;border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus;border-blue-500">
+                <BaseInput id="mainEmail" type="email" v-model="currentCorporation.mainEmail" label="Main Email" />
               </div>
               <div>
-                <label for="address" class="block text-sm;font-semibold text-gray-700 mb-2">Address</label>
-                <textarea id="address" v-model="currentCorporation.address" class="w-full px-4 py-3;border;border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                <BaseTextarea id="address" v-model="currentCorporation.address" label="Address" />
               </div>
               <div class="sm:col-span-2">
-                <label for="note" class="block text-sm;font-semibold text-gray-700 mb-2">Notes</label>
-                <textarea id="note" v-model="currentCorporation.note" class="w-full px-4 py-3;border;border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                <BaseTextarea id="note" v-model="currentCorporation.note" label="Notes" />
               </div>
             </div>
           </div>
