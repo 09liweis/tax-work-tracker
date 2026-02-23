@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
     return { success: false, error: 'Invalid credentials' };
   }
 
-  const token = getLoginToken({userId: user._id});
+  const token = await getLoginToken({userId: user._id});
 
   return { success: true, token };
 });
