@@ -46,6 +46,20 @@ const form = reactive({
 
 const formError = ref('')
 const formSaving = ref(false)
+const step = ref(1)
+const maxStep = 3
+
+// navigation helpers
+function nextStep() {
+  if (step.value < maxStep) {
+    step.value++
+  }
+}
+function prevStep() {
+  if (step.value > 1) {
+    step.value--
+  }
+}
 
 function normalizeDate(d) {
   return d ? new Date(d).toISOString().substr(0,10) : ''
@@ -79,6 +93,7 @@ const resetForm = () => {
     notes: ''
   })
   formError.value = ''
+  step.value = 1
 }
 
 const editRecord = (r) => {
@@ -86,6 +101,7 @@ const editRecord = (r) => {
     ...r,
     submittedDate: normalizeDate(r.submittedDate)
   })
+  step.value = 1
 }
 
 watch(
@@ -107,6 +123,12 @@ watch(
 )
 
 const saveRecord = async () => {
+  // if not last step, move forward instead of submitting
+  if (step.value < maxStep) {
+    step.value++
+    return
+  }
+
   formSaving.value = true
   formError.value = ''
   try {
@@ -143,7 +165,43 @@ const saveRecord = async () => {
         </div>
         <div class="px-6 py-6">
           <div v-if="formError" class="mb-4 text-sm text-red-600">{{ formError }}</div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- step indicator -->
+          <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+              <div v-for="stepNum in maxStep" :key="stepNum" class="flex items-center flex-1">
+                <div class="flex items-center">
+                  <div
+                    :class="[
+                      'w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-200',
+                      step >= stepNum ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-600'
+                    ]"
+                  >
+                    {{ stepNum }}
+                  </div>
+                  <div class="ml-2 hidden sm:block">
+                    <div
+                      :class="[
+                        'text-xs font-medium',
+                        step >= stepNum ? 'text-blue-600' : 'text-gray-500'
+                      ]"
+                    >
+                      {{ stepNum === 1 ? 'General' : stepNum === 2 ? 'Remittance/Slips' : 'Submission' }}
+                    </div>
+                  </div>
+                </div>
+                <div
+                  v-if="stepNum < maxStep"
+                  :class="[
+                    'flex-1 h-0.5 mx-2 transition-all duration-200',
+                    step > stepNum ? 'bg-blue-600' : 'bg-gray-300'
+                  ]"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- general info -->
+          <div v-if="step === 1" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700">Year</label>
               <input v-model="form.year" type="text" class="mt-1 block w-full border rounded p-2" />
@@ -180,6 +238,10 @@ const saveRecord = async () => {
               <label class="block text-sm font-medium text-gray-700">Payroll Notes</label>
               <textarea v-model="form.payrollNotes" class="mt-1 block w-full border rounded p-2"></textarea>
             </div>
+          </div>
+
+          <!-- remittance / slips -->
+          <div v-if="step === 2" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700">Nil Remi Status</label>
               <input v-model="form.nilRemiStatus" type="text" class="mt-1 block w-full border rounded p-2" />
@@ -220,6 +282,10 @@ const saveRecord = async () => {
               <label class="block text-sm font-medium text-gray-700">Tax Slips Note</label>
               <textarea v-model="form.taxSlipsNote" class="mt-1 block w-full border rounded p-2"></textarea>
             </div>
+          </div>
+
+          <!-- submission -->
+          <div v-if="step === 3" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700">Submit Method</label>
               <input v-model="form.submitMethod" type="text" class="mt-1 block w-full border rounded p-2" />
@@ -238,15 +304,35 @@ const saveRecord = async () => {
             </div>
           </div>
 
-          <div class="mt-6 flex justify-end">
+          <!-- navigation buttons -->
+          <div class="mt-6 flex justify-between">
             <button
               type="button"
-              @click="saveRecord"
-              :disabled="formSaving"
-              class="px-6 py-2.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200 shadow-sm"
+              @click="prevStep"
+              :disabled="step === 1"
+              class="px-4 py-2 bg-gray-300 text-gray-700 rounded"
             >
-              {{ selectedRecord ? 'Update' : 'Add' }}
+              Previous
             </button>
+            <div>
+              <button
+                v-if="step < maxStep"
+                type="button"
+                @click="nextStep"
+                class="px-4 py-2 bg-blue-600 text-white rounded"
+              >
+                Next
+              </button>
+              <button
+                v-else
+                type="button"
+                @click="saveRecord"
+                :disabled="formSaving"
+                class="px-6 py-2.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200 shadow-sm"
+              >
+                {{ selectedRecord ? 'Update' : 'Add' }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
