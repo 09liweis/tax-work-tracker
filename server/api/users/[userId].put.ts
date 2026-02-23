@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const decoded = await verifyToken(token);
-    if (decoded.role !== 'admin') {
+    if (decoded?.role !== 'admin') {
       return { success: false, error: 'Forbidden' };
     }
   } catch (error) {
@@ -33,7 +33,6 @@ export default defineEventHandler(async (event) => {
 
   try {
     const userId = event.context.params?.id;
-    console.log(event.context.params)
 
     const user = await User.findById(userId);
 

@@ -6,16 +6,18 @@ export const getLoginToken = async ({userId}:{userId:any}) => {
 }
 
 export const verifyToken = async (token:string) => {
+  const EMPTY_USER = {role:'',_id:''};
   try {
-    const decoded = await jwt.verify(token, process.env.JWT_SECRET as string);
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET as string) as {userId:string};
     const userId = decoded.userId;
     const user = await User.findById(userId);
     if (!user) {
-      throw new Error('User not found');
+      console.error('User not found');
+      return EMPTY_USER;
     }
     return user;
   } catch (err) {
     console.error(`VerifyToken ${token} error: `, err);
-    return false;
+    return EMPTY_USER;
   }
 }
