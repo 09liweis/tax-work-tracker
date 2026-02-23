@@ -11,6 +11,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 </script>
 
+<template>
 <div>
   <label v-if="label" :for="id" class="block text-sm font-medium text-gray-700 mb-2">{{ label }}</label>
   <textarea
@@ -24,3 +25,4 @@ const emit = defineEmits(['update:modelValue'])
   />
   <p v-if="error" class="mt-2 text-sm text-red-600">{{ error }}</p>
 </div>
+</template>

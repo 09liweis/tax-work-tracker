@@ -9,6 +9,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 </script>
 
+<template>
 <div>
   <div class="flex items-center">
     <input
@@ -23,3 +24,4 @@ const emit = defineEmits(['update:modelValue'])
   </div>
   <p v-if="error" class="mt-2 text-sm text-red-600">{{ error }}</p>
 </div>
+</template>
