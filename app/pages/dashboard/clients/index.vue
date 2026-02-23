@@ -38,18 +38,46 @@ onMounted(fetchClients)
 // Modal state
 const isModalOpen = ref(false)
 const isEditing = ref(false)
-const currentClient = ref({ id: null, name: '', dob: '', sin: '', telephone: '', email: '', city: '', province: '', maritalStatus: '', gender: '', status: 'Active' })
+const currentClient = ref({
+  id: null,
+  name: '',
+  dob: '',
+  sin: '',
+  telephone: '',
+  email: '',
+  address: '',
+  city: '',
+  province: '',
+  maritalStatus: '',
+  gender: '',
+  status: 'Active'
+})
 
 // Modal functions
 const openAddModal = () => {
   isEditing.value = false
-  currentClient.value = { id: null, name: '', dob: '', sin: '', telephone: '', email: '', city: '', province: '', maritalStatus: '', gender: '', status: 'Active' }
+  currentClient.value = {
+    id: null,
+    name: '',
+    dob: '',
+    sin: '',
+    telephone: '',
+    email: '',
+    address: '',
+    city: '',
+    province: '',
+    maritalStatus: '',
+    gender: '',
+    status: 'Active'
+  }
   isModalOpen.value = true
 }
 
 const openEditModal = (client) => {
   isEditing.value = true
   currentClient.value = { ...client, id: client.id || client._id }
+  // ensure address field exists when editing older clients
+  if (!currentClient.value.address) currentClient.value.address = ''
   isModalOpen.value = true
 }
 
@@ -137,7 +165,12 @@ const closeModal = () => {
                   </div>
                   <div class="ml-4">
                     <div class="text-sm font-medium text-gray-900">{{ client.name }}</div>
-                    <div class="text-sm text-gray-500">{{ client.email || '—' }}</div>
+                    <div class="text-sm text-gray-500">
+                      <span>{{ client.email || '—' }}</span>
+                      <template v-if="client.address">
+                        <span class="block">{{ client.address }}</span>
+                      </template>
+                    </div>
                   </div>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -197,6 +230,12 @@ const closeModal = () => {
             <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
             <input id="email" v-model="currentClient.email" type="email"
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="client@example.com">
+          </div>
+
+          <div>
+            <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">Address</label>
+            <input id="address" v-model="currentClient.address" type="text"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="Street address, PO box, etc.">
           </div>
 
           <div class="grid grid-cols-2 gap-4">
