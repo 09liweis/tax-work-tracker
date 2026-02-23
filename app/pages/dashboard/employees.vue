@@ -64,14 +64,7 @@ const closeModal = () => {
 }
 
 const handleSaved = (saved) => {
-  const emp = { ...saved, id: saved._id || saved.id }
-  if (isEditing.value) {
-    const idx = employees.value.findIndex(e => String(e.id) === String(emp.id))
-    if (idx !== -1) employees.value[idx] = emp
-    else employees.value.push(emp)
-  } else {
-    employees.value.push(emp)
-  }
+  fetchEmployees();
   closeModal()
 }
 

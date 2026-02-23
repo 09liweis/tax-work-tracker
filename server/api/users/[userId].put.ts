@@ -1,6 +1,5 @@
 import { defineEventHandler, readBody } from 'h3';
 import { User } from '../../models/user.schema';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 export default defineEventHandler(async (event) => {
@@ -10,7 +9,7 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { role: string };
+    const decoded = await verifyToken(token);
     if (decoded.role !== 'admin') {
       return { success: false, error: 'Forbidden' };
     }
@@ -32,9 +31,10 @@ export default defineEventHandler(async (event) => {
 
   const data = { email, password, name, role, status }
 
-  const userId = event.context.params?.userId;
-
   try {
+    const userId = event.context.params?.id;
+    console.log(event.context.params)
+
     const user = await User.findById(userId);
 
     if (!user) {
@@ -45,9 +45,7 @@ export default defineEventHandler(async (event) => {
       data.password = await bcrypt.hash(data.password, 10);
     }
 
-    Object.assign(user, data);
-
-    await user.save();
+    await User.updateOne({_id:userId},data);
     return { success: true, user };
   } catch (error) {
     return { success: false, error };
