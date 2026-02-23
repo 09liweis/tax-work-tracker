@@ -2,6 +2,7 @@ import { defineEventHandler, readBody } from 'h3';
 import { User } from '../../models/user.schema';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { getLoginToken } from '~~/server/utils/jwt';
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
@@ -26,7 +27,7 @@ export default defineEventHandler(async (event) => {
     return { success: false, error: 'Invalid credentials' };
   }
 
-  const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET as string, { expiresIn: '1w' });
+  const token = getLoginToken({userId: user._id});
 
   return { success: true, token };
 });
