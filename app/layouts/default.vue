@@ -53,13 +53,18 @@ definePageMeta({
   middleware: 'auth'
 })
 
-const isAdmin = process.client && localStorage.getItem('role') === 'admin'
+import { computed } from 'vue'
+import { useUser } from '~/composables/useUser'
+
+const { loginUser } = useUser()
+const isAdmin = computed(() => process.client && loginUser.value?.role === 'admin')
 
 const logout = () => {
   if (process.client) {
     localStorage.removeItem('authenticated')
     localStorage.removeItem('token')
     localStorage.removeItem('role')
+    loginUser.value = null
     navigateTo('/login')
   }
 }

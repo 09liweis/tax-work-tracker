@@ -65,6 +65,8 @@ definePageMeta({
   layout: 'auth'
 })
 
+import { useUser } from '~/composables/useUser'
+
 const email = ref('')
 const password = ref('')
 const loading = ref(false)
@@ -92,6 +94,9 @@ const login = async () => {
       localStorage.setItem('authenticated', 'true')
       // store role returned by server for quick checks
       if (response.role) localStorage.setItem('role', response.role)
+      // populate global user object
+      const { fetchMe } = useUser()
+      await fetchMe()
       navigateTo('/dashboard')
     } else {
       error.value = response.error || 'Login failed'

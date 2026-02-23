@@ -22,6 +22,7 @@ const isLoading = ref(true)
 const fetchError = ref('')
 
 const userStore = useUser()
+const { loginUser } = userStore
 const isAdmin = ref(false)
 
 const fetchEmployees = async () => {
@@ -90,8 +91,8 @@ const deleteEmployee = async (id) => {
 }
 
 onMounted(async () => {
-  const u = await userStore.fetchMe()
-  isAdmin.value = u?.role === 'admin'
+  // ensure global user is populated
+  isAdmin.value = loginUser.value?.role === 'admin'
   if (!isAdmin.value) {
     fetchError.value = 'Only administrators can access this page'
     isLoading.value = false

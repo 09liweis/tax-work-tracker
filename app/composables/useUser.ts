@@ -1,18 +1,19 @@
 import { ref } from 'vue'
 
-const user = ref(null)
+// global reactive object for logged-in user
+export const loginUser = ref(null)
 
 export function useUser() {
   const fetchMe = async () => {
     try {
       const token = localStorage.getItem('token')
       if (!token) return null
-      const res = await $fetch('/api/users/me', {
+      const res: any = await $fetch('/api/users/me', {
         headers: { Authorization: `Bearer ${token}` }
       })
-      if (res.success) {
-        user.value = res.user
-        return user.value
+      if (res.success && res.user) {
+        loginUser.value = res.user
+        return loginUser.value
       }
       return null
     } catch (err) {
@@ -20,5 +21,5 @@ export function useUser() {
     }
   }
 
-  return { user, fetchMe }
+  return { loginUser, fetchMe }
 }
