@@ -42,8 +42,23 @@ const form = reactive({
   notes: '',
   completed: false,
 })
+const step = ref(1)
+const maxStep = 3
 const formError = ref('')
 const formSaving = ref(false)
+
+// navigation helpers for the multi-step wizard
+function nextStep() {
+  if (step.value < maxStep) {
+    step.value++
+  }
+}
+
+function prevStep() {
+  if (step.value > 1) {
+    step.value--
+  }
+}
 
 function normalizeDate(d) {
   return d ? new Date(d).toISOString().substr(0,10) : ''
@@ -76,6 +91,7 @@ const resetForm = () => {
     completed: false,
   })
   formError.value = ''
+  step.value = 1
 }
 
 const editTask = (t) => {
@@ -89,6 +105,7 @@ const editTask = (t) => {
     dueDate: normalizeDate(t.dueDate),
     actualCompletedDate: normalizeDate(t.actualCompletedDate),
   })
+  step.value = 1
 }
 
 watch(
@@ -112,6 +129,12 @@ watch(
 )
 
 const saveTask = async () => {
+  // if not on last step, advance instead of sending
+  if (step.value < maxStep) {
+    step.value++
+    return
+  }
+
   formSaving.value = true
   formError.value = ''
   try {
@@ -151,111 +174,187 @@ const saveTask = async () => {
         </div>
 
         <div class="px-6 py-6">
-          <div v-if="formError" class="mb-4 text-sm text-red-600">{{ formError }}</div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Task Type</label>
-              <input v-model="form.taskType" type="text" class="mt-1 block w-full border rounded p-2" />
+            <div v-if="formError" class="mb-4 text-sm text-red-600">{{ formError }}</div>
+
+            <!-- step indicator -->
+            <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+              <div class="flex items-center justify-between">
+                <div v-for="stepNum in maxStep" :key="stepNum" class="flex items-center flex-1">
+                  <div class="flex items-center">
+                    <div
+                      :class="[
+                        'w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-200',
+                        step >= stepNum ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-600'
+                      ]"
+                    >
+                      {{ stepNum }}
+                    </div>
+                    <div class="ml-2 hidden sm:block">
+                      <div
+                        :class="[
+                          'text-xs font-medium',
+                          step >= stepNum ? 'text-blue-600' : 'text-gray-500'
+                        ]"
+                      >
+                        {{ stepNum === 1 ? 'General' : stepNum === 2 ? 'Dates' : 'Status/Finance' }}
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    v-if="stepNum < maxStep"
+                    :class="[
+                      'flex-1 h-0.5 mx-2 transition-all duration-200',
+                      step > stepNum ? 'bg-blue-600' : 'bg-gray-300'
+                    ]"
+                  ></div>
+                </div>
+              </div>
             </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Category</label>
-              <input v-model="form.category" type="text" class="mt-1 block w-full border rounded p-2" />
+
+            <!-- general info -->
+            <div v-if="step === 1" class="space-y-4">
+              <h4 class="text-md font-semibold text-gray-800 mb-2">General</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Task Type</label>
+                  <input v-model="form.taskType" type="text" placeholder="e.g. PMS" class="mt-1 block w-full border rounded p-2" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Category</label>
+                  <input v-model="form.category" type="text" placeholder="PFS, Other" class="mt-1 block w-full border rounded p-2" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Year Ending</label>
+                  <input v-model="form.yearEnding" type="text" placeholder="2023" class="mt-1 block w-full border rounded p-2" />
+                </div>
+                <div class="md:col-span-2">
+                  <label class="block text-sm font-medium text-gray-700">Task Description</label>
+                  <input v-model="form.taskDescription" type="text" placeholder="e.g. Prepare corporate tax return" class="mt-1 block w-full border rounded p-2" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Owner</label>
+                  <input v-model="form.owner" type="text" placeholder="John Doe" class="mt-1 block w-full border rounded p-2" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Channel</label>
+                  <input v-model="form.channel" type="text" placeholder="Email/Phone" class="mt-1 block w-full border rounded p-2" />
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-700">Missing Items</label>
+                <textarea v-model="form.missingItems" placeholder="List missing documents" class="mt-1 block w-full border rounded p-2"></textarea>
+              </div>
             </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Year Ending</label>
-              <input v-model="form.yearEnding" type="text" class="mt-1 block w-full border rounded p-2" />
+
+            <!-- dates -->
+            <div v-if="step === 2" class="space-y-4">
+              <h4 class="text-md font-semibold text-gray-800 mt-6 mb-2">Dates</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Docs Received</label>
+                  <input v-model="form.docsReceivedDate" type="date" class="mt-1 block w-full border rounded p-2" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Start Date</label>
+                  <input v-model="form.startDate" type="date" class="mt-1 block w-full border rounded p-2" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Due Date</label>
+                  <input v-model="form.dueDate" type="date" class="mt-1 block w-full border rounded p-2" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Completed Date</label>
+                  <input v-model="form.actualCompletedDate" type="date" class="mt-1 block w-full border rounded p-2" />
+                </div>
+              </div>
             </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Task Description</label>
-              <input v-model="form.taskDescription" type="text" class="mt-1 block w-full border rounded p-2" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Owner</label>
-              <input v-model="form.owner" type="text" class="mt-1 block w-full border rounded p-2" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Docs Received Date</label>
-              <input v-model="form.docsReceivedDate" type="date" class="mt-1 block w-full border rounded p-2" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Channel</label>
-              <input v-model="form.channel" type="text" class="mt-1 block w-full border rounded p-2" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">HST Doc Status</label>
-              <input v-model="form.hstDocStatus" type="text" class="mt-1 block w-full border rounded p-2" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">T2 Doc Status</label>
-              <input v-model="form.t2DocStatus" type="text" class="mt-1 block w-full border rounded p-2" />
-            </div>
-            <div class="md:col-span-2">
-              <label class="block text-sm font-medium text-gray-700">Missing Items</label>
-              <textarea v-model="form.missingItems" class="mt-1 block w-full border rounded p-2"></textarea>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Start Date</label>
-              <input v-model="form.startDate" type="date" class="mt-1 block w-full border rounded p-2" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Due Date</label>
-              <input v-model="form.dueDate" type="date" class="mt-1 block w-full border rounded p-2" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Actual Completed Date</label>
-              <input v-model="form.actualCompletedDate" type="date" class="mt-1 block w-full border rounded p-2" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Status</label>
-              <input v-model="form.status" type="text" class="mt-1 block w-full border rounded p-2" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Blocker / Waiting For</label>
-              <input v-model="form.blockerWaitingFor" type="text" class="mt-1 block w-full border rounded p-2" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Priority</label>
-              <input v-model="form.priority" type="text" class="mt-1 block w-full border rounded p-2" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Receivable Amount</label>
-              <input v-model="form.receivableAmount" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
-            </div>
-            <div class="flex items-center space-x-2">
-              <input v-model="form.invoice" type="checkbox" id="invoice" class="h-4 w-4" />
-              <label for="invoice" class="text-sm font-medium text-gray-700">Invoice (Yes/No)</label>
-            </div>
-            <div class="flex items-center space-x-2">
-              <input v-model="form.paid" type="checkbox" id="paid" class="h-4 w-4" />
-              <label for="paid" class="text-sm font-medium text-gray-700">Paid (Yes/No)</label>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Payment</label>
-              <input v-model="form.payment" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
-            </div>
-            <div class="md:col-span-2">
-              <label class="block text-sm font-medium text-gray-700">Notes</label>
-              <textarea v-model="form.notes" class="mt-1 block w-full border rounded p-2"></textarea>
+
+            <!-- status & financial -->
+            <div v-if="step === 3" class="space-y-4">
+              <h4 class="text-md font-semibold text-gray-800 mt-6 mb-2">Status / Finance</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Status</label>
+                  <input v-model="form.status" type="text" class="mt-1 block w-full border rounded p-2" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Priority</label>
+                  <input v-model="form.priority" type="text" class="mt-1 block w-full border rounded p-2" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Blocker / Waiting For</label>
+                  <input v-model="form.blockerWaitingFor" type="text" class="mt-1 block w-full border rounded p-2" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">HST Doc Status</label>
+                  <input v-model="form.hstDocStatus" type="text" class="mt-1 block w-full border rounded p-2" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">T2 Doc Status</label>
+                  <input v-model="form.t2DocStatus" type="text" class="mt-1 block w-full border rounded p-2" />
+                </div>
+                <div class="flex items-center space-x-2">
+                  <input v-model="form.completed" type="checkbox" id="completed" class="h-4 w-4" />
+                  <label for="completed" class="text-sm font-medium text-gray-700">Completed</label>
+                </div>
+              </div>
+
+              <!-- finance details -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Receivable Amount</label>
+                  <input v-model="form.receivableAmount" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+                </div>
+                <div class="flex items-center space-x-2">
+                  <input v-model="form.invoice" type="checkbox" id="invoice" class="h-4 w-4" />
+                  <label for="invoice" class="text-sm font-medium text-gray-700">Invoice</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <input v-model="form.paid" type="checkbox" id="paid" class="h-4 w-4" />
+                  <label for="paid" class="text-sm font-medium text-gray-700">Paid</label>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Payment Amount</label>
+                  <input v-model="form.payment" type="number" step="0.01" class="mt-1 block w-full border rounded p-2" />
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-700">Notes</label>
+                <textarea v-model="form.notes" class="mt-1 block w-full border rounded p-2"></textarea>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-between items-center">
+        <!-- navigation buttons -->
+        <div class="mt-6 flex justify-between">
           <button
             type="button"
-            @click="$emit('close')"
-            class="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+            @click="prevStep"
+            :disabled="step === 1"
+            class="px-4 py-2 bg-gray-300 text-gray-700 rounded"
           >
-            Cancel
+            Previous
           </button>
-          <button
-            type="button"
-            @click="saveTask"
-            :disabled="formSaving"
-            class="px-6 py-2.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200 shadow-sm"
-          >
-            {{ selectedTask ? 'Update Task' : 'Add Task' }}
-          </button>
+          <div>
+            <button
+              v-if="step < maxStep"
+              type="button"
+              @click="nextStep"
+              class="px-4 py-2 bg-blue-600 text-white rounded"
+            >
+              Next
+            </button>
+            <button
+              v-else
+              type="button"
+              @click="saveTask"
+              :disabled="formSaving"
+              class="px-6 py-2.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200 shadow-sm"
+            >
+              {{ selectedTask ? 'Update Task' : 'Add Task' }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
