@@ -64,11 +64,11 @@ const fetchDashboardData = async () => {
       const pending = tasks.filter(t => !t.completed)
       const completed = tasks.filter(t => t.completed)
 
-      stats.value.pendingTasks += pending.length
-      stats.value.completedTasks += completed.length
+      stats.value.pendingTasks = pending.length
+      stats.value.completedTasks = completed.length
 
       const paidTasks = tasks.filter(t => t.paid && t.payment)
-      stats.value.totalRevenue += paidTasks.reduce((sum, t) => sum + (parseFloat(t.payment) || 0), 0)
+      stats.value.totalRevenue = paidTasks.reduce((sum, t) => sum + (parseFloat(t.payment) || 0), 0)
 
       const upcoming = tasks
         .filter(t => !t.completed && t.targetDueDate)
@@ -82,7 +82,7 @@ const fetchDashboardData = async () => {
         .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
         .slice(0, 5)
 
-      upcomingDeadlines.value = [...upcomingDeadlines.value, ...upcoming]
+      upcomingDeadlines.value = upcoming;
     }
 
     if (corpTaxRes.success) {
