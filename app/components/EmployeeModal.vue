@@ -2,6 +2,7 @@
 import { watch, ref } from 'vue'
 import BaseInput from '~/components/form/BaseInput.vue'
 import BaseSelect from '~/components/form/BaseSelect.vue'
+import BasePasswordInput from '~/components/form/BasePasswordInput.vue'
 import { EMPLOYEE_ROLE_OPTIONS, EMPLOYEE_STATUS_OPTIONS } from './utils/formOptions.js'
 
 const props = defineProps({
@@ -134,7 +135,7 @@ const save = async () => {
               <BaseInput id="email" type="email" v-model="formData.email" label="Email Address"
                 placeholder="employee@company.com" :error="formErrors.email" />
               <BaseSelect id="status" v-model="formData.status" label="Employment Status" :options="EMPLOYEE_STATUS_OPTIONS" />
-              <BaseInput v-if="!isEditing" id="password" type="password" v-model="formData.password" label="Password"
+              <BasePasswordInput v-if="!isEditing" id="password" v-model="formData.password" label="Password"
                 placeholder="Create a password" :error="formErrors.password" />
             </div>
 

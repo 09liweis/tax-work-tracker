@@ -3,6 +3,7 @@ import { reactive, ref, watch } from 'vue'
 import BaseInput from '~/components/form/BaseInput.vue'
 import BaseTextarea from '~/components/form/BaseTextarea.vue'
 import BaseSelect from '~/components/form/BaseSelect.vue'
+import BasePasswordInput from '~/components/form/BasePasswordInput.vue'
 import { CORPORATION_STATUS_OPTIONS } from './utils/formOptions.js'
 
 const props = defineProps({
@@ -202,13 +203,13 @@ const save = () => {
                 <BaseInput id="isedAccountId" v-model="currentCorporation.isedAccountId" label="ISED Account ID" placeholder="ISED123" />
               </div>
               <div>
-                <BaseInput id="isedPassword" type="password" v-model="currentCorporation.isedPassword" label="ISED Password" placeholder="••••••••" />
+                <BasePasswordInput id="isedPassword" v-model="currentCorporation.isedPassword" label="ISED Password" placeholder="••••••••" />
               </div>
               <div>
                 <BaseInput id="oneKeyId" v-model="currentCorporation.oneKeyId" label="One Key ID" placeholder="ONEKEY123" />
               </div>
               <div>
-                <BaseInput id="onePassword" type="password" v-model="currentCorporation.onePassword" label="One Password" placeholder="••••••••" />
+                <BasePasswordInput id="onePassword" v-model="currentCorporation.onePassword" label="One Password" placeholder="••••••••" />
               </div>
             </div>
           </div>
