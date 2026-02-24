@@ -35,84 +35,17 @@ const fetchDashboardData = async () => {
   loading.value = true
   try {
     const token = localStorage.getItem('token')
+    const res = await $fetch('/api/dashboard', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
 
-    const [clientsRes, corpsRes, personalTaxRes, corpTaxRes, usersRes] = await Promise.all([
-      $fetch('/api/clients', { headers: { Authorization: `Bearer ${token}` } }),
-      $fetch('/api/corporations', { headers: { Authorization: `Bearer ${token}` } }),
-      $fetch('/api/personalTax', { headers: { Authorization: `Bearer ${token}` } }),
-      $fetch('/api/corporationTax', { headers: { Authorization: `Bearer ${token}` } }),
-      isAdmin.value ? $fetch('/api/users', { headers: { Authorization: `Bearer ${token}` } }) : Promise.resolve({ success: true, users: [] })
-    ])
-
-    if (clientsRes.success) {
-      stats.value.totalClients = clientsRes.clients.length
-      recentClients.value = clientsRes.clients
-        .sort((a, b) => new Date(b.lts || b.ts) - new Date(a.lts || a.ts))
-        .slice(0, 5)
+    if (res.success) {
+      stats.value = res.stats
+      recentClients.value = res.recentClients
+      upcomingDeadlines.value = res.upcomingDeadlines
+    } else {
+      console.error('Failed to fetch dashboard data:', res.error)
     }
-
-    if (corpsRes.success) {
-      stats.value.totalCorporations = corpsRes.corporations.length
-    }
-
-    if (usersRes.success) {
-      stats.value.employees = usersRes.users.length
-    }
-
-    if (personalTaxRes.success) {
-      const tasks = personalTaxRes.personalTaxes || []
-      const pending = tasks.filter(t => !t.completed)
-      const completed = tasks.filter(t => t.completed)
-
-      stats.value.pendingTasks = pending.length
-      stats.value.completedTasks = completed.length
-
-      const paidTasks = tasks.filter(t => t.paid && t.payment)
-      stats.value.totalRevenue = paidTasks.reduce((sum, t) => sum + (parseFloat(t.payment) || 0), 0)
-
-      const upcoming = tasks
-        .filter(t => !t.completed && t.targetDueDate)
-        .map(t => ({
-          type: 'Personal Tax',
-          description: t.taskDescription,
-          clientId: t.clientId,
-          dueDate: t.targetDueDate,
-          priority: t.priority
-        }))
-        .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
-        .slice(0, 5)
-
-      upcomingDeadlines.value = upcoming;
-    }
-
-    if (corpTaxRes.success) {
-      const tasks = corpTaxRes.corporationTaxes || []
-      const pending = tasks.filter(t => !t.completed)
-      const completed = tasks.filter(t => t.completed)
-
-      stats.value.pendingTasks += pending.length
-      stats.value.completedTasks += completed.length
-
-      const paidTasks = tasks.filter(t => t.paid && t.payment)
-      stats.value.totalRevenue += paidTasks.reduce((sum, t) => sum + (parseFloat(t.payment) || 0), 0)
-
-      const upcoming = tasks
-        .filter(t => !t.completed && t.dueDate)
-        .map(t => ({
-          type: 'Corporate Tax',
-          description: t.taskDescription,
-          corpId: t.corpId,
-          dueDate: t.dueDate,
-          priority: t.priority
-        }))
-        .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
-        .slice(0, 5)
-
-      upcomingDeadlines.value = [...upcomingDeadlines.value, ...upcoming].slice(0, 5)
-    }
-
-    upcomingDeadlines.value.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
-
   } catch (err) {
     console.error('Failed to fetch dashboard data:', err)
   } finally {
