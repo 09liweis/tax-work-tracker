@@ -25,6 +25,7 @@ import CorporationCompanyInfo from '~/components/CorporationCompanyInfo.vue'
 import CorporationContactInfo from '~/components/CorporationContactInfo.vue'
 import CorporationAccountAccess from '~/components/CorporationAccountAccess.vue'
 import CorporationNotes from '~/components/CorporationNotes.vue'
+import { apiGet } from '~/utils/api'
 
 const route = useRoute()
 const corpId = route.params.corpId
@@ -58,10 +59,7 @@ const fetchCorporation = async () => {
   loading.value = true
   fetchError.value = ''
   try {
-    const token = localStorage.getItem('token')
-    const res = await $fetch(`/api/corporations/${corpId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await apiGet(`/api/corporations/${corpId}`)
     if (!res.success) throw new Error(res.error || 'Failed to load corporation')
     corporation.value = { ...res.corporation, id: res.corporation._id || res.corporation.id }
   } catch (err) {
@@ -75,10 +73,7 @@ const fetchTaxes = async () => {
   corpTaxesLoading.value = true
   corpTaxesError.value = ''
   try {
-    const token = localStorage.getItem('token')
-    const res = await $fetch(`/api/corporationTax?corpId=${corpId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await apiGet(`/api/corporationTax?corpId=${corpId}`)
     if (!res.success) throw new Error(res.error || 'Failed to load tax tasks')
     corpTaxes.value = (res.corporationTaxes || []).map(t => ({ ...t, id: t._id || t.id }))
   } catch (err) {
@@ -92,10 +87,7 @@ const fetchPayrolls = async () => {
   corpPayrollsLoading.value = true
   corpPayrollsError.value = ''
   try {
-    const token = localStorage.getItem('token')
-    const res = await $fetch(`/api/corporationPayroll?corpId=${corpId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await apiGet(`/api/corporationPayroll?corpId=${corpId}`)
     if (!res.success) throw new Error(res.error || 'Failed to load payroll records')
     corpPayrolls.value = (res.corporationPayrolls || []).map(r => ({ ...r, id: r._id || r.id }))
   } catch (err) {

@@ -12,6 +12,8 @@ useHead({
   ]
 })
 
+import { apiGet, apiPost } from '~/utils/api'
+
 const clients = ref([])
 const isLoading = ref(true)
 const fetchError = ref('')
@@ -20,10 +22,7 @@ const fetchClients = async () => {
   isLoading.value = true
   fetchError.value = ''
   try {
-    const token = localStorage.getItem('token')
-    const res = await $fetch('/api/clients', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await apiGet('/api/clients')
     if (!res.success) throw new Error(res.error || 'Failed to load clients')
     clients.value = res.clients.map(c => ({ ...c, id: c._id || c.id }))
   } catch (err) {
@@ -83,13 +82,8 @@ const openEditModal = (client) => {
 
 const saveClient = async () => {
   try {
-    const token = localStorage.getItem('token')
     const payload = { ...currentClient.value }
-    const res = await $fetch('/api/clients/upsert', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
-      body: payload
-    })
+    const res = await apiPost('/api/clients/upsert', payload)
     if (!res.success) throw new Error(res.error || 'Save failed')
 
     const saved = { ...res.client, id: res.client._id || res.client.id }

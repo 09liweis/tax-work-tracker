@@ -1,6 +1,12 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useUser } from '~/composables/useUser'
+import { apiGet } from '~/utils/api'
+import DashboardWelcome from '~/components/dashboard/DashboardWelcome.vue'
+import DashboardStats from '~/components/dashboard/DashboardStats.vue'
+import RecentClients from '~/components/dashboard/RecentClients.vue'
+import UpcomingDeadlines from '~/components/dashboard/UpcomingDeadlines.vue'
+import QuickActions from '~/components/dashboard/QuickActions.vue'
 
 definePageMeta({
   layout: 'default',
@@ -34,10 +40,7 @@ const loading = ref(true)
 const fetchDashboardData = async () => {
   loading.value = true
   try {
-    const token = localStorage.getItem('token')
-    const res = await $fetch('/api/dashboard', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await apiGet('/api/dashboard')
 
     if (res.success) {
       stats.value = res.stats

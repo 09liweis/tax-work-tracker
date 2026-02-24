@@ -12,14 +12,15 @@ useHead({
   ]
 })
 
-const route = useRoute()
-const clientId = route.params.clientId
-
 import ClientInfoCard from '~/components/ClientInfoCard.vue'
 import PersonalTaxSection from '~/components/PersonalTaxSection.vue'
 import TaskModal from '~/components/TaskModal.vue'
 import CorporationModal from '~/components/CorporationModal.vue'
 import CorporationList from '~/components/CorporationList.vue'
+import { apiGet, apiPost } from '~/utils/api'
+
+const route = useRoute()
+const clientId = route.params.clientId
 
 const client = ref(null)
 const isLoading = ref(true)
@@ -49,10 +50,7 @@ const fetchClient = async () => {
   isLoading.value = true
   fetchError.value = ''
   try {
-    const token = localStorage.getItem('token')
-    const res = await $fetch(`/api/clients/${clientId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await apiGet(`/api/clients/${clientId}`)
     if (!res.success) throw new Error(res.error || 'Failed to load client')
     client.value = { ...res.client, id: res.client._id || res.client.id }
   } catch (err) {
@@ -72,10 +70,7 @@ const fetchPersonalTaxes = async () => {
   personalTaxesLoading.value = true
   personalTaxesError.value = ''
   try {
-    const token = localStorage.getItem('token')
-    const res = await $fetch(`/api/personalTax?clientId=${clientId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await apiGet(`/api/personalTax?clientId=${clientId}`)
     if (!res.success) throw new Error(res.error || 'Failed to load personal tax records')
     personalTaxes.value = res.personalTaxes || []
   } catch (err) {
@@ -89,10 +84,7 @@ const fetchCorporations = async () => {
   corporationsLoading.value = true
   corporationsError.value = ''
   try {
-    const token = localStorage.getItem('token')
-    const res = await $fetch(`/api/corporations?clientId=${clientId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await apiGet(`/api/corporations?clientId=${clientId}`)
     if (!res.success) throw new Error(res.error || 'Failed to load corporations')
     corporations.value = (res.corporations || []).map(c => ({ ...c, id: c._id || c.id }))
   } catch (err) {
@@ -143,12 +135,7 @@ const closeCorpModal = () => {
 const handleCorpSave = async (corpData) => {
   // send to backend upsert endpoint
   try {
-    const token = localStorage.getItem('token')
-    const res = await $fetch('/api/corporations/upsert', {
-      method: 'POST',
-      body: corpData,
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await apiPost('/api/corporations/upsert', corpData)
     if (!res.success) throw new Error(res.error || 'Failed to save corporation')
   } catch (err) {
     // could display error in UI; for now log

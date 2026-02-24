@@ -66,6 +66,7 @@ definePageMeta({
 })
 
 import { useUser } from '~/composables/useUser'
+import { apiPost } from '~/utils/api'
 
 const email = ref('')
 const password = ref('')
@@ -81,12 +82,9 @@ const login = async () => {
 
   loading.value = true
   try {
-    const response = await $fetch('/api/users/login', {
-      method: 'POST',
-      body: {
-        email: email.value,
-        password: password.value
-      }
+    const response = await apiPost('/api/users/login', {
+      email: email.value,
+      password: password.value
     })
 
     if (response.success) {

@@ -1,6 +1,7 @@
 <script setup>
 
 import CorporationList from '~/components/CorporationList.vue'
+import { apiGet, apiPost } from '~/utils/api'
 
 definePageMeta({
   layout: 'default',
@@ -24,10 +25,7 @@ const fetchCorporations = async () => {
   corporationsLoading.value = true
   corporationsError.value = ''
   try {
-    const token = localStorage.getItem('token')
-    const res = await $fetch('/api/corporations', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await apiGet('/api/corporations')
     if (!res.success) throw new Error(res.error || 'Failed to load corporations')
     corporations.value = (res.corporations || []).map(c => ({ ...c, id: c._id || c.id }))
   } catch (err) {
@@ -58,12 +56,7 @@ const openEditModal = (corp) => {
 
 const handleSave = async (corp) => {
   try {
-    const token = localStorage.getItem('token')
-    const res = await $fetch('/api/corporations/upsert', {
-      method: 'POST',
-      body: corp,
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await apiPost('/api/corporations/upsert', corp)
     if (!res.success) throw new Error(res.error || 'Failed to save corporation')
   } catch (err) {
     console.error('Error saving corporation', err)

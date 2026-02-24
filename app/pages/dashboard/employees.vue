@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import EmployeeList from '~/components/EmployeeList.vue'
 import EmployeeModal from '~/components/EmployeeModal.vue'
 import { useUser } from '~/composables/useUser'
+import { apiGet, apiDelete } from '~/utils/api'
 
 definePageMeta({
   layout: 'default',
@@ -29,10 +30,7 @@ const fetchEmployees = async () => {
   isLoading.value = true
   fetchError.value = ''
   try {
-    const token = localStorage.getItem('token')
-    const res = await $fetch('/api/users', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await apiGet('/api/users')
     if (!res.success) throw new Error(res.error || 'Failed to load employees')
     employees.value = res.users;
   } catch (err) {
@@ -71,11 +69,7 @@ const handleSaved = (saved) => {
 const deleteEmployee = async (id) => {
   if (!confirm('Are you sure you want to delete this employee?')) return
   try {
-    const token = localStorage.getItem('token')
-    const res = await $fetch(`/api/users/${id}`, {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await apiDelete(`/api/users/${id}`)
     if (!res.success) throw new Error(res.error || 'Delete failed')
     employees.value = employees.value.filter(e => String(e.id) !== String(id))
   } catch (err) {
