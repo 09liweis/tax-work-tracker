@@ -1,4 +1,6 @@
 <script setup>
+import { getStatusColor, getPriorityColor, getTaskTypeIcon } from './utils/statusHelpers.js'
+
 const props = defineProps({
   tasks: {
     type: Array,
@@ -9,37 +11,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(["new", "edit"])
-
-const getStatusColor = (status) => {
-  const colors = {
-    'Pending': 'bg-yellow-100 text-yellow-800',
-    'In Progress': 'bg-blue-100 text-blue-800',
-    'Completed': 'bg-green-100 text-green-800',
-    'Overdue': 'bg-red-100 text-red-800'
-  }
-  return colors[status] || 'bg-gray-100 text-gray-800'
-}
-
-const getPriorityColor = (priority) => {
-  const colors = {
-    'Low': 'bg-gray-100 text-gray-600',
-    'Medium': 'bg-blue-100 text-blue-600',
-    'High': 'bg-orange-100 text-orange-600',
-    'Urgent': 'bg-red-100 text-red-600'
-  }
-  return colors[priority] || 'bg-gray-100 text-gray-600'
-}
-
-const getTaskTypeIcon = (taskType) => {
-  const icons = {
-    'Corporate Tax Return': '🏢',
-    'Annual Accounts': '📊',
-    'VAT Return': '💰',
-    'PAYE Return': '👥',
-    'Self Assessment': '📋'
-  }
-  return icons[taskType] || '📄'
-}
 </script>
 
 <template>
@@ -127,7 +98,7 @@ const getTaskTypeIcon = (taskType) => {
           </div>
 
           <div class="flex items-center gap-3 flex-shrink-0">
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium" :class="getStatusColor(t.status)">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium" :class="getStatusColor(t.status, 'tax')">
               {{ t.status }}
             </span>
             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium" :class="getPriorityColor(t.priority)">
