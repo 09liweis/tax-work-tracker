@@ -3,6 +3,8 @@ import { watch, computed, ref, reactive } from 'vue'
 import BaseInput from '~/components/form/BaseInput.vue'
 import BaseTextarea from '~/components/form/BaseTextarea.vue'
 import BaseCheckbox from '~/components/form/BaseCheckbox.vue'
+import BaseSelect from '~/components/form/BaseSelect.vue'
+import { STATUS_OPTIONS, PRIORITY_OPTIONS, DOC_STATUS_OPTIONS } from './utils/formOptions.js'
 
 const props = defineProps({
   visible: Boolean,
@@ -267,19 +269,19 @@ const saveTask = async () => {
               <h4 class="text-md font-semibold text-gray-800 mt-6 mb-2">Status / Finance</h4>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <BaseInput v-model="form.status" label="Status" />
+                  <BaseSelect v-model="form.status" label="Status" :options="STATUS_OPTIONS" />
                 </div>
                 <div>
-                  <BaseInput v-model="form.priority" label="Priority" />
+                  <BaseSelect v-model="form.priority" label="Priority" :options="PRIORITY_OPTIONS" />
                 </div>
                 <div>
                   <BaseInput v-model="form.blockerWaitingFor" label="Blocker / Waiting For" />
                 </div>
                 <div>
-                  <BaseInput v-model="form.hstDocStatus" label="HST Doc Status" />
+                  <BaseSelect v-model="form.hstDocStatus" label="HST Doc Status" :options="DOC_STATUS_OPTIONS" />
                 </div>
                 <div>
-                  <BaseInput v-model="form.t2DocStatus" label="T2 Doc Status" />
+                  <BaseSelect v-model="form.t2DocStatus" label="T2 Doc Status" :options="DOC_STATUS_OPTIONS" />
                 </div>
                 <BaseCheckbox v-model="form.completed" id="completed" label="Completed" />
               </div>

@@ -3,6 +3,14 @@ import { watch, computed, ref, reactive } from 'vue'
 import BaseInput from '~/components/form/BaseInput.vue'
 import BaseTextarea from '~/components/form/BaseTextarea.vue'
 import BaseCheckbox from '~/components/form/BaseCheckbox.vue'
+import BaseSelect from '~/components/form/BaseSelect.vue'
+import {
+  PAYROLL_STATUS_OPTIONS,
+  FREQUENCY_OPTIONS,
+  TAX_SLIPS_STATUS_OPTIONS,
+  SUBMIT_METHOD_OPTIONS,
+  FILLING_METHOD_OPTIONS
+} from './utils/formOptions.js'
 
 const props = defineProps({
   visible: Boolean,
@@ -209,10 +217,10 @@ const saveRecord = async () => {
               <BaseInput v-model="form.year" label="Year" />
             </div>
             <div>
-              <BaseInput v-model="form.payrollFrequency" label="Payroll Frequency" />
+              <BaseSelect v-model="form.payrollFrequency" label="Payroll Frequency" :options="FREQUENCY_OPTIONS" />
             </div>
             <div>
-              <BaseInput v-model="form.remittanceFrequency" label="Remittance Frequency" />
+              <BaseSelect v-model="form.remittanceFrequency" label="Remittance Frequency" :options="FREQUENCY_OPTIONS" />
             </div>
             <BaseCheckbox v-model="form.authStatus" id="authStatus" label="Auth Status" />
             <div>
@@ -223,7 +231,7 @@ const saveRecord = async () => {
             </div>
             <BaseCheckbox v-model="form.wsib" id="wsib" label="WSIB" />
             <div>
-              <BaseInput v-model="form.payrollStatus" label="Payroll Status" />
+              <BaseSelect v-model="form.payrollStatus" label="Payroll Status" :options="PAYROLL_STATUS_OPTIONS" />
             </div>
             <div class="md:col-span-2">
               <BaseTextarea v-model="form.payrollNotes" label="Payroll Notes" />
@@ -240,7 +248,7 @@ const saveRecord = async () => {
               <BaseInput v-model="form.remittanceReconciliation" label="Remittance Reconciliation" />
             </div>
             <div>
-              <BaseInput v-model="form.taxSlipsStatus" label="Tax Slips Status" />
+              <BaseSelect v-model="form.taxSlipsStatus" label="Tax Slips Status" :options="TAX_SLIPS_STATUS_OPTIONS" />
             </div>
             <div>
               <BaseInput v-model="form.t4Gross" label="T4 Gross" type="number" step="0.01" />
@@ -268,10 +276,10 @@ const saveRecord = async () => {
           <!-- submission -->
           <div v-if="step === 3" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <BaseInput v-model="form.submitMethod" label="Submit Method" />
+              <BaseSelect v-model="form.submitMethod" label="Submit Method" :options="SUBMIT_METHOD_OPTIONS" />
             </div>
             <div>
-              <BaseInput v-model="form.fillingMethod" label="Filling Method" />
+              <BaseSelect v-model="form.fillingMethod" label="Filling Method" :options="FILLING_METHOD_OPTIONS" />
             </div>
             <div>
               <BaseInput v-model="form.submittedDate" label="Submitted Date" type="date" />

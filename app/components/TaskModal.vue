@@ -3,6 +3,8 @@ import { watch, computed, ref, reactive } from 'vue'
 import BaseInput from '~/components/form/BaseInput.vue'
 import BaseTextarea from '~/components/form/BaseTextarea.vue'
 import BaseCheckbox from '~/components/form/BaseCheckbox.vue'
+import BaseSelect from '~/components/form/BaseSelect.vue'
+import { STATUS_OPTIONS, PRIORITY_OPTIONS } from './utils/formOptions.js'
 
 const props = defineProps({
   visible: Boolean,
@@ -165,13 +167,13 @@ const saveTask = async () => {
               <BaseInput v-model="form.actualCompletedDate" label="Actual Completed Date" type="date" />
             </div>
             <div>
-              <BaseInput v-model="form.status" label="Status" />
+              <BaseSelect v-model="form.status" label="Status" :options="STATUS_OPTIONS" />
             </div>
             <div>
               <BaseInput v-model="form.blocker" label="Blocker / Waiting For" />
             </div>
             <div>
-              <BaseInput v-model="form.priority" label="Priority" />
+              <BaseSelect v-model="form.priority" label="Priority" :options="PRIORITY_OPTIONS" />
             </div>
             <div>
               <BaseInput v-model="form.receivable" label="Receivable" type="number" step="0.01" />

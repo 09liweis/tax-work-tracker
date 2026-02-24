@@ -3,6 +3,7 @@ import { reactive, ref, watch } from 'vue'
 import BaseInput from '~/components/form/BaseInput.vue'
 import BaseTextarea from '~/components/form/BaseTextarea.vue'
 import BaseSelect from '~/components/form/BaseSelect.vue'
+import { CORPORATION_STATUS_OPTIONS } from './utils/formOptions.js'
 
 const props = defineProps({
   visible: Boolean,
@@ -165,7 +166,7 @@ const save = () => {
                 <BaseInput id="industry" v-model="currentCorporation.industry" label="Industry" placeholder="e.g., Technology" />
               </div>
               <div>
-                <BaseSelect id="corpStatus" v-model="currentCorporation.status" label="Status" :options="[{ value: 'Active', label: 'Active' }, { value: 'Under Review', label: 'Under Review' }, { value: 'Inactive', label: 'Inactive' }]" />
+                <BaseSelect id="corpStatus" v-model="currentCorporation.status" label="Status" :options="CORPORATION_STATUS_OPTIONS" />
               </div>
               <div>
                 <BaseInput id="incorporatedDate" v-model="currentCorporation.incorporatedDate" label="Incorporated Date" type="date" />

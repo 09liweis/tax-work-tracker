@@ -2,6 +2,7 @@
 import { watch, ref } from 'vue'
 import BaseInput from '~/components/form/BaseInput.vue'
 import BaseSelect from '~/components/form/BaseSelect.vue'
+import { EMPLOYEE_ROLE_OPTIONS, EMPLOYEE_STATUS_OPTIONS } from './utils/formOptions.js'
 
 const props = defineProps({
   visible: Boolean,
@@ -128,18 +129,11 @@ const save = async () => {
             <div class="space-y-5">
               <BaseInput id="name" v-model="formData.name" label="Full Name" placeholder="Enter full name"
                 :error="formErrors.name" />
-              <BaseSelect id="role" v-model="formData.role" label="Job Role" :options="[
-                { value: 'admin', label: 'Admin' },
-                { value: 'employee', label: 'Employee' },
-              ]" placeholder="Enter job role"
+              <BaseSelect id="role" v-model="formData.role" label="Job Role" :options="EMPLOYEE_ROLE_OPTIONS" placeholder="Enter job role"
                 :error="formErrors.role" />
               <BaseInput id="email" type="email" v-model="formData.email" label="Email Address"
                 placeholder="employee@company.com" :error="formErrors.email" />
-              <BaseSelect id="status" v-model="formData.status" label="Employment Status" :options="[
-                { value: 'Active', label: '🟢 Active' },
-                { value: 'On Leave', label: '🟡 On Leave' },
-                { value: 'Inactive', label: '🔴 Inactive' }
-              ]" />
+              <BaseSelect id="status" v-model="formData.status" label="Employment Status" :options="EMPLOYEE_STATUS_OPTIONS" />
               <BaseInput v-if="!isEditing" id="password" type="password" v-model="formData.password" label="Password"
                 placeholder="Create a password" :error="formErrors.password" />
             </div>
