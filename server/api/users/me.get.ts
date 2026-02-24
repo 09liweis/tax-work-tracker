@@ -7,8 +7,8 @@ export default defineEventHandler(async (event) => {
   if (!token) return { success: false, error: 'Unauthorized' };
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string };
-    const user = await User.findById(decoded.userId).select('-password');
+    const decoded = await verifyToken(token);
+    const user = await User.findById(decoded._id).select('-password');
     if (!user) return { success: false, error: 'User not found' };
     return { success: true, user };
   } catch (err) {
