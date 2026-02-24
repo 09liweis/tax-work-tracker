@@ -10,7 +10,8 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { role: string };
+    const decoded = await verifyToken(token);
+    console.log(decoded)
     if (decoded.role !== 'admin') {
       return { success: false, error: 'Forbidden' };
     }
