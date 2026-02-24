@@ -1,4 +1,4 @@
-import { defineEventHandler } from 'h3';
+import { defineEventHandler, readBody } from 'h3';
 import { CorporationPayroll } from '../../models/corporationPayroll.schema';
 import jwt from 'jsonwebtoken';
 
@@ -12,13 +12,13 @@ export default defineEventHandler(async (event) => {
     return { success: false, error: 'Invalid token' };
   }
 
-  const body = await useBody(event);
+  const body = await readBody(event);
   const data: any = body;
 
   try {
-    if (data.id) {
-      const id = data.id;
-      delete data.id;
+    if (data._id) {
+      const id = data._id;
+      delete data._id;
       const updated = await CorporationPayroll.findByIdAndUpdate(id, data, { new: true });
       return { success: true, corporationPayroll: updated };
     } else {

@@ -241,7 +241,6 @@ const saveRecord = async () => {
           <!-- remittance / slips -->
           <div v-if="step === 2" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700">Nil Remi Status</label>
               <BaseInput v-model="form.nilRemiStatus" label="Nil Remi Status" />
             </div>
             <div>
