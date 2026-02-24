@@ -32,6 +32,7 @@ const corpId = route.params.corpId
 
 // state for corporation record fetched from API
 const corporation = ref(null)
+const client = ref(null)
 const loading = ref(true)
 const fetchError = ref('')
 
@@ -62,6 +63,7 @@ const fetchCorporation = async () => {
     const res = await apiGet(`/api/corporations/${corpId}`)
     if (!res.success) throw new Error(res.error || 'Failed to load corporation')
     corporation.value = { ...res.corporation, id: res.corporation._id || res.corporation.id }
+    client.value = res.client || null
   } catch (err) {
     fetchError.value = err?.message || 'An error occurred while loading corporation'
   } finally {
@@ -179,7 +181,7 @@ onMounted(async () => {
         <div class="lg:col-span-2">
           <CorporationCompanyInfo :corp="corporation" />
         </div>
-        <CorporationContactInfo :corp="corporation" />
+        <CorporationContactInfo :corp="corporation" :client="client" />
       </div>
 
       <CorporationAccountAccess :corp="corporation" />

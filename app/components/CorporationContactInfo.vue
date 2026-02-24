@@ -23,12 +23,27 @@
         <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Address</label>
         <p class="mt-1 text-sm text-gray-900">{{ corp.address || '—' }}</p>
       </div>
+      <div v-if="client" class="pt-3 border-t border-gray-100">
+        <label class="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2 block">Associated Client</label>
+        <NuxtLink :to="`/dashboard/clients/${client._id || client.id}`" class="block p-3 rounded-lg bg-indigo-50 hover:bg-indigo-100 transition-colors">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center">
+              <span class="text-sm font-medium text-white">{{ client.name.charAt(0) }}</span>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm font-medium text-indigo-900">{{ client.name }}</p>
+              <p class="text-xs text-indigo-600">{{ client.email || 'No email' }}</p>
+            </div>
+          </div>
+        </NuxtLink>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 const props = defineProps({
-  corp: { type: Object, required: true }
+  corp: { type: Object, required: true },
+  client: { type: Object, default: null }
 })
 </script>

@@ -1,5 +1,6 @@
 import { defineEventHandler } from 'h3';
 import { Corporation } from '../../models/corporation.schema';
+import { Client } from '../../models/client.schema';
 import { verifyToken } from '~~/server/utils/jwt';
 
 export default defineEventHandler(async (event) => {
@@ -17,7 +18,13 @@ export default defineEventHandler(async (event) => {
   try {
     const corp = await Corporation.findById(id);
     if (!corp) return { success: false, error: 'Corporation not found' };
-    return { success: true, corporation: corp };
+
+    let client = null;
+    if (corp.clientId) {
+      client = await Client.findById(corp.clientId);
+    }
+
+    return { success: true, corporation: corp, client };
   } catch (error) {
     return { success: false, error: 'Invalid corporation ID' };
   }
