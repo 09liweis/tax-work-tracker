@@ -13,6 +13,8 @@ export function useUser() {
       })
       if (res.success && res.user) {
         loginUser.value = res.user
+        // Store user in localStorage for middleware access
+        localStorage.setItem('user', JSON.stringify(res.user))
         return loginUser.value
       }
       return null

@@ -64,6 +64,7 @@ const logout = () => {
     localStorage.removeItem('authenticated')
     localStorage.removeItem('token')
     localStorage.removeItem('role')
+    localStorage.removeItem('user')
     loginUser.value = null
     navigateTo('/login')
   }
