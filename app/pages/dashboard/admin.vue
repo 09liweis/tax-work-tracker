@@ -189,6 +189,17 @@ onMounted(fetchAdminData)
                 <p class="text-sm text-gray-500">Add, edit, or remove team members</p>
               </div>
             </NuxtLink>
+            <NuxtLink to="/dashboard/personal-tax-services" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+              <div class="flex-shrink-0 bg-green-100 rounded-md p-2">
+                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+              </div>
+              <div class="ml-4">
+                <h4 class="text-sm font-medium text-gray-900">Personal Tax Services</h4>
+                <p class="text-sm text-gray-500">Manage personal tax services and pricing</p>
+              </div>
+            </NuxtLink>
           </div>
         </div>
       </div>
