@@ -11,7 +11,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Personal Tax Services - Tax Work Tracker',
+  title: 'Personal Tax Services - Admin - Tax Work Tracker',
   meta: [
     { name: 'description', content: 'Manage personal tax services and pricing.' },
     { name: 'robots', content: 'noindex, nofollow' }
