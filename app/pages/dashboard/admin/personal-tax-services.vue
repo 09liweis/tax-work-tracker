@@ -6,7 +6,7 @@ import { useUser } from '~/composables/useUser'
 import { apiGet, apiDelete } from '~/utils/api'
 
 definePageMeta({
-  layout: 'default',
+  layout: 'admin',
   middleware: 'auth'
 })
 
