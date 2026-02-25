@@ -17,11 +17,11 @@
               </NuxtLink>
               <NuxtLink
                 v-if="isAdmin"
-                to="/dashboard/employees"
+                to="/dashboard/admin"
                 class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
                 active-class="text-indigo-600"
               >
-                Employees
+                Admin
               </NuxtLink>
               <NuxtLink to="/dashboard/clients" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" active-class="text-indigo-600">
                 Clients
