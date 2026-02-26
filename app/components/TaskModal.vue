@@ -1,10 +1,11 @@
 <script setup>
-import { watch, computed, ref, reactive } from 'vue'
+import { watch, computed, ref, reactive, onMounted } from 'vue'
 import BaseInput from '~/components/form/BaseInput.vue'
 import BaseTextarea from '~/components/form/BaseTextarea.vue'
 import BaseCheckbox from '~/components/form/BaseCheckbox.vue'
 import BaseSelect from '~/components/form/BaseSelect.vue'
 import { STATUS_OPTIONS, PRIORITY_OPTIONS } from './utils/formOptions.js'
+import { apiGet } from '~/utils/api'
 
 const props = defineProps({
   visible: Boolean,
@@ -44,6 +45,14 @@ const form = reactive({
 const formError = ref('')
 const formSaving = ref(false)
 
+// Personal tax services for task description dropdown
+const personalTaxServices = ref([])
+const loadingServices = ref(false)
+
+// Employees for case worker dropdown
+const employees = ref([])
+const loadingEmployees = ref(false)
+
 function normalizeDate(d) {
   return d ? new Date(d).toISOString().substr(0,10) : ''
 }
@@ -82,6 +91,49 @@ const editTask = (task) => {
     actualCompletedDate: normalizeDate(task.actualCompletedDate),
   })
 }
+
+// Fetch personal tax services for dropdown
+const fetchPersonalTaxServices = async () => {
+  loadingServices.value = true
+  try {
+    const res = await apiGet('/api/personal-tax-services')
+    if (res.success && res.services) {
+      personalTaxServices.value = res.services.map(s => ({
+        label: s.name,
+        value: s.name
+      }))
+    }
+  } catch (err) {
+    console.error('Failed to fetch personal tax services:', err)
+  } finally {
+    loadingServices.value = false
+  }
+}
+
+// Fetch employees for case worker dropdown
+const fetchEmployees = async () => {
+  loadingEmployees.value = true
+  try {
+    const res = await apiGet('/api/users')
+    if (res.success && res.users) {
+      employees.value = res.users
+        .filter(u => u.role === 'user' || u.role === 'employee')
+        .map(u => ({
+          label: u.name || u.email,
+          value: u.name || u.email
+        }))
+    }
+  } catch (err) {
+    console.error('Failed to fetch employees:', err)
+  } finally {
+    loadingEmployees.value = false
+  }
+}
+
+onMounted(() => {
+  fetchPersonalTaxServices()
+  fetchEmployees()
+})
 
 watch(
   () => props.task,
@@ -146,13 +198,30 @@ const saveTask = async () => {
           <div v-if="formError" class="mb-4 text-sm text-red-600">{{ formError }}</div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <BaseInput v-model="form.taskDescription" label="Task Description" />
+              <BaseSelect
+                v-model="form.taskDescription"
+                label="Task Description"
+                :options="personalTaxServices"
+                :disabled="loadingServices"
+                placeholder="Select a service"
+              >
+                <option value="">-- Select a service --</option>
+              </BaseSelect>
+              <span v-if="loadingServices" class="text-xs text-gray-500 mt-1">Loading services...</span>
             </div>
             <div>
               <BaseInput v-model="form.taxYear" label="Tax Year" type="number" />
             </div>
             <div>
-              <BaseInput v-model="form.caseWorker" label="Case Worker" />
+              <BaseSelect
+                v-model="form.caseWorker"
+                label="Case Worker"
+                :options="employees"
+                :disabled="loadingEmployees"
+              >
+                <option value="">-- Select an employee --</option>
+              </BaseSelect>
+              <span v-if="loadingEmployees" class="text-xs text-gray-500 mt-1">Loading employees...</span>
             </div>
             <div>
               <BaseInput v-model="form.startDate" label="Start Date" type="date" />
