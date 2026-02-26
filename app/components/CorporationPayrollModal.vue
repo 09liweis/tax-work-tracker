@@ -31,6 +31,7 @@ const selectedRecord = computed(() => props.record)
 
 const form = reactive({
   corpId: props.corpId,
+  caseWorkerId: '',
   supervisorId: '',
   year: '',
   payrollFrequency: '',
@@ -66,6 +67,10 @@ const maxStep = 3
 const supervisors = ref([])
 const loadingSupervisors = ref(false)
 
+// Employees for caseWorkerId dropdown
+const employees = ref([])
+const loadingEmployees = ref(false)
+
 // navigation helpers
 function nextStep() {
   if (step.value < maxStep) {
@@ -85,6 +90,7 @@ function normalizeDate(d) {
 const resetForm = () => {
   Object.assign(form, {
     corpId: props.corpId,
+    caseWorkerId: '',
     supervisorId: '',
     year: '',
     payrollFrequency: '',
@@ -147,6 +153,7 @@ const fetchSupervisors = async () => {
     const res = await apiGet('/api/users')
     if (res.success && res.users) {
       supervisors.value = res.users
+        .filter(u => u.role === 'admin')
         .map(u => ({
           label: u.name || u.email,
           value: u._id || u.id
@@ -159,8 +166,29 @@ const fetchSupervisors = async () => {
   }
 }
 
+// Fetch employees for caseWorkerId dropdown
+const fetchEmployees = async () => {
+  loadingEmployees.value = true
+  try {
+    const res = await apiGet('/api/users')
+    if (res.success && res.users) {
+      employees.value = res.users
+        .filter(u => u.role === 'user' || u.role === 'employee')
+        .map(u => ({
+          label: u.name || u.email,
+          value: u._id || u.id
+        }))
+    }
+  } catch (err) {
+    console.error('Failed to fetch employees:', err)
+  } finally {
+    loadingEmployees.value = false
+  }
+}
+
 onMounted(() => {
   fetchSupervisors()
+  fetchEmployees()
 })
 
 const saveRecord = async () => {
@@ -262,6 +290,17 @@ const saveRecord = async () => {
             <BaseCheckbox v-model="form.wsib" id="wsib" label="WSIB" />
             <div>
               <BaseSelect v-model="form.payrollStatus" label="Payroll Status" :options="PAYROLL_STATUS_OPTIONS" />
+            </div>
+            <div class="md:col-span-2">
+              <BaseSelect
+                v-model="form.caseWorkerId"
+                label="Case Worker"
+                :options="employees"
+                :disabled="loadingEmployees"
+              >
+                <option value="">-- Select an employee --</option>
+              </BaseSelect>
+              <span v-if="loadingEmployees" class="text-xs text-gray-500 mt-1">Loading employees...</span>
             </div>
             <div class="md:col-span-2">
               <BaseSelect

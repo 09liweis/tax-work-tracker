@@ -2,6 +2,7 @@ import { defineMongooseModel } from '#nuxt/mongoose';
 
 export const CorporationPayroll = defineMongooseModel('CorporationPayroll', {
   corpId: { type: String, required: true },
+  caseWorkerId: { type: String },
   supervisorId: { type: String },
   year: { type: String },
   payrollFrequency: { type: String },
