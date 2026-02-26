@@ -5,6 +5,11 @@ import BaseTextarea from '~/components/form/BaseTextarea.vue'
 import BaseCheckbox from '~/components/form/BaseCheckbox.vue'
 import BaseSelect from '~/components/form/BaseSelect.vue'
 import { STATUS_OPTIONS, PRIORITY_OPTIONS, DOC_STATUS_OPTIONS } from './utils/formOptions.js'
+
+const DEPARTMENT_OPTIONS = [
+  { label: 'PMS', value: 'PMS' },
+  { label: 'PFS', value: 'PFS' }
+]
 import { apiGet } from '~/utils/api'
 
 const props = defineProps({
@@ -29,7 +34,7 @@ const form = reactive({
   category: '',
   yearEnding: '',
   taskDescription: '',
-  owner: '',
+  caseWorkerId: '',
   supervisorId: '',
   docsReceivedDate: '',
   channel: '',
@@ -58,6 +63,10 @@ const formSaving = ref(false)
 const supervisors = ref([])
 const loadingSupervisors = ref(false)
 
+// Employees for caseWorker dropdown
+const employees = ref([])
+const loadingEmployees = ref(false)
+
 // navigation helpers for the multi-step wizard
 function nextStep() {
   if (step.value < maxStep) {
@@ -82,7 +91,7 @@ const resetForm = () => {
     category: '',
     yearEnding: '',
     taskDescription: '',
-    owner: '',
+    caseWorkerId: '',
     supervisorId: '',
     docsReceivedDate: '',
     channel: '',
@@ -147,6 +156,7 @@ const fetchSupervisors = async () => {
     const res = await apiGet('/api/users')
     if (res.success && res.users) {
       supervisors.value = res.users
+        .filter(u => u.role === 'admin')
         .map(u => ({
           label: u.name || u.email,
           value: u._id || u.id
@@ -159,8 +169,29 @@ const fetchSupervisors = async () => {
   }
 }
 
+// Fetch employees for caseWorker dropdown
+const fetchEmployees = async () => {
+  loadingEmployees.value = true
+  try {
+    const res = await apiGet('/api/users')
+    if (res.success && res.users) {
+      employees.value = res.users
+        .filter(u => u.role === 'user' || u.role === 'employee')
+        .map(u => ({
+          label: u.name || u.email,
+          value: u._id || u.id
+        }))
+    }
+  } catch (err) {
+    console.error('Failed to fetch employees:', err)
+  } finally {
+    loadingEmployees.value = false
+  }
+}
+
 onMounted(() => {
   fetchSupervisors()
+  fetchEmployees()
 })
 
 const saveTask = async () => {
@@ -251,7 +282,9 @@ const saveTask = async () => {
               <h4 class="text-md font-semibold text-gray-800 mb-2">General</h4>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <BaseInput v-model="form.taskType" label="Task Type" placeholder="e.g. PMS" />
+                  <BaseSelect v-model="form.taskType" label="Department" :options="DEPARTMENT_OPTIONS">
+                    <option value="">-- Select Department --</option>
+                  </BaseSelect>
                 </div>
                 <div>
                   <BaseInput v-model="form.category" label="Category" placeholder="PFS, Other" />
@@ -263,7 +296,15 @@ const saveTask = async () => {
                   <BaseInput v-model="form.taskDescription" label="Task Description" placeholder="e.g. Prepare corporate tax return" />
                 </div>
                 <div>
-                  <BaseInput v-model="form.owner" label="Owner" placeholder="John Doe" />
+                  <BaseSelect
+                    v-model="form.caseWorkerId"
+                    label="Case Worker"
+                    :options="employees"
+                    :disabled="loadingEmployees"
+                  >
+                    <option value="">-- Select an employee --</option>
+                  </BaseSelect>
+                  <span v-if="loadingEmployees" class="text-xs text-gray-500 mt-1">Loading employees...</span>
                 </div>
                 <div>
                   <BaseInput v-model="form.channel" label="Channel" placeholder="Email/Phone" />

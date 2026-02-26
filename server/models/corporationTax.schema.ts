@@ -6,7 +6,7 @@ export const CorporationTax = defineMongooseModel('CorporationTax', {
   category: { type: String },
   yearEnding: { type: String },
   taskDescription: { type: String },
-  owner: { type: String },
+  caseWorkerId: { type: String },
   supervisorId: { type: String },
   docsReceivedDate: { type: Date },
   channel: { type: String },
