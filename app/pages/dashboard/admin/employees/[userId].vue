@@ -26,11 +26,21 @@ const fetchError = ref('')
 // Tab state
 const activeTab = ref('overview')
 
+// Date range filter
+const startDate = ref('')
+const endDate = ref('')
+
 const fetchUserData = async () => {
   isLoading.value = true
   fetchError.value = ''
   try {
-    const res = await apiGet(`/api/users/${userId}`)
+    let url = `/api/users/${userId}`
+    const params = new URLSearchParams()
+    if (startDate.value) params.append('startDate', startDate.value)
+    if (endDate.value) params.append('endDate', endDate.value)
+    if (params.toString()) url += `?${params.toString()}`
+
+    const res = await apiGet(url)
     if (!res.success) throw new Error(res.error || 'Failed to load employee data')
     userData.value = res
   } catch (err) {
@@ -60,6 +70,12 @@ const calculatePersonalTaxTotal = () => {
 const calculateCorporationTaxTotal = () => {
   if (!userData.value?.corporationTaxes) return 0
   return userData.value.corporationTaxes.reduce((sum, tax) => sum + (tax.payment || 0), 0)
+}
+
+const clearDateFilter = () => {
+  startDate.value = ''
+  endDate.value = ''
+  fetchUserData()
 }
 </script>
 
@@ -92,6 +108,44 @@ const calculateCorporationTaxTotal = () => {
 
       <!-- Content -->
       <div v-else-if="userData" class="space-y-6">
+        <!-- Date Range Filter -->
+        <div class="bg-white shadow rounded-lg p-6">
+          <div class="flex flex-wrap items-center gap-4">
+            <div class="flex-1 min-w-[200px]">
+              <label for="startDate" class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+              <input
+                id="startDate"
+                v-model="startDate"
+                type="date"
+                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+              />
+            </div>
+            <div class="flex-1 min-w-[200px]">
+              <label for="endDate" class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+              <input
+                id="endDate"
+                v-model="endDate"
+                type="date"
+                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"
+              />
+            </div>
+            <div class="flex gap-2 items-end">
+              <button
+                @click="fetchUserData"
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Apply Filter
+              </button>
+              <button
+                @click="clearDateFilter"
+                class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- Employee Info Card -->
         <div class="bg-white shadow rounded-lg overflow-hidden">
           <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-indigo-500 to-purple-600">
