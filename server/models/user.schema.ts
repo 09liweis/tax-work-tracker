@@ -17,21 +17,17 @@ export const User = defineMongooseModel('User', {
   role: {
     type: String,
     required: true,
-    default: 'user',
   },
   status: {
     type: String,
     required: true,
-    default: 'Active',
   },
   ts: {
     type: Date,
     required: true,
-    default: Date.now,
   },
   lts: {
     type: Date,
-    require: true,
-    default: Date.now,
+    required: true,
   },
 });
