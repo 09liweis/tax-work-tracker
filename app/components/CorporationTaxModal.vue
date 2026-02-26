@@ -1,10 +1,11 @@
 <script setup>
-import { watch, computed, ref, reactive } from 'vue'
+import { watch, computed, ref, reactive, onMounted } from 'vue'
 import BaseInput from '~/components/form/BaseInput.vue'
 import BaseTextarea from '~/components/form/BaseTextarea.vue'
 import BaseCheckbox from '~/components/form/BaseCheckbox.vue'
 import BaseSelect from '~/components/form/BaseSelect.vue'
 import { STATUS_OPTIONS, PRIORITY_OPTIONS, DOC_STATUS_OPTIONS } from './utils/formOptions.js'
+import { apiGet } from '~/utils/api'
 
 const props = defineProps({
   visible: Boolean,
@@ -29,6 +30,7 @@ const form = reactive({
   yearEnding: '',
   taskDescription: '',
   owner: '',
+  supervisorId: '',
   docsReceivedDate: '',
   channel: '',
   hstDocStatus: '',
@@ -51,6 +53,10 @@ const step = ref(1)
 const maxStep = 3
 const formError = ref('')
 const formSaving = ref(false)
+
+// Supervisors for supervisorId dropdown
+const supervisors = ref([])
+const loadingSupervisors = ref(false)
 
 // navigation helpers for the multi-step wizard
 function nextStep() {
@@ -77,6 +83,7 @@ const resetForm = () => {
     yearEnding: '',
     taskDescription: '',
     owner: '',
+    supervisorId: '',
     docsReceivedDate: '',
     channel: '',
     hstDocStatus: '',
@@ -132,6 +139,29 @@ watch(
     }
   }
 )
+
+// Fetch supervisors for supervisorId dropdown
+const fetchSupervisors = async () => {
+  loadingSupervisors.value = true
+  try {
+    const res = await apiGet('/api/users')
+    if (res.success && res.users) {
+      supervisors.value = res.users
+        .map(u => ({
+          label: u.name || u.email,
+          value: u._id || u.id
+        }))
+    }
+  } catch (err) {
+    console.error('Failed to fetch supervisors:', err)
+  } finally {
+    loadingSupervisors.value = false
+  }
+}
+
+onMounted(() => {
+  fetchSupervisors()
+})
 
 const saveTask = async () => {
   // if not on last step, advance instead of sending
@@ -237,6 +267,17 @@ const saveTask = async () => {
                 </div>
                 <div>
                   <BaseInput v-model="form.channel" label="Channel" placeholder="Email/Phone" />
+                </div>
+                <div class="md:col-span-2">
+                  <BaseSelect
+                    v-model="form.supervisorId"
+                    label="Supervisor"
+                    :options="supervisors"
+                    :disabled="loadingSupervisors"
+                  >
+                    <option value="">-- Select a supervisor --</option>
+                  </BaseSelect>
+                  <span v-if="loadingSupervisors" class="text-xs text-gray-500 mt-1">Loading supervisors...</span>
                 </div>
               </div>
 

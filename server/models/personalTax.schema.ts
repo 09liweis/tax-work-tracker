@@ -4,6 +4,7 @@ export const PersonalTax = defineMongooseModel('PersonalTax', {
   clientId: { type: String, required: true },
   taskDescription: { type: String },
   taxYear: { type: Number },
+  supervisorId: { type: String },
   caseWorker: { type: String },
   startDate: { type: Date },
   documentsFrom: { type: String },

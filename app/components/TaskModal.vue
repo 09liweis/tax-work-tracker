@@ -27,6 +27,7 @@ const form = reactive({
   clientId: props.clientId,
   taskDescription: '',
   taxYear: '',
+  supervisorId: '',
   caseWorker: '',
   startDate: '',
   documentsFrom: '',
@@ -53,6 +54,10 @@ const loadingServices = ref(false)
 const employees = ref([])
 const loadingEmployees = ref(false)
 
+// Supervisors for supervisorId dropdown
+const supervisors = ref([])
+const loadingSupervisors = ref(false)
+
 function normalizeDate(d) {
   return d ? new Date(d).toISOString().substr(0,10) : ''
 }
@@ -62,6 +67,7 @@ const resetForm = () => {
     clientId: props.clientId,
     taskDescription: '',
     taxYear: '',
+    supervisorId: '',
     caseWorker: '',
     startDate: '',
     documentsFrom: '',
@@ -117,10 +123,9 @@ const fetchEmployees = async () => {
     const res = await apiGet('/api/users')
     if (res.success && res.users) {
       employees.value = res.users
-        .filter(u => u.role === 'user' || u.role === 'employee')
         .map(u => ({
           label: u.name || u.email,
-          value: u.name || u.email
+          value: u._id
         }))
     }
   } catch (err) {
@@ -130,9 +135,34 @@ const fetchEmployees = async () => {
   }
 }
 
+// Fetch supervisors for supervisorId dropdown
+const fetchSupervisors = async () => {
+  loadingSupervisors.value = true
+  try {
+    const res = await apiGet('/api/users')
+    if (res.success && res.users) {
+      supervisors.value = res.users
+        /**
+ * 过滤用户角色是否为管理员
+ * @param {Object} u - 用户对象
+ * @returns {boolean} 如果用户角色是admin则返回true，否则返回false
+ */
+.map(u => ({
+          label: u.name || u.email,
+          value: u._id || u.id
+        }))
+    }
+  } catch (err) {
+    console.error('Failed to fetch supervisors:', err)
+  } finally {
+    loadingSupervisors.value = false
+  }
+}
+
 onMounted(() => {
   fetchPersonalTaxServices()
   fetchEmployees()
+  fetchSupervisors()
 })
 
 watch(
@@ -222,6 +252,17 @@ const saveTask = async () => {
                 <option value="">-- Select an employee --</option>
               </BaseSelect>
               <span v-if="loadingEmployees" class="text-xs text-gray-500 mt-1">Loading employees...</span>
+            </div>
+            <div>
+              <BaseSelect
+                v-model="form.supervisorId"
+                label="Supervisor"
+                :options="supervisors"
+                :disabled="loadingSupervisors"
+              >
+                <option value="">-- Select a supervisor --</option>
+              </BaseSelect>
+              <span v-if="loadingSupervisors" class="text-xs text-gray-500 mt-1">Loading supervisors...</span>
             </div>
             <div>
               <BaseInput v-model="form.startDate" label="Start Date" type="date" />

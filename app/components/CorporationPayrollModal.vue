@@ -1,5 +1,5 @@
 <script setup>
-import { watch, computed, ref, reactive } from 'vue'
+import { watch, computed, ref, reactive, onMounted } from 'vue'
 import BaseInput from '~/components/form/BaseInput.vue'
 import BaseTextarea from '~/components/form/BaseTextarea.vue'
 import BaseCheckbox from '~/components/form/BaseCheckbox.vue'
@@ -11,6 +11,7 @@ import {
   SUBMIT_METHOD_OPTIONS,
   FILLING_METHOD_OPTIONS
 } from './utils/formOptions.js'
+import { apiGet } from '~/utils/api'
 
 const props = defineProps({
   visible: Boolean,
@@ -30,6 +31,7 @@ const selectedRecord = computed(() => props.record)
 
 const form = reactive({
   corpId: props.corpId,
+  supervisorId: '',
   year: '',
   payrollFrequency: '',
   remittanceFrequency: '',
@@ -60,6 +62,10 @@ const formSaving = ref(false)
 const step = ref(1)
 const maxStep = 3
 
+// Supervisors for supervisorId dropdown
+const supervisors = ref([])
+const loadingSupervisors = ref(false)
+
 // navigation helpers
 function nextStep() {
   if (step.value < maxStep) {
@@ -79,6 +85,7 @@ function normalizeDate(d) {
 const resetForm = () => {
   Object.assign(form, {
     corpId: props.corpId,
+    supervisorId: '',
     year: '',
     payrollFrequency: '',
     remittanceFrequency: '',
@@ -132,6 +139,29 @@ watch(
     if (!v) resetForm()
   }
 )
+
+// Fetch supervisors for supervisorId dropdown
+const fetchSupervisors = async () => {
+  loadingSupervisors.value = true
+  try {
+    const res = await apiGet('/api/users')
+    if (res.success && res.users) {
+      supervisors.value = res.users
+        .map(u => ({
+          label: u.name || u.email,
+          value: u._id || u.id
+        }))
+    }
+  } catch (err) {
+    console.error('Failed to fetch supervisors:', err)
+  } finally {
+    loadingSupervisors.value = false
+  }
+}
+
+onMounted(() => {
+  fetchSupervisors()
+})
 
 const saveRecord = async () => {
   // if not last step, move forward instead of submitting
@@ -232,6 +262,17 @@ const saveRecord = async () => {
             <BaseCheckbox v-model="form.wsib" id="wsib" label="WSIB" />
             <div>
               <BaseSelect v-model="form.payrollStatus" label="Payroll Status" :options="PAYROLL_STATUS_OPTIONS" />
+            </div>
+            <div class="md:col-span-2">
+              <BaseSelect
+                v-model="form.supervisorId"
+                label="Supervisor"
+                :options="supervisors"
+                :disabled="loadingSupervisors"
+              >
+                <option value="">-- Select a supervisor --</option>
+              </BaseSelect>
+              <span v-if="loadingSupervisors" class="text-xs text-gray-500 mt-1">Loading supervisors...</span>
             </div>
             <div class="md:col-span-2">
               <BaseTextarea v-model="form.payrollNotes" label="Payroll Notes" />
