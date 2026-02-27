@@ -27,6 +27,10 @@ export default defineEventHandler(async (event) => {
     return { success: false, error: 'Invalid credentials' };
   }
 
+  // Update user's last timestamp (lts) on successful login
+  user.lts = new Date();
+  await user.save();
+
   const token = await getLoginToken({userId: user._id});
 
   return { success: true, token, role: user.role };
