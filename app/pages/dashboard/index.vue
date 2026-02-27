@@ -60,9 +60,9 @@ onMounted(fetchDashboardData)
 </script>
 
 <template>
-  <div class="px-4 py-6 sm:px-0">
+  <div class="px-4 sm:px-6 py-4 sm:py-6">
     <!-- Loading State -->
-    <div v-if="loading" class="flex items-center justify-center py-20">
+    <div v-if="loading" class="flex items-center justify-center py-16 sm:py-20">
       <svg class="animate-spin h-10 w-10 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
@@ -77,7 +77,7 @@ onMounted(fetchDashboardData)
       <DashboardStats :stats="stats" />
 
       <!-- Two Column Layout -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-5 sm:mb-8">
         <!-- Recent Clients -->
         <RecentClients :recent-clients="recentClients" />
 
