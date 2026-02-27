@@ -110,13 +110,6 @@ const emit = defineEmits(["new", "edit"])
                   {{ t.remittanceFrequency }}
                 </span>
               </div>
-              <div class="flex items-center gap-2 text-gray-500 col-span-2">
-                <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
-                </svg>
-                <span>BN Number: </span>
-                <span class="font-mono font-medium text-gray-700 bg-gray-100 px-2 py-0.5 rounded">{{ t.bnNumber || 'N/A' }}</span>
-              </div>
             </div>
           </div>
 

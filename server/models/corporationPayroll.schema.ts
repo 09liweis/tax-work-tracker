@@ -9,7 +9,6 @@ export const CorporationPayroll = defineMongooseModel('CorporationPayroll', {
   remittanceFrequency: { type: String },
   authStatus: { type: Boolean, default: false },
   webAccessCode: { type: String },
-  bnNumber: { type: String },
   wsib: { type: Boolean, default: false },
   payrollStatus: { type: String },
   payrollNotes: { type: String },

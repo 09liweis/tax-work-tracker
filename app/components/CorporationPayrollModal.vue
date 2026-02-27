@@ -38,7 +38,6 @@ const form = reactive({
   remittanceFrequency: '',
   authStatus: false,
   webAccessCode: '',
-  bnNumber: '',
   wsib: false,
   payrollStatus: '',
   payrollNotes: '',
@@ -127,7 +126,6 @@ const resetForm = () => {
     remittanceFrequency: '',
     authStatus: false,
     webAccessCode: '',
-    bnNumber: '',
     wsib: false,
     payrollStatus: '',
     payrollNotes: '',
@@ -313,9 +311,6 @@ const saveRecord = async () => {
             <BaseCheckbox v-model="form.authStatus" id="authStatus" label="Auth Status" />
             <div>
               <BaseInput v-model="form.webAccessCode" label="Web Access Code" />
-            </div>
-            <div>
-              <BaseInput v-model="form.bnNumber" label="BN Number" />
             </div>
             <BaseCheckbox v-model="form.wsib" id="wsib" label="WSIB" />
             <div>
