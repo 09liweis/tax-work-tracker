@@ -9,11 +9,11 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
         <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Incorporated Date</label>
-        <p class="mt-1 text-sm text-gray-900">{{ corp.incorporatedDate ? new Date(corp.incorporatedDate).toLocaleDateString() : '—' }}</p>
+        <p class="mt-1 text-sm text-gray-900">{{ corp.incorporatedDate }}</p>
       </div>
       <div>
         <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Year End</label>
-        <p class="mt-1 text-sm text-gray-900">{{ corp.endingPeriod ? new Date(corp.endingPeriod).toLocaleDateString() : '—' }}</p>
+        <p class="mt-1 text-sm text-gray-900">{{ corp.endingPeriod }}</p>
       </div>
       <div>
         <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">WSIB No.</label>

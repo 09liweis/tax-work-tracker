@@ -25,6 +25,7 @@ import CorporationCompanyInfo from '~/components/CorporationCompanyInfo.vue'
 import CorporationContactInfo from '~/components/CorporationContactInfo.vue'
 import CorporationAccountAccess from '~/components/CorporationAccountAccess.vue'
 import CorporationNotes from '~/components/CorporationNotes.vue'
+import CorporationModal from '~/components/CorporationModal.vue'
 import { apiGet } from '~/utils/api'
 
 const route = useRoute()
@@ -56,13 +57,17 @@ const showPayrollModal = ref(false)
 const modalPayroll = ref(null)
 const payrollEditing = ref(false)
 
+// modal state for corporation edit
+const showCorpModal = ref(false)
+const corpEditing = ref(false)
+
 const fetchCorporation = async () => {
   loading.value = true
   fetchError.value = ''
   try {
     const res = await apiGet(`/api/corporations/${corpId}`)
     if (!res.success) throw new Error(res.error || 'Failed to load corporation')
-    corporation.value = { ...res.corporation, id: res.corporation._id || res.corporation.id }
+    corporation.value = res.corporation;
     client.value = res.client || null
   } catch (err) {
     fetchError.value = err?.message || 'An error occurred while loading corporation'
@@ -139,6 +144,31 @@ const handlePayrollSave = async () => {
   closePayrollModal()
 }
 
+// corporation modal handlers
+const openEditCorpModal = () => {
+  corpEditing.value = true
+  showCorpModal.value = true
+}
+const closeCorpModal = () => {
+  showCorpModal.value = false
+}
+const handleCorpSave = async (payload) => {
+  try {
+    const token = localStorage.getItem('token')
+    const res = await $fetch('/api/corporations/upsert', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: payload
+    })
+    if (!res.success) throw new Error(res.error || 'Failed to save corporation')
+    corporation.value = res.corporation;
+    closeCorpModal()
+  } catch (err) {
+    console.error('Failed to save corporation:', err)
+    alert(err?.message || 'An error occurred while saving corporation')
+  }
+}
+
 onMounted(async () => {
   await fetchCorporation()
   if (!corporation.value) {
@@ -174,7 +204,7 @@ onMounted(async () => {
 
     <!-- Corporation Details -->
     <div v-else-if="corporation" class="max-w-7xl mx-auto px-4 py-6 space-y-6">
-      <CorporationHeader :corp="corporation" />
+      <CorporationHeader :corp="corporation" @edit="openEditCorpModal" />
       <CorporationQuickInfo :corp="corporation" />
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -219,6 +249,15 @@ onMounted(async () => {
         :record="modalPayroll"
         @close="closePayrollModal"
         @saved="handlePayrollSave"
+      />
+
+      <!-- Corporation Edit Modal -->
+      <CorporationModal
+        :visible="showCorpModal"
+        :editing="corpEditing"
+        :corporation="corporation"
+        @close="closeCorpModal"
+        @save="handleCorpSave"
       />
     </div>
   </div>

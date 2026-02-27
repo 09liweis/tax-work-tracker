@@ -13,12 +13,12 @@ export default defineEventHandler(async (event) => {
   }
 
   const body = await readBody(event);
-  const { id, ...data } = body as any;
+  const { _id, ...data } = body as any;
   data.lts = new Date();
 
   try {
-    if (id) {
-      const updated = await Corporation.findByIdAndUpdate(id, data, { new: true });
+    if (_id) {
+      const updated = await Corporation.findByIdAndUpdate(_id, data, { new: true });
       if (!updated) return { success: false, error: 'Corporation not found' };
       return { success: true, corporation: updated };
     }
