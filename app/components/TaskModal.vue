@@ -50,13 +50,41 @@ const formSaving = ref(false)
 const personalTaxServices = ref([])
 const loadingServices = ref(false)
 
+// Single loading state for users
+const loadingUsers = ref(false)
+
 // Employees for case worker dropdown
 const employees = ref([])
-const loadingEmployees = ref(false)
 
 // Supervisors for supervisorId dropdown
 const supervisors = ref([])
-const loadingSupervisors = ref(false)
+
+// Fetch users once and populate both supervisors and employees arrays
+const fetchUsers = async () => {
+  loadingUsers.value = true
+  try {
+    const res = await apiGet('/api/users')
+    if (res.success && res.users) {
+      // Filter and map employees (case workers) - no role filter for employees in TaskModal
+      employees.value = res.users
+        .map(u => ({
+          label: u.name || u.email,
+          value: u._id
+        }))
+      // Filter and map supervisors (admins)
+      supervisors.value = res.users
+        .filter(u => u.role === 'admin')
+        .map(u => ({
+          label: u.name || u.email,
+          value: u._id || u.id
+        }))
+    }
+  } catch (err) {
+    console.error('Failed to fetch users:', err)
+  } finally {
+    loadingUsers.value = false
+  }
+}
 
 function normalizeDate(d) {
   return d ? new Date(d).toISOString().substr(0,10) : ''
@@ -116,53 +144,9 @@ const fetchPersonalTaxServices = async () => {
   }
 }
 
-// Fetch employees for case worker dropdown
-const fetchEmployees = async () => {
-  loadingEmployees.value = true
-  try {
-    const res = await apiGet('/api/users')
-    if (res.success && res.users) {
-      employees.value = res.users
-        .map(u => ({
-          label: u.name || u.email,
-          value: u._id
-        }))
-    }
-  } catch (err) {
-    console.error('Failed to fetch employees:', err)
-  } finally {
-    loadingEmployees.value = false
-  }
-}
-
-// Fetch supervisors for supervisorId dropdown
-const fetchSupervisors = async () => {
-  loadingSupervisors.value = true
-  try {
-    const res = await apiGet('/api/users')
-    if (res.success && res.users) {
-      supervisors.value = res.users
-        /**
- * 过滤用户角色是否为管理员
- * @param {Object} u - 用户对象
- * @returns {boolean} 如果用户角色是admin则返回true，否则返回false
- */
-.map(u => ({
-          label: u.name || u.email,
-          value: u._id || u.id
-        }))
-    }
-  } catch (err) {
-    console.error('Failed to fetch supervisors:', err)
-  } finally {
-    loadingSupervisors.value = false
-  }
-}
-
 onMounted(() => {
   fetchPersonalTaxServices()
-  fetchEmployees()
-  fetchSupervisors()
+  fetchUsers()
 })
 
 watch(
@@ -247,22 +231,22 @@ const saveTask = async () => {
                 v-model="form.caseWorker"
                 label="Case Worker"
                 :options="employees"
-                :disabled="loadingEmployees"
+                :disabled="loadingUsers"
               >
                 <option value="">-- Select an employee --</option>
               </BaseSelect>
-              <span v-if="loadingEmployees" class="text-xs text-gray-500 mt-1">Loading employees...</span>
+              <span v-if="loadingUsers" class="text-xs text-gray-500 mt-1">Loading employees...</span>
             </div>
             <div>
               <BaseSelect
                 v-model="form.supervisorId"
                 label="Supervisor"
                 :options="supervisors"
-                :disabled="loadingSupervisors"
+                :disabled="loadingUsers"
               >
                 <option value="">-- Select a supervisor --</option>
               </BaseSelect>
-              <span v-if="loadingSupervisors" class="text-xs text-gray-500 mt-1">Loading supervisors...</span>
+              <span v-if="loadingUsers" class="text-xs text-gray-500 mt-1">Loading supervisors...</span>
             </div>
             <div>
               <BaseInput v-model="form.startDate" label="Start Date" type="date" />

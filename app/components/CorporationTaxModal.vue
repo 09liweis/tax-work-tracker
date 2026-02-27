@@ -59,13 +59,42 @@ const maxStep = 3
 const formError = ref('')
 const formSaving = ref(false)
 
+// Single loading state for users
+const loadingUsers = ref(false)
+
 // Supervisors for supervisorId dropdown
 const supervisors = ref([])
-const loadingSupervisors = ref(false)
 
 // Employees for caseWorker dropdown
 const employees = ref([])
-const loadingEmployees = ref(false)
+
+// Fetch users once and populate both supervisors and employees arrays
+const fetchUsers = async () => {
+  loadingUsers.value = true
+  try {
+    const res = await apiGet('/api/users')
+    if (res.success && res.users) {
+      // Filter and map employees (case workers)
+      employees.value = res.users
+        .filter(u => u.role === 'user' || u.role === 'employee')
+        .map(u => ({
+          label: u.name || u.email,
+          value: u._id || u.id
+        }))
+      // Filter and map supervisors (admins)
+      supervisors.value = res.users
+        .filter(u => u.role === 'admin')
+        .map(u => ({
+          label: u.name || u.email,
+          value: u._id || u.id
+        }))
+    }
+  } catch (err) {
+    console.error('Failed to fetch users:', err)
+  } finally {
+    loadingUsers.value = false
+  }
+}
 
 // navigation helpers for the multi-step wizard
 function nextStep() {
@@ -190,8 +219,7 @@ const fetchEmployees = async () => {
 }
 
 onMounted(() => {
-  fetchSupervisors()
-  fetchEmployees()
+  fetchUsers()
 })
 
 const saveTask = async () => {
@@ -300,11 +328,11 @@ const saveTask = async () => {
                     v-model="form.caseWorkerId"
                     label="Case Worker"
                     :options="employees"
-                    :disabled="loadingEmployees"
+                    :disabled="loadingUsers"
                   >
                     <option value="">-- Select an employee --</option>
                   </BaseSelect>
-                  <span v-if="loadingEmployees" class="text-xs text-gray-500 mt-1">Loading employees...</span>
+                  <span v-if="loadingUsers" class="text-xs text-gray-500 mt-1">Loading employees...</span>
                 </div>
                 <div>
                   <BaseInput v-model="form.channel" label="Channel" placeholder="Email/Phone" />
@@ -314,11 +342,11 @@ const saveTask = async () => {
                     v-model="form.supervisorId"
                     label="Supervisor"
                     :options="supervisors"
-                    :disabled="loadingSupervisors"
+                    :disabled="loadingUsers"
                   >
                     <option value="">-- Select a supervisor --</option>
                   </BaseSelect>
-                  <span v-if="loadingSupervisors" class="text-xs text-gray-500 mt-1">Loading supervisors...</span>
+                  <span v-if="loadingUsers" class="text-xs text-gray-500 mt-1">Loading supervisors...</span>
                 </div>
               </div>
 
