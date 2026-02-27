@@ -19,7 +19,7 @@ const emit = defineEmits(['refresh'])
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <NuxtLink
         v-if="isAdmin"
-        to="/dashboard/employees"
+        to="/dashboard/admin/employees"
         class="group relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all transform hover:scale-105"
       >
         <div class="flex items-center">

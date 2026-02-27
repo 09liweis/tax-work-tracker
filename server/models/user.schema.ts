@@ -25,9 +25,11 @@ export const User = defineMongooseModel('User', {
   ts: {
     type: Date,
     required: true,
+    default: Date.now()
   },
   lts: {
     type: Date,
     required: true,
+    default: Date.now()
   },
 });
