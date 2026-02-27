@@ -55,6 +55,7 @@ const form = reactive({
   submitMethod: '',
   fillingMethod: '',
   submittedDate: '',
+  completed: false,
   notes: ''
 })
 
@@ -143,6 +144,7 @@ const resetForm = () => {
     submitMethod: '',
     fillingMethod: '',
     submittedDate: '',
+    completed: false,
     notes: ''
   })
   formError.value = ''
@@ -391,6 +393,7 @@ const saveRecord = async () => {
             <div>
               <BaseInput v-model="form.submittedDate" label="Submitted Date" type="date" />
             </div>
+            <BaseCheckbox v-model="form.completed" id="completed" label="Completed" />
             <div class="md:col-span-2">
               <BaseTextarea v-model="form.notes" label="Notes" />
             </div>

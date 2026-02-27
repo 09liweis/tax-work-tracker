@@ -84,6 +84,12 @@ const emit = defineEmits(["new", "edit"])
               <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium" :class="getStatusColor(t.payrollStatus, 'payroll')">
                 {{ t.payrollStatus }}
               </span>
+              <span v-if="t.completed" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                <svg class="w-3 h-3 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Completed
+              </span>
             </div>
             <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
               <div class="flex items-center gap-2 text-gray-500">

@@ -26,6 +26,7 @@ export const CorporationPayroll = defineMongooseModel('CorporationPayroll', {
   submitMethod: { type: String },
   fillingMethod: { type: String },
   submittedDate: { type: Date },
+  completed: { type: Boolean, default: false },
   notes: { type: String },
   ts: { type: Date, required: true, default: Date.now },
   lts: { type: Date, required: true, default: Date.now }
