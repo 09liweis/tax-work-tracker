@@ -32,8 +32,7 @@ const currentClient = ref({
   city: '',
   province: '',
   maritalStatus: '',
-  gender: '',
-  status: 'Active'
+  gender: ''
 })
 
 watch(() => props.visible, (newVal) => {
@@ -54,8 +53,7 @@ watch(() => props.visible, (newVal) => {
         city: '',
         province: '',
         maritalStatus: '',
-        gender: '',
-        status: 'Active'
+        gender: ''
       }
     }
   }
@@ -161,16 +159,6 @@ const closeModal = () => {
                 </option>
               </select>
             </div>
-          </div>
-
-          <div>
-            <label for="status" class="block text-sm font-semibold text-gray-700 mb-2">Status</label>
-            <select id="status" v-model="currentClient.status"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white">
-              <option v-for="option in STATUS_OPTIONS" :key="option.value" :value="option.value">
-                {{ option.label }}
-              </option>
-            </select>
           </div>
         </div>
         <div class="flex justify-end space-x-3 mt-6">

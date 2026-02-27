@@ -77,17 +77,6 @@ const emit = defineEmits(["retry"])
               <dt class="text-sm font-medium text-gray-500">Gender</dt>
               <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ client.gender || '—' }}</dd>
             </div>
-            <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt class="text-sm font-medium text-gray-500">Status</dt>
-              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <span
-                  :class="client.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'"
-                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                >
-                  {{ client.status }}
-                </span>
-              </dd>
-            </div>
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-500">Last Updated</dt>
               <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">

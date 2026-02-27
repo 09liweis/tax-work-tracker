@@ -32,11 +32,6 @@ defineProps({
             <p class="text-sm font-medium text-gray-900 group-hover:text-blue-700">{{ client.name }}</p>
             <p class="text-xs text-gray-500">{{ client.email || 'No email' }}</p>
           </div>
-          <div class="flex-shrink-0">
-            <span :class="client.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
-              {{ client.status }}
-            </span>
-          </div>
         </NuxtLink>
       </div>
     </div>

@@ -11,7 +11,6 @@ export const Client = defineMongooseModel('Client', {
   province: { type: String },
   maritalStatus: { type: String },
   gender: { type: String },
-  status: { type: String, required: true },
   ts: { type: Date, required: true },
   lts: { type: Date, required: true },
 });

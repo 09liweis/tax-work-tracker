@@ -133,11 +133,6 @@ const closeModal = () => {
                   </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                  <span
-                    :class="client.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'"
-                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
-                    {{ client.status }}
-                  </span>
                   <button @click.stop="openEditModal(client)"
                     class="text-indigo-600 hover:text-indigo-500 text-sm">Edit</button>
                 </div>
