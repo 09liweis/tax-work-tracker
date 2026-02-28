@@ -240,10 +240,10 @@ const save = () => {
 
           <!-- Navigation buttons -->
           <div class="mt-6 flex justify-between">
-            <button type="button" @click="prevStep" :disabled="step === 1" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Previous</button>
+            <Button variant="gray" @click="prevStep" :disabled="step === 1">Previous</Button>
             <div>
-              <button v-if="step < maxStep" type="button" @click="nextStep" class="px-4 py-2 bg-blue-600 text-white rounded">Next</button>
-              <button v-else type="submit" class="px-4 py-2 bg-green-600 text-white rounded">{{ editing ? 'Update' : 'Save' }}</button>
+              <Button v-if="step < maxStep" variant="blue" @click="nextStep">Next</Button>
+              <Button v-else variant="success" type="submit">{{ editing ? 'Update' : 'Save' }}</Button>
             </div>
           </div>
         </form>

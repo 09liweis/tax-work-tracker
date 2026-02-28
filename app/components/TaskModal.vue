@@ -283,10 +283,10 @@ const saveTask = async () => {
             <BaseCheckbox v-model="form.completed" id="completed" label="Completed" />
           </div>
           <div class="mt-4">
-            <button @click="saveTask" :disabled="formSaving" class="px-4 py-2 bg-green-600 text-white rounded">
+            <Button @click="saveTask" :disabled="formSaving" :loading="formSaving" variant="success">
               {{ formSaving ? 'Saving...' : 'Save Task' }}
-            </button>
-            <button @click="$emit('close')" type="button" class="ml-2 px-4 py-2 bg-gray-300 text-gray-700 rounded">Cancel</button>
+            </Button>
+            <Button @click="$emit('close')" variant="gray">Cancel</Button>
           </div>
         </div>
       </div>

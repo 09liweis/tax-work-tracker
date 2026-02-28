@@ -194,7 +194,7 @@ const handleClientSave = async (savedClient) => {
             </svg>
             <p class="text-red-800 font-medium">{{ fetchError }}</p>
           </div>
-          <button @click="fetchClient" class="text-sm text-red-600 font-medium hover:text-red-500 underline">Retry</button>
+          <Button @click="fetchClient" variant="link">Retry</Button>
         </div>
       </div>
     </div>
@@ -228,15 +228,12 @@ const handleClientSave = async (savedClient) => {
                 </div>
               </div>
               <div class="flex items-center space-x-3">
-                <button
-                  @click="openEditClientModal"
-                  class="inline-flex items-center px-4 py-2 bg-white/20 hover:bg-white/30 text-white text-sm font-semibold rounded-lg transition-all border border-white/30 backdrop-blur-sm"
-                >
-                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                  </svg>
-                  Edit
-                </button>
+              <Button @click="openEditClientModal" class="bg-white/20 hover:bg-white/30 border-white/30">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+                Edit
+              </Button>
               </div>
             </div>
         </div>
@@ -347,15 +344,12 @@ const handleClientSave = async (savedClient) => {
                   </svg>
                   Personal Tax Records
                 </h2>
-                <button
-                  @click="openModal"
-                  class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-sm"
-                >
+                <Button @click="openModal" variant="blue">
                   <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                   </svg>
                   New Record
-                </button>
+                </Button>
               </div>
             </div>
 
@@ -419,15 +413,12 @@ const handleClientSave = async (savedClient) => {
                   </svg>
                   Corporations
                 </h2>
-                <button
-                  @click="openAddCorpModal"
-                  class="inline-flex items-center px-4 py-2 bg-cyan-600 text-white text-sm font-medium rounded-lg hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition-all shadow-sm"
-                >
+                <Button @click="openAddCorpModal" variant="info">
                   <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                   </svg>
                   Add Corporation
-                </button>
+                </Button>
               </div>
             </div>
 

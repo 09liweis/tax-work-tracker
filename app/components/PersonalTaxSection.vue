@@ -29,7 +29,7 @@ const emit = defineEmits(["new", "edit"])
 
     <!-- task list -->
     <div v-else>
-      <button @click="emit('new')" class="mb-4 px-4 py-2 bg-indigo-600 text-white rounded">New Record</button>
+      <Button @click="emit('new')" class="mb-4">New Record</Button>
       <table class="w-full table-auto border-collapse">
         <thead>
           <tr class="bg-gray-100">
@@ -47,7 +47,7 @@ const emit = defineEmits(["new", "edit"])
             <td class="border px-2 py-1 text-center">{{ task.status }}</td>
             <td class="border px-2 py-1 text-center">{{ task.priority }}</td>
             <td class="border px-2 py-1 text-center">
-              <button @click="emit('edit', task)" class="text-indigo-600 hover:underline">Edit</button>
+              <Button @click="emit('edit', task)" variant="link">Edit</Button>
             </td>
           </tr>
           <tr v-if="personalTaxes.length === 0">

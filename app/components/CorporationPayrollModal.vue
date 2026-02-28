@@ -396,32 +396,12 @@ const saveRecord = async () => {
 
           <!-- navigation buttons -->
           <div class="mt-6 flex justify-between">
-            <button
-              type="button"
-              @click="prevStep"
-              :disabled="step === 1"
-              class="px-4 py-2 bg-gray-300 text-gray-700 rounded"
-            >
-              Previous
-            </button>
+            <Button type="button" @click="prevStep" :disabled="step === 1" variant="gray">Previous</Button>
             <div>
-              <button
-                v-if="step < maxStep"
-                type="button"
-                @click="nextStep"
-                class="px-4 py-2 bg-blue-600 text-white rounded"
-              >
-                Next
-              </button>
-              <button
-                v-else
-                type="button"
-                @click="saveRecord"
-                :disabled="formSaving"
-                class="px-6 py-2.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200 shadow-sm"
-              >
+              <Button v-if="step < maxStep" type="button" @click="nextStep" variant="blue">Next</Button>
+              <Button v-else type="button" @click="saveRecord" :disabled="formSaving" :loading="formSaving" variant="success">
                 {{ selectedRecord ? 'Update' : 'Add' }}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

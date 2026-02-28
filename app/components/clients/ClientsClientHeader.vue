@@ -29,15 +29,12 @@ const emit = defineEmits(['add-client'])
           </div>
         </div>
       </div>
-      <button
-        @click="emit('add-client')"
-        class="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-indigo-600 rounded-lg font-medium hover:bg-blue-50 transition-colors duration-200 shadow-lg hover:shadow-xl"
-      >
+      <Button @click="emit('add-client')" class="bg-white text-indigo-600 hover:bg-blue-50 shadow-lg hover:shadow-xl">
         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
         Add Client
-      </button>
+      </Button>
     </div>
   </div>
 </template>

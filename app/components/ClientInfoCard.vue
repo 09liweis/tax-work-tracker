@@ -22,7 +22,7 @@ const emit = defineEmits(["retry"])
     <!-- Error state -->
     <div v-else-if="error" class="rounded-md bg-red-50 p-6 flex items-center justify-between">
       <p class="text-sm text-red-700">{{ error }}</p>
-      <button @click="emit('retry')" class="text-sm text-red-600 font-medium hover:text-red-500 underline ml-4">Retry</button>
+      <Button @click="emit('retry')" variant="link" class="ml-4">Retry</Button>
     </div>
 
     <!-- Client content -->

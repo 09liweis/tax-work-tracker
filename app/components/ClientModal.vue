@@ -162,14 +162,8 @@ const closeModal = () => {
           </div>
         </div>
         <div class="flex justify-end space-x-3 mt-6">
-          <button type="button" @click="closeModal"
-            class="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
-            Cancel
-          </button>
-          <button type="submit"
-            class="px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200 shadow-sm">
-            {{ isEditing ? 'Update Client' : 'Add Client' }}
-          </button>
+          <Button variant="outline" @click="closeModal">Cancel</Button>
+          <Button variant="primary" type="submit">{{ isEditing ? 'Update Client' : 'Add Client' }}</Button>
         </div>
       </form>
     </div>

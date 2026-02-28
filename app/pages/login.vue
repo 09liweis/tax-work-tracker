@@ -49,17 +49,16 @@
             </div>
 
             <!-- Submit Button -->
-            <button
+            <Button
               type="submit"
               :disabled="loading"
-              class="w-full flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold rounded-lg shadow-md hover:from-blue-700 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:from-blue-600 disabled:hover:to-cyan-600"
+              :loading="loading"
+              variant="gradient-blue"
+              size="lg"
+              block
             >
-              <svg v-if="loading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-              </svg>
-              <span>{{ loading ? 'Signing in...' : 'Sign In' }}</span>
-            </button>
+              {{ loading ? 'Signing in...' : 'Sign In' }}
+            </Button>
           </form>
         </div>
 

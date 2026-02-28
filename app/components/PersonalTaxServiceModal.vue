@@ -126,20 +126,8 @@ const save = async () => {
 
       <!-- Footer Actions -->
       <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end space-x-3">
-        <button
-          type="button"
-          @click="$emit('close')"
-          class="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          @click="save"
-          class="px-6 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 shadow-sm"
-        >
-          {{ isEditing ? 'Update Service' : 'Add Service' }}
-        </button>
+        <Button type="button" @click="$emit('close')" variant="outline">Cancel</Button>
+        <Button type="button" @click="save" variant="blue">{{ isEditing ? 'Update Service' : 'Add Service' }}</Button>
       </div>
     </div>
   </div>
