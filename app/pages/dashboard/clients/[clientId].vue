@@ -31,6 +31,7 @@ const fetchError = ref('')
 const personalTaxes = ref([])
 const personalTaxesLoading = ref(false)
 const personalTaxesError = ref('')
+const filterYear = ref('')
 
 // corporation state
 const corporations = ref([])
@@ -72,11 +73,12 @@ onMounted(async () => {
   await fetchCorporations()
 })
 
-const fetchPersonalTaxes = async () => {
+const fetchPersonalTaxes = async (year = '') => {
   personalTaxesLoading.value = true
   personalTaxesError.value = ''
   try {
-    const res = await apiGet(`/api/personalTax?clientId=${clientId}`)
+    const query = year ? `?clientId=${clientId}&year=${year}` : `?clientId=${clientId}`
+    const res = await apiGet(`/api/personalTax${query}`)
     if (!res.success) throw new Error(res.error || 'Failed to load personal tax records')
     personalTaxes.value = res.personalTaxes || []
   } catch (err) {
@@ -167,6 +169,12 @@ const closeClientModal = () => {
 const handleClientSave = async (savedClient) => {
   client.value = { ...savedClient, id: savedClient._id || savedClient.id }
   closeClientModal()
+}
+
+// Handle year filter
+const handleFilter = async ({ year }) => {
+  filterYear.value = year
+  await fetchPersonalTaxes(year)
 }
 
 </script>
@@ -335,73 +343,15 @@ const handleClientSave = async (savedClient) => {
         <!-- Main Content Area -->
         <div class="lg:col-span-2 space-y-6">
           <!-- Personal Tax Records -->
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
-              <div class="flex items-center justify-between">
-                <h2 class="text-lg font-semibold text-gray-900 flex items-center">
-                  <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                  </svg>
-                  Personal Tax Records
-                </h2>
-                <Button @click="openModal" variant="blue">
-                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                  </svg>
-                  New Record
-                </Button>
-              </div>
-            </div>
-
-            <div v-if="personalTaxesLoading" class="px-6 py-12 text-center">
-              <svg class="animate-spin h-8 w-8 mx-auto mb-3 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-              </svg>
-              <p class="text-gray-600">Loading tax records</p>
-            </div>
-
-            <div v-else-if="personalTaxesError" class="px-6 py-6">
-              <div class="rounded-md bg-red-50 p-4 text-sm text-red-700">{{ personalTaxesError }}</div>
-            </div>
-
-            <div v-else-if="personalTaxes.length === 0" class="px-6 py-12 text-center">
-              <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-              </svg>
-              <h3 class="mt-2 text-sm font-medium text-gray-900">No tax records</h3>
-              <p class="mt-1 text-sm text-gray-500">Get started by creating a new tax record.</p>
-            </div>
-
-            <div v-else class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Description</th>
-                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Year</th>
-                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Priority</th>
-                    <th class="px-6 py-3 text-right text-xs font-semibold text-gray-700 uppercase tracking-wider">Actions</th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                  <tr v-for="task in personalTaxes" :key="task._id" class="hover:bg-gray-50 transition-colors">
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ task.taskDescription || '—' }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ task.taxYear || '—' }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        {{ task.status || 'Pending' }}
-                      </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ task.priority || '—' }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button @click="openEditModal(task)" class="text-blue-600 hover:text-blue-900 font-medium">Edit</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <PersonalTaxSection
+            :personal-taxes="personalTaxes"
+            :loading="personalTaxesLoading"
+            :error="personalTaxesError"
+            :selected-year="filterYear"
+            @new="openModal"
+            @edit="openEditModal"
+            @filter="handleFilter"
+          />
 
           <!-- Corporations -->
           <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">

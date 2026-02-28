@@ -5,15 +5,63 @@ const props = defineProps({
     default: () => []
   },
   loading: Boolean,
-  error: String
+  error: String,
+  selectedYear: {
+    type: String,
+    default: ''
+  }
 })
 
-const emit = defineEmits(["new", "edit"])
+const emit = defineEmits(["new", "edit", "filter"])
+
+const filterYear = ref(props.selectedYear || new Date().getFullYear().toString())
+
+const getYearOptions = () => {
+  const currentYear = new Date().getFullYear()
+  const years = []
+  for (let i = currentYear; i >= currentYear - 5; i--) {
+    years.push(i.toString())
+  }
+  return years
+}
+
+// Apply year filter
+const applyFilter = () => {
+  emit('filter', { year: filterYear.value })
+}
+
+// Clear filter
+const clearFilter = () => {
+  filterYear.value = ''
+  emit('filter', { year: '' })
+}
 </script>
 
 <template>
   <div class="mt-8">
     <h3 class="text-lg leading-6 font-medium text-gray-900">Personal Tax Records</h3>
+
+    <!-- Year Filter -->
+    <div class="mb-4 flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
+      <label for="year-filter" class="text-sm font-medium text-gray-700">Filter by Year:</label>
+      <select
+        id="year-filter"
+        v-model="filterYear"
+        @change="applyFilter"
+        class="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      >
+        <option value="">All Years</option>
+        <option v-for="year in getYearOptions()" :key="year" :value="year">
+          {{ year }}
+        </option>
+      </select>
+      <Button @click="applyFilter" size="sm">
+        Apply
+      </Button>
+      <Button v-if="filterYear" @click="clearFilter" variant="gray" size="sm">
+        Clear
+      </Button>
+    </div>
 
     <!-- personal taxes loading / error -->
     <div v-if="loading" class="flex items-center py-4 text-gray-500">
