@@ -29,7 +29,7 @@ const emit = defineEmits(['add-client'])
           </div>
         </div>
       </div>
-      <Button @click="emit('add-client')" class="bg-white text-indigo-600 hover:bg-blue-50 shadow-lg hover:shadow-xl">
+      <Button @click="emit('add-client')" variant="success">
         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
