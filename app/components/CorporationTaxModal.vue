@@ -32,7 +32,7 @@ const form = reactive({
   corpId: props.corpId,
   taskType: '',
   category: '',
-  yearEnding: '',
+  yearEnding: new Date().getFullYear().toString(),
   taskDescription: '',
   caseWorkerId: '',
   supervisorId: '',
@@ -318,7 +318,7 @@ const saveTask = async () => {
                   <BaseInput v-model="form.category" label="Category" placeholder="PFS, Other" />
                 </div>
                 <div>
-                  <BaseInput v-model="form.yearEnding" label="Year Ending" placeholder="2023" />
+                  <BaseInput v-model="form.yearEnding" label="Year Ending" type="number" placeholder="2023" />
                 </div>
                 <div class="md:col-span-2">
                   <BaseInput v-model="form.taskDescription" label="Task Description" placeholder="e.g. Prepare corporate tax return" />

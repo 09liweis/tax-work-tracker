@@ -22,9 +22,15 @@ export default defineEventHandler(async (event) => {
     // Calculate skip value
     const skip = (page - 1) * limit;
 
+    // Build query filter
+    const filter: any = {};
+    if (query.clientId) {
+      filter.clientId = query.clientId;
+    }
+
     const [corps, total] = await Promise.all([
-      Corporation.find().sort({ name: 1 }).skip(skip).limit(limit),
-      Corporation.countDocuments(query)
+      Corporation.find(filter).sort({ name: 1 }).skip(skip).limit(limit),
+      Corporation.countDocuments(filter)
     ]);
     
     return { 

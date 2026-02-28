@@ -26,7 +26,7 @@ const selectedTask = computed(() => props.task)
 const form = reactive({
   clientId: props.clientId,
   taskDescription: '',
-  taxYear: '',
+  taxYear: new Date().getFullYear().toString(),
   supervisorId: '',
   caseWorker: '',
   startDate: '',
@@ -224,7 +224,7 @@ const saveTask = async () => {
               <span v-if="loadingServices" class="text-xs text-gray-500 mt-1">Loading services...</span>
             </div>
             <div>
-              <BaseInput v-model="form.taxYear" label="Tax Year" type="number" />
+              <BaseInput v-model="form.taxYear" label="Tax Year" type="number" placeholder="2023" />
             </div>
             <div>
               <BaseSelect

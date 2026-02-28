@@ -33,7 +33,7 @@ const form = reactive({
   corpId: props.corpId,
   caseWorkerId: '',
   supervisorId: '',
-  year: '',
+  year: new Date().getFullYear().toString(),
   payrollFrequency: '',
   remittanceFrequency: '',
   authStatus: false,
@@ -300,7 +300,7 @@ const saveRecord = async () => {
           <!-- general info -->
           <div v-if="step === 1" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <BaseInput v-model="form.year" label="Year" />
+              <BaseInput v-model="form.year" label="Year" type="number" placeholder="2023" />
             </div>
             <div>
               <BaseSelect v-model="form.payrollFrequency" label="Payroll Frequency" :options="FREQUENCY_OPTIONS" />
