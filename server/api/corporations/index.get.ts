@@ -1,6 +1,5 @@
-import { defineEventHandler } from 'h3';
+import { defineEventHandler, getQuery } from 'h3';
 import { Corporation } from '../../models/corporation.schema';
-import jwt from 'jsonwebtoken';
 import { verifyToken } from '~~/server/utils/jwt';
 
 export default defineEventHandler(async (event) => {
@@ -13,15 +12,32 @@ export default defineEventHandler(async (event) => {
     return { success: false, error: 'Invalid token' };
   }
 
-  const clientId = event.node.req.url?.includes('clientId')
-    ? new URL(event.node.req.url, 'http://fake').searchParams.get('clientId')
-    : null;
-
   try {
-    const query: any = {};
-    if (clientId) query.clientId = clientId;
-    const corps = await Corporation.find(query).sort({ name: 1 });
-    return { success: true, corporations: corps };
+    const query = getQuery(event);
+
+    // Get page and limit from query params with defaults
+    const page = parseInt(query.page as string) || 1;
+    const limit = parseInt(query.limit as string) || 10;
+
+    // Calculate skip value
+    const skip = (page - 1) * limit;
+
+    const [corps, total] = await Promise.all([
+      Corporation.find().sort({ name: 1 }).skip(skip).limit(limit),
+      Corporation.countDocuments(query)
+    ]);
+    
+    return { 
+      success: true, 
+      corporations: corps,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+        hasMore: skip + limit < total
+      }
+    };
   } catch (error) {
     return { success: false, error };
   }
