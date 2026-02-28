@@ -21,7 +21,7 @@ const togglePassword = () => {
 
 <template>
   <div>
-    <label v-if="label" :for="id" class="block text-sm font-medium text-gray-700 mb-2">{{ label }}</label>
+    <label v-if="label" :for="id" class="block text-sm font-semibold text-gray-700 mb-2">{{ label }}</label>
     <div class="relative">
       <input
         :id="id"
@@ -30,13 +30,18 @@ const togglePassword = () => {
         @input="$emit('update:modelValue', $event.target.value)"
         :disabled="disabled"
         :placeholder="placeholder"
-        class="block w-full border rounded p-2 pr-10 bg-white"
-        :class="error ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500'"
+        :class="[
+          'block w-full px-4 py-2.5 pr-12 border rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-0',
+          error
+            ? 'border-red-300 focus:ring-red-500 focus:border-red-500 bg-red-50'
+            : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500 bg-white hover:border-gray-400',
+          disabled ? 'bg-gray-100 cursor-not-allowed' : ''
+        ]"
       />
       <button
         type="button"
         @click="togglePassword"
-        class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
+        class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none transition-colors duration-200"
         tabindex="-1"
       >
         <svg v-if="!showPassword" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
