@@ -15,6 +15,7 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event) as any;
   const filter: any = {};
   if (query.clientId) filter.clientId = query.clientId;
+  if (query.year) filter.taxYear = query.year;
 
   try {
     const personalTaxes = await PersonalTax.find(filter).sort({ ts: -1 });
