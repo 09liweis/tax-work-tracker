@@ -24,17 +24,26 @@ export default defineEventHandler(async (event) => {
 
     // Build query filter
     const filter: any = {};
+
     if (query.clientId) {
       filter.clientId = query.clientId;
+    }
+
+    if (query.name) {
+      filter.name = { $regex: query.name, $options: 'i' };
+    }
+
+    if (query.bnNumber) {
+      filter.bnNumber = { $regex: query.bnNumber, $options: 'i' };
     }
 
     const [corps, total] = await Promise.all([
       Corporation.find(filter).sort({ name: 1 }).skip(skip).limit(limit),
       Corporation.countDocuments(filter)
     ]);
-    
-    return { 
-      success: true, 
+
+    return {
+      success: true,
       corporations: corps,
       pagination: {
         page,

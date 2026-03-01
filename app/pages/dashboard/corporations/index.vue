@@ -27,20 +27,47 @@ const pageSize = ref(10)
 const totalPages = ref(1)
 const totalItems = ref(0)
 
+// Filter state
+const filters = ref({
+  name: '',
+  bnNumber: ''
+})
+
 const route = useRoute()
 
 const fetchCorporations = async (page = currentPage.value) => {
   corporationsLoading.value = true
   corporationsError.value = ''
   try {
-    const res = await apiGet(`/api/corporations?page=${page}&limit=${pageSize.value}`)
+    const params = new URLSearchParams()
+    params.append('page', page.toString())
+    params.append('limit', pageSize.value.toString())
+
+    // Add filters to query
+    if (filters.value.name) params.append('name', filters.value.name)
+    if (filters.value.bnNumber) params.append('bnNumber', filters.value.bnNumber)
+
+    const url = `/api/corporations?${params.toString()}`
+    const res = await apiGet(url)
     if (!res.success) throw new Error(res.error || 'Failed to load corporations')
     corporations.value = (res.corporations || []).map(c => ({ ...c, id: c._id || c.id }))
-    
+
     // Update pagination
     currentPage.value = res.pagination?.page || 1
     totalPages.value = res.pagination?.totalPages || 1
     totalItems.value = res.pagination?.total || 0
+
+    // Update URL without page reload
+    if (process.client) {
+      const query = {
+        ...route.query,
+        page: page.toString(),
+        ...Object.fromEntries(
+          Object.entries(filters.value).filter(([_, v]) => v)
+        )
+      }
+      await navigateTo({ path: route.path, query }, { replace: true })
+    }
   } catch (err) {
     corporationsError.value = err?.message || 'An error occurred while loading corporations'
   } finally {
@@ -48,12 +75,35 @@ const fetchCorporations = async (page = currentPage.value) => {
   }
 }
 
+const applyFilters = () => {
+  fetchCorporations(1)
+}
+
+const clearFilters = async () => {
+  filters.value = {
+    name: '',
+    bnNumber: ''
+  }
+
+  // Clear URL query parameters
+  if (process.client) {
+    const { name, bnNumber, ...restQuery } = route.query
+    await navigateTo({ path: route.path, query: { ...restQuery, page: '1' } }, { replace: true })
+  }
+
+  fetchCorporations(1)
+}
+
 onMounted(() => {
-  // Get page from URL query parameter
+  // Get page and filters from URL query parameters
   const pageFromUrl = parseInt(route.query.page)
   if (pageFromUrl && pageFromUrl > 0) {
     currentPage.value = pageFromUrl
   }
+
+  if (route.query.name) filters.value.name = route.query.name
+  if (route.query.bnNumber) filters.value.bnNumber = route.query.bnNumber
+
   fetchCorporations(currentPage.value)
 })
 
@@ -140,7 +190,15 @@ const closeModal = () => {
           </Button>
         </div>
       </div>
-      
+
+      <!-- Filter Section -->
+      <CorporationsFilter
+        :filters="filters"
+        @update:filters="filters = $event"
+        @apply="applyFilters"
+        @clear="clearFilters"
+      />
+
       <!-- Loading state -->
       <div v-if="corporationsLoading" class="flex items-center justify-center py-12">
         <div class="flex flex-col items-center">
@@ -151,7 +209,7 @@ const closeModal = () => {
           <p class="mt-3 text-sm text-gray-500">Loading corporations...</p>
         </div>
       </div>
-      
+
       <!-- Error state -->
       <div v-else-if="corporationsError" class="flex items-center justify-center py-12">
         <div class="flex flex-col items-center">
@@ -164,7 +222,7 @@ const closeModal = () => {
           </Button>
         </div>
       </div>
-      
+
       <CorporationList v-else :corporations="corporations" />
       
       <!-- Pagination -->
