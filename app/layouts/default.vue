@@ -31,9 +31,18 @@
               </NuxtLink>
             </nav>
           </div>
-          <Button @click="logout" variant="danger">
-            Logout
-          </Button>
+          <div class="flex items-center space-x-4">
+            <NuxtLink
+              v-if="loginUser?._id"
+              :to="`/dashboard/admin/employees/${loginUser._id}`"
+              class="text-gray-600 hover:text-gray-900 text-sm font-medium"
+            >
+              {{ loginUser.name }}
+            </NuxtLink>
+            <Button @click="logout" variant="danger">
+              Logout
+            </Button>
+          </div>
         </div>
       </div>
     </header>
