@@ -78,13 +78,20 @@ const applyFilters = () => {
   fetchClients(1)
 }
 
-const clearFilters = () => {
+const clearFilters = async() => {
   filters.value = {
     name: '',
     email: '',
     sin: '',
     dob: ''
   }
+
+  // Clear URL query parameters
+  if (process.client) {
+    const { name, email, sin, dob, ...restQuery } = route.query
+    await navigateTo({ path: route.path, query: { ...restQuery, page: '1' } }, { replace: true })
+  }
+
   fetchClients(1)
 }
 

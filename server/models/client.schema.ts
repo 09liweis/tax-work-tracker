@@ -2,7 +2,7 @@ import { defineMongooseModel } from '#nuxt/mongoose';
 
 export const Client = defineMongooseModel('Client', {
   name: { type: String, required: true },
-  dob: { type: Date },
+  dob: { type: String },
   sin: { type: String },
   telephone: { type: String },
   email: { type: String },
