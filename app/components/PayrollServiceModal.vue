@@ -1,4 +1,6 @@
 <script setup>
+import BaseInput from '~/components/form/BaseInput.vue'
+
 const props = defineProps({
   show: {
     type: Boolean,
@@ -50,22 +52,6 @@ const handleSubmit = async () => {
     console.error('Error submitting payroll service:', error)
   }
 }
-
-const formatCurrency = (value) => {
-  if (!value) return ''
-  const num = parseFloat(value)
-  if (isNaN(num)) return ''
-  return new Intl.NumberFormat('en-US', {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }).format(num)
-}
-
-const handlePriceInput = (event) => {
-  const value = event.target.value.replace(/[^0-9.]/g, '')
-  formData.value.price = value
-}
 </script>
 
 <template>
@@ -105,30 +91,22 @@ const handlePriceInput = (event) => {
                       {{ isEditing ? 'Edit Payroll Service' : 'Add Payroll Service' }}
                     </h3>
                     <div class="mt-4 space-y-4">
-                      <div>
-                        <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Service Name *</label>
-                        <input
-                          id="name"
-                          v-model="formData.name"
-                          type="text"
-                          class="block w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
-                          placeholder="e.g., Tax Filing"
-                          required
-                        />
-                      </div>
+                      <BaseInput
+                        v-model="formData.name"
+                        label="Service Name *"
+                        id="name"
+                        placeholder="e.g., Tax Filing"
+                      />
 
-                      <div>
-                        <label for="price" class="block text-sm font-medium text-slate-700 mb-1">Price ($) *</label>
-                        <input
-                          id="price"
-                          :value="formData.price"
-                          @input="handlePriceInput"
-                          type="text"
-                          class="block w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
-                          placeholder="0.00"
-                          required
-                        />
-                      </div>
+                      <BaseInput
+                        v-model="formData.price"
+                        label="Price ($) *"
+                        id="price"
+                        type="number"
+                        placeholder="0.00"
+                        step="0.01"
+                        min="0"
+                      />
                     </div>
                   </div>
                 </div>
