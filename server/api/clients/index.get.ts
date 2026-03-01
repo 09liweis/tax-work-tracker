@@ -22,11 +22,30 @@ export default defineEventHandler(async (event) => {
     // Calculate skip value
     const skip = (page - 1) * limit;
 
-    // Get total count
-    const total = await Client.countDocuments();
+    // Build filter from query params
+    const filter: any = {};
 
-    // Get paginated clients
-    const clients = await Client.find()
+    if (query.name) {
+      filter.name = { $regex: query.name, $options: 'i' };
+    }
+
+    if (query.email) {
+      filter.email = { $regex: query.email, $options: 'i' };
+    }
+
+    if (query.sin) {
+      filter.sin = { $regex: query.sin, $options: 'i' };
+    }
+
+    if (query.dob) {
+      filter.dob = new Date(query.dob as string);
+    }
+
+    // Get total count with filter
+    const total = await Client.countDocuments(filter);
+
+    // Get paginated clients with filter
+    const clients = await Client.find(filter)
       .sort({ name: 1 })
       .skip(skip)
       .limit(limit);

@@ -26,13 +26,31 @@ const pagination = ref({
   hasPrev: false
 })
 
+// Filter state
+const filters = ref({
+  name: '',
+  email: '',
+  sin: '',
+  dob: ''
+})
+
 const route = useRoute()
 
 const fetchClients = async (page = 1) => {
   isLoading.value = true
   fetchError.value = ''
   try {
-    const url = `/api/clients?page=${page}&limit=${pagination.value.limit}`
+    const params = new URLSearchParams()
+    params.append('page', page.toString())
+    params.append('limit', pagination.value.limit.toString())
+
+    // Add filters to query
+    if (filters.value.name) params.append('name', filters.value.name)
+    if (filters.value.email) params.append('email', filters.value.email)
+    if (filters.value.sin) params.append('sin', filters.value.sin)
+    if (filters.value.dob) params.append('dob', filters.value.dob)
+
+    const url = `/api/clients?${params.toString()}`
     const res = await apiGet(url)
     if (!res.success) throw new Error(res.error || 'Failed to load clients')
     clients.value = res.clients.map(c => ({ ...c, id: c._id || c.id }))
@@ -40,7 +58,13 @@ const fetchClients = async (page = 1) => {
 
     // Update URL without page reload
     if (process.client) {
-      const query = { ...route.query, page: page.toString() }
+      const query = {
+        ...route.query,
+        page: page.toString(),
+        ...Object.fromEntries(
+          Object.entries(filters.value).filter(([_, v]) => v)
+        )
+      }
       await navigateTo({ path: route.path, query }, { replace: true })
     }
   } catch (err) {
@@ -50,9 +74,28 @@ const fetchClients = async (page = 1) => {
   }
 }
 
+const applyFilters = () => {
+  fetchClients(1)
+}
+
+const clearFilters = () => {
+  filters.value = {
+    name: '',
+    email: '',
+    sin: '',
+    dob: ''
+  }
+  fetchClients(1)
+}
+
 onMounted(() => {
-  // Get page from URL query param
+  // Get page and filters from URL query params
   const pageFromQuery = parseInt(route.query.page) || 1
+  if (route.query.name) filters.value.name = route.query.name;
+  if (route.query.email) filters.value.email = route.query.email;
+  if (route.query.sin) filters.value.sin = route.query.sin;
+  if (route.query.dob) filters.value.dob = route.query.dob;
+
   fetchClients(pageFromQuery)
 })
 
@@ -134,6 +177,14 @@ const pageNumbers = computed(() => {
 <template>
   <div class="bg-white shadow-lg rounded-xl overflow-hidden">
     <ClientsClientHeader :client-count="pagination.total" @add-client="openAddModal" />
+
+    <!-- Filter Section -->
+    <ClientsFilter
+      :filters="filters"
+      @update:filters="filters = $event"
+      @apply="applyFilters"
+      @clear="clearFilters"
+    />
 
     <ClientsClientList
       :clients="clients"
