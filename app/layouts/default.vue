@@ -33,11 +33,11 @@
           </div>
           <div class="flex items-center space-x-4">
             <NuxtLink
-              v-if="loginUser?._id"
-              :to="`/dashboard/admin/employees/${loginUser._id}`"
+              v-if="loginUser"
+              to="/dashboard/profile"
               class="text-gray-600 hover:text-gray-900 text-sm font-medium"
             >
-              {{ loginUser.name }}
+              My Profile
             </NuxtLink>
             <Button @click="logout" variant="danger">
               Logout
