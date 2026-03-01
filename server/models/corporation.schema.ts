@@ -14,7 +14,6 @@ export const Corporation = defineMongooseModel('Corporation', {
   companyKey: { type: String },
   endingPeriod: { type: String },
   contact: { type: String },
-  sinNumber: { type: String },
   primaryContact: { type: String },
   mainPhone: { type: String },
   industry: { type: String },

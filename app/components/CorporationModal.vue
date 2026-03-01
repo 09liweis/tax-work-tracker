@@ -37,7 +37,6 @@ const defaultCorp = () => ({
   companyKey: '',
   endingPeriod: '',
   contact: '',
-  sinNumber: '',
   primaryContact: '',
   mainPhone: '',
   industry: '',
