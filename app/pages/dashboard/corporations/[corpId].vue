@@ -145,6 +145,20 @@ const handlePayrollSave = async () => {
   await fetchPayrolls()
   closePayrollModal()
 }
+const handlePayrollDelete = async (record) => {
+  if (!confirm(`Are you sure you want to delete the payroll record for ${record.year}?`)) {
+    return
+  }
+
+  try {
+    const res = await apiPost('/api/corporationPayroll/delete', { id: record._id || record.id })
+    if (!res.success) throw new Error(res.error || 'Failed to delete payroll record')
+    await fetchPayrolls()
+  } catch (err) {
+    console.error('Failed to delete payroll record:', err)
+    alert(err?.message || 'An error occurred while deleting the payroll record')
+  }
+}
 
 // corporation modal handlers
 const openEditCorpModal = () => {
@@ -235,6 +249,7 @@ onMounted(async () => {
         @edit-tax="openEditTaxModal"
         @new-payroll="openAddPayrollModal"
         @edit-payroll="openEditPayrollModal"
+        @delete-payroll="handlePayrollDelete"
       />
 
       <!-- Tax Modal -->

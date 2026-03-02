@@ -36,7 +36,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['new-tax', 'edit-tax', 'new-payroll', 'edit-payroll'])
+const emit = defineEmits(['new-tax', 'edit-tax', 'new-payroll', 'edit-payroll', 'delete-payroll'])
 </script>
 
 <template>
@@ -60,6 +60,7 @@ const emit = defineEmits(['new-tax', 'edit-tax', 'new-payroll', 'edit-payroll'])
         :error="payrollError"
         @new="emit('new-payroll')"
         @edit="emit('edit-payroll', $event)"
+        @delete="emit('delete-payroll', $event)"
       />
     </div>
   </div>
