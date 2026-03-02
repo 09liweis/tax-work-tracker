@@ -1,6 +1,5 @@
 import { defineEventHandler, readBody } from 'h3';
 import { User } from '../../models/user.schema';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { getLoginToken } from '~~/server/utils/jwt';
 
