@@ -38,7 +38,7 @@ const clearFilter = () => {
 </script>
 
 <template>
-  <div class="mt-8">
+  <div class="p-4">
     <h3 class="text-lg leading-6 font-medium text-gray-900">Personal Tax Records</h3>
 
     <!-- Year Filter -->
