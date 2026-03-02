@@ -5,6 +5,11 @@ export const getLoginToken = async ({userId}:{userId:any}) => {
   return token;
 }
 
+export const getRefreshToken = async ({userId}:{userId:any}) => {
+  const token = await jwt.sign({ userId }, process.env.JWT_SECRET as string, { expiresIn: '30d' });
+  return token;
+}
+
 export const verifyToken = async (token:string) => {
   const EMPTY_USER = {role:'',_id:''};
   try {
