@@ -11,7 +11,7 @@ import {
   SUBMIT_METHOD_OPTIONS,
   FILLING_METHOD_OPTIONS
 } from '~/components/utils/formOptions'
-import { apiGet } from '~/utils/api'
+import { apiGet, apiPost } from '~/utils/api'
 
 const props = defineProps({
   visible: Boolean,
@@ -62,6 +62,9 @@ const formError = ref('')
 const formSaving = ref(false)
 const step = ref(1)
 const maxStep = 3
+
+// Checkbox for creating rest of year payrolls
+const createRestOfYear = ref(false)
 
 // Single loading state for users
 const loadingUsers = ref(false)
@@ -189,15 +192,17 @@ const saveRecord = async () => {
   formSaving.value = true
   formError.value = ''
   try {
-    const token = localStorage.getItem('token')
     const payload = { ...form }
     if (selectedRecord.value) payload.id = selectedRecord.value._id || selectedRecord.value.id
-    const res = await $fetch('/api/corporationPayroll/upsert', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
-      body: payload
-    })
+
+    // Pass createRestOfYear flag to the server
+    if (createRestOfYear.value) {
+      payload.createRestOfYear = true
+    }
+
+    const res = await apiPost('/api/corporationPayroll/upsert', payload)
     if (!res.success) throw new Error(res.error || 'Failed to save record')
+
     emit('saved')
   } catch (err) {
     formError.value = err?.message || 'An error occurred while saving record'
@@ -359,9 +364,18 @@ const saveRecord = async () => {
             <Button type="button" @click="prevStep" :disabled="step === 1" variant="gray">Previous</Button>
             <div>
               <Button v-if="step < maxStep" type="button" @click="nextStep" variant="blue">Next</Button>
-              <Button v-else type="button" @click="saveRecord" :disabled="formSaving" :loading="formSaving" variant="success">
-                {{ selectedRecord ? 'Update' : 'Add' }}
-              </Button>
+              <div v-else class="flex items-center gap-3">
+                <Button type="button" @click="saveRecord" :disabled="formSaving" :loading="formSaving" variant="success">
+                  {{ selectedRecord ? 'Update' : 'Add' }}
+                </Button>
+                <BaseCheckbox
+                  v-if="!selectedRecord"
+                  id="createRestOfYear"
+                  v-model="createRestOfYear"
+                  label="Create rest of year"
+                  :disabled="formSaving || !form.year || !form.payrollFrequency"
+                />
+              </div>
             </div>
           </div>
         </div>
