@@ -24,7 +24,7 @@ export const CorporationPayroll = defineMongooseModel('CorporationPayroll', {
   taxSlipsNote: { type: String },
   submitMethod: { type: String },
   fillingMethod: { type: String },
-  submittedDate: { type: Date },
+  submittedDate: { type: String },
   completed: { type: Boolean, default: false },
   notes: { type: String },
   ts: { type: Date, required: true, default: Date.now },

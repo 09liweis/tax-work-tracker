@@ -40,6 +40,7 @@ export default defineEventHandler(async (event) => {
         const baseDate = data.submittedDate ? new Date(data.submittedDate) : new Date();
         const baseMonth = baseDate.getMonth();
         const baseYear = baseDate.getFullYear();
+        const baseDay = baseDate.getDate();
 
         const additionalRecords = [];
         const recordsToSave = [];
@@ -52,7 +53,7 @@ export default defineEventHandler(async (event) => {
           if (nextYear > baseYear) break;
 
           const adjustedMonth = nextMonth % 12;
-          const nextDate = new Date(nextYear, adjustedMonth, 1);
+          const nextDate = new Date(nextYear, adjustedMonth, baseDay);
           const monthLabel = nextDate.toLocaleString('default', { month: 'long', year: 'numeric' });
 
           const restPayload = {

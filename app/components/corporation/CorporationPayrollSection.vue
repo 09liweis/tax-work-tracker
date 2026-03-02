@@ -94,7 +94,7 @@ const emit = defineEmits(["new", "edit"])
             <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
               <div class="flex items-center gap-2 text-gray-500">
                 <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
                 <span>Payroll: </span>
                 <span class="font-medium text-gray-700 px-2 py-0.5 rounded" :class="getFrequencyBadge(t.payrollFrequency)">
@@ -109,6 +109,13 @@ const emit = defineEmits(["new", "edit"])
                 <span class="font-medium text-gray-700 px-2 py-0.5 rounded" :class="getFrequencyBadge(t.remittanceFrequency)">
                   {{ t.remittanceFrequency }}
                 </span>
+              </div>
+              <div class="flex items-center gap-2 text-gray-500">
+                <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Submitted: </span>
+                <span class="font-medium text-gray-700">{{ t.submittedDate }}</span>
               </div>
             </div>
           </div>
