@@ -17,10 +17,8 @@ import ClientDetails from '~/components/client/ClientDetails.vue'
 import ClientTabs from '~/components/client/ClientTabs.vue'
 import ClientTabContent from '~/components/client/ClientTabContent.vue'
 import ClientModal from '~/components/client/ClientModal.vue'
-import PersonalTaxSection from '~/components/PersonalTaxSection.vue'
 import TaskModal from '~/components/TaskModal.vue'
-import CorporationModal from '~/components/CorporationModal.vue'
-import CorporationList from '~/components/CorporationList.vue'
+import CorporationModal from '~/components/corporation/CorporationModal.vue'
 import { apiGet, apiPost } from '~/utils/api'
 
 const route = useRoute()

@@ -1,4 +1,7 @@
 <script setup>
+import PersonalTaxSection from '~/components/PersonalTaxSection.vue'
+import CorporationList from '~/components/corporation/CorporationList.vue'
+
 const props = defineProps({
   activeTab: {
     type: String,
@@ -39,14 +42,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['new-personal-tax', 'edit-personal-tax', 'filter-personal-tax', 'add-corporation', 'edit-corporation'])
-
-const openAddCorpModal = () => {
-  emit('add-corporation')
-}
-
-const openEditCorpModal = (corp) => {
-  emit('edit-corporation', corp)
-}
 </script>
 
 <template>
@@ -73,7 +68,7 @@ const openEditCorpModal = (corp) => {
             </svg>
             Corporations
           </h2>
-          <Button @click="openAddCorpModal" variant="info">
+          <Button @click="emit('add-corporation')" variant="info">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
             </svg>

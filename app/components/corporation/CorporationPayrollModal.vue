@@ -10,7 +10,7 @@ import {
   TAX_SLIPS_STATUS_OPTIONS,
   SUBMIT_METHOD_OPTIONS,
   FILLING_METHOD_OPTIONS
-} from './utils/formOptions.js'
+} from '~/components/utils/formOptions'
 import { apiGet } from '~/utils/api'
 
 const props = defineProps({
@@ -174,46 +174,6 @@ watch(
     if (!v) resetForm()
   }
 )
-
-// Fetch supervisors for supervisorId dropdown
-const fetchSupervisors = async () => {
-  loadingSupervisors.value = true
-  try {
-    const res = await apiGet('/api/users')
-    if (res.success && res.users) {
-      supervisors.value = res.users
-        .filter(u => u.role === 'admin')
-        .map(u => ({
-          label: u.name || u.email,
-          value: u._id || u.id
-        }))
-    }
-  } catch (err) {
-    console.error('Failed to fetch supervisors:', err)
-  } finally {
-    loadingSupervisors.value = false
-  }
-}
-
-// Fetch employees for caseWorkerId dropdown
-const fetchEmployees = async () => {
-  loadingEmployees.value = true
-  try {
-    const res = await apiGet('/api/users')
-    if (res.success && res.users) {
-      employees.value = res.users
-        .filter(u => u.role === 'user' || u.role === 'employee')
-        .map(u => ({
-          label: u.name || u.email,
-          value: u._id || u.id
-        }))
-    }
-  } catch (err) {
-    console.error('Failed to fetch employees:', err)
-  } finally {
-    loadingEmployees.value = false
-  }
-}
 
 onMounted(() => {
   fetchUsers()

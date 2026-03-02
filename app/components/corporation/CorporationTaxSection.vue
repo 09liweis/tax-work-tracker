@@ -1,5 +1,5 @@
 <script setup>
-import { getStatusColor, getPriorityColor, getTaskTypeIcon } from './utils/statusHelpers.js'
+import { getStatusColor, getPriorityColor, getTaskTypeIcon } from '~/components/utils/statusHelpers';
 
 const props = defineProps({
   tasks: {

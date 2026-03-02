@@ -1,5 +1,5 @@
 <script setup>
-import { getStatusColor, getFrequencyBadge } from './utils/statusHelpers.js'
+import { getStatusColor, getFrequencyBadge } from '~/components/utils/statusHelpers'
 
 const props = defineProps({
   tasks: {

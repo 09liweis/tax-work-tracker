@@ -4,7 +4,7 @@ import BaseInput from '~/components/form/BaseInput.vue'
 import BaseTextarea from '~/components/form/BaseTextarea.vue'
 import BaseCheckbox from '~/components/form/BaseCheckbox.vue'
 import BaseSelect from '~/components/form/BaseSelect.vue'
-import { STATUS_OPTIONS, PRIORITY_OPTIONS } from './utils/formOptions.js'
+import { STATUS_OPTIONS, PRIORITY_OPTIONS } from '~/components/utils/formOptions'
 import { apiGet } from '~/utils/api'
 
 const props = defineProps({

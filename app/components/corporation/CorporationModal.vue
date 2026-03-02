@@ -4,7 +4,7 @@ import BaseInput from '~/components/form/BaseInput.vue'
 import BaseTextarea from '~/components/form/BaseTextarea.vue'
 import BaseSelect from '~/components/form/BaseSelect.vue'
 import BasePasswordInput from '~/components/form/BasePasswordInput.vue'
-import { CORPORATION_STATUS_OPTIONS } from './utils/formOptions.js'
+import { CORPORATION_STATUS_OPTIONS } from '~/components/utils/formOptions'
 
 const props = defineProps({
   visible: Boolean,

@@ -1,6 +1,6 @@
 <script setup>
-import CorporationList from '~/components/CorporationList.vue'
-import CorporationModal from '~/components/CorporationModal.vue'
+import CorporationList from '~/components/corporation/CorporationList.vue'
+import CorporationModal from '~/components/corporation/CorporationModal.vue'
 import { apiGet, apiPost } from '~/utils/api'
 
 definePageMeta({

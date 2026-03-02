@@ -14,19 +14,18 @@ useHead({
   ]
 })
 
-import CorporationTaxSection from '~/components/CorporationTaxSection.vue'
-import CorporationTaxModal from '~/components/CorporationTaxModal.vue'
-import CorporationPayrollSection from '~/components/CorporationPayrollSection.vue'
-import CorporationPayrollModal from '~/components/CorporationPayrollModal.vue'
-
-import CorporationHeader from '~/components/CorporationHeader.vue'
-import CorporationQuickInfo from '~/components/CorporationQuickInfo.vue'
-import CorporationCompanyInfo from '~/components/CorporationCompanyInfo.vue'
-import CorporationContactInfo from '~/components/CorporationContactInfo.vue'
-import CorporationAccountAccess from '~/components/CorporationAccountAccess.vue'
-import CorporationNotes from '~/components/CorporationNotes.vue'
-import CorporationModal from '~/components/CorporationModal.vue'
-import { apiGet } from '~/utils/api'
+import CorporationHeader from '~/components/corporation/CorporationHeader.vue'
+import CorporationQuickInfo from '~/components/corporation/CorporationQuickInfo.vue'
+import CorporationCompanyInfo from '~/components/corporation/CorporationCompanyInfo.vue'
+import CorporationContactInfo from '~/components/corporation/CorporationContactInfo.vue'
+import CorporationAccountAccess from '~/components/corporation/CorporationAccountAccess.vue'
+import CorporationNotes from '~/components/corporation/CorporationNotes.vue'
+import CorporationModal from '~/components/corporation/CorporationModal.vue'
+import CorporationTabs from '~/components/corporation/CorporationTabs.vue'
+import CorporationTabContent from '~/components/corporation/CorporationTabContent.vue'
+import CorporationTaxModal from '~/components/corporation/CorporationTaxModal.vue'
+import CorporationPayrollModal from '~/components/corporation/CorporationPayrollModal.vue'
+import { apiGet, apiPost } from '~/utils/api'
 
 const route = useRoute()
 const corpId = route.params.corpId
@@ -60,6 +59,9 @@ const payrollEditing = ref(false)
 // modal state for corporation edit
 const showCorpModal = ref(false)
 const corpEditing = ref(false)
+
+// tab state
+const activeTab = ref('tax')
 
 const fetchCorporation = async () => {
   loading.value = true
@@ -154,14 +156,9 @@ const closeCorpModal = () => {
 }
 const handleCorpSave = async (payload) => {
   try {
-    const token = localStorage.getItem('token')
-    const res = await $fetch('/api/corporations/upsert', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
-      body: payload
-    })
+    const res = await apiPost('/api/corporations/upsert', payload)
     if (!res.success) throw new Error(res.error || 'Failed to save corporation')
-    corporation.value = res.corporation;
+    corporation.value = res.corporation
     closeCorpModal()
   } catch (err) {
     console.error('Failed to save corporation:', err)
@@ -217,15 +214,30 @@ onMounted(async () => {
       <CorporationAccountAccess :corp="corporation" />
       <CorporationNotes :note="corporation.note" />
 
-      <!-- Corporate Tax Tasks -->
-      <CorporationTaxSection
-        :tasks="corpTaxes"
-        :loading="corpTaxesLoading"
-        :error="corpTaxesError"
-        @new="openAddTaxModal"
-        @edit="openEditTaxModal"
+      <!-- Tabs -->
+      <CorporationTabs
+        v-model="activeTab"
+        :tax-count="corpTaxes.length"
+        :payroll-count="corpPayrolls.length"
       />
 
+      <!-- Tab Content -->
+      <CorporationTabContent
+        :active-tab="activeTab"
+        :corp-id="corpId"
+        :tax-tasks="corpTaxes"
+        :tax-loading="corpTaxesLoading"
+        :tax-error="corpTaxesError"
+        :payroll-records="corpPayrolls"
+        :payroll-loading="corpPayrollsLoading"
+        :payroll-error="corpPayrollsError"
+        @new-tax="openAddTaxModal"
+        @edit-tax="openEditTaxModal"
+        @new-payroll="openAddPayrollModal"
+        @edit-payroll="openEditPayrollModal"
+      />
+
+      <!-- Tax Modal -->
       <CorporationTaxModal
         :visible="showTaxModal"
         :corpId="corpId"
@@ -234,15 +246,7 @@ onMounted(async () => {
         @saved="handleTaxSave"
       />
 
-      <!-- Payroll Records -->
-      <CorporationPayrollSection
-        :tasks="corpPayrolls"
-        :loading="corpPayrollsLoading"
-        :error="corpPayrollsError"
-        @new="openAddPayrollModal"
-        @edit="openEditPayrollModal"
-      />
-
+      <!-- Payroll Modal -->
       <CorporationPayrollModal
         :visible="showPayrollModal"
         :corpId="corpId"

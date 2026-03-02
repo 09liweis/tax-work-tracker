@@ -3,7 +3,7 @@ import { watch, ref } from 'vue'
 import BaseInput from '~/components/form/BaseInput.vue'
 import BaseSelect from '~/components/form/BaseSelect.vue'
 import BasePasswordInput from '~/components/form/BasePasswordInput.vue'
-import { EMPLOYEE_ROLE_OPTIONS, EMPLOYEE_STATUS_OPTIONS } from './utils/formOptions.js'
+import { EMPLOYEE_ROLE_OPTIONS, EMPLOYEE_STATUS_OPTIONS } from '~/components/utils/formOptions'
 
 const props = defineProps({
   visible: Boolean,

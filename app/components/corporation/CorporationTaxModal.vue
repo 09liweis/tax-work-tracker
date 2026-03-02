@@ -4,7 +4,7 @@ import BaseInput from '~/components/form/BaseInput.vue'
 import BaseTextarea from '~/components/form/BaseTextarea.vue'
 import BaseCheckbox from '~/components/form/BaseCheckbox.vue'
 import BaseSelect from '~/components/form/BaseSelect.vue'
-import { STATUS_OPTIONS, PRIORITY_OPTIONS, DOC_STATUS_OPTIONS } from './utils/formOptions.js'
+import { STATUS_OPTIONS, PRIORITY_OPTIONS, DOC_STATUS_OPTIONS } from '~/components/utils/formOptions'
 
 const DEPARTMENT_OPTIONS = [
   { label: 'PMS', value: 'PMS' },
@@ -177,46 +177,6 @@ watch(
     }
   }
 )
-
-// Fetch supervisors for supervisorId dropdown
-const fetchSupervisors = async () => {
-  loadingSupervisors.value = true
-  try {
-    const res = await apiGet('/api/users')
-    if (res.success && res.users) {
-      supervisors.value = res.users
-        .filter(u => u.role === 'admin')
-        .map(u => ({
-          label: u.name || u.email,
-          value: u._id || u.id
-        }))
-    }
-  } catch (err) {
-    console.error('Failed to fetch supervisors:', err)
-  } finally {
-    loadingSupervisors.value = false
-  }
-}
-
-// Fetch employees for caseWorker dropdown
-const fetchEmployees = async () => {
-  loadingEmployees.value = true
-  try {
-    const res = await apiGet('/api/users')
-    if (res.success && res.users) {
-      employees.value = res.users
-        .filter(u => u.role === 'user' || u.role === 'employee')
-        .map(u => ({
-          label: u.name || u.email,
-          value: u._id || u.id
-        }))
-    }
-  } catch (err) {
-    console.error('Failed to fetch employees:', err)
-  } finally {
-    loadingEmployees.value = false
-  }
-}
 
 onMounted(() => {
   fetchUsers()
