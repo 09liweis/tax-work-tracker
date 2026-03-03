@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import EmployeeList from '~/components/EmployeeList.vue'
 import EmployeeModal from '~/components/EmployeeModal.vue'
 import { useUser } from '~/composables/useUser'
-import { apiGet, apiDelete } from '~/utils/api'
+import { apiGet } from '~/utils/api'
 
 definePageMeta({
   layout: 'admin',
