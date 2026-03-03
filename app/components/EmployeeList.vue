@@ -9,10 +9,6 @@ const onEdit = (e, emp) => {
   e.stopPropagation()
   emit('edit', emp)
 }
-const onDelete = (e, id) => {
-  e.stopPropagation()
-  emit('delete', id)
-}
 </script>
 
 <template>
@@ -40,7 +36,6 @@ const onDelete = (e, id) => {
                 {{ employee.status }}
               </span>
               <Button v-if="isAdmin" @click="onEdit($event, employee)" variant="link" size="sm">Edit</Button>
-              <Button v-if="isAdmin" @click="onDelete($event, employee.id)" variant="link" size="sm" class="text-red-600 hover:text-red-900">Delete</Button>
             </div>
           </div>
         </div>

@@ -66,17 +66,6 @@ const handleSaved = (saved) => {
   closeModal()
 }
 
-const deleteEmployee = async (id) => {
-  if (!confirm('Are you sure you want to delete this employee?')) return
-  try {
-    const res = await apiDelete(`/api/users/${id}`)
-    if (!res.success) throw new Error(res.error || 'Delete failed')
-    employees.value = employees.value.filter(e => String(e.id) !== String(id))
-  } catch (err) {
-    alert(err?.message || 'Unable to delete employee')
-  }
-}
-
 onMounted(async () => {
   // ensure global user is populated
   isAdmin.value = loginUser.value?.role === 'admin'
@@ -125,7 +114,6 @@ onMounted(async () => {
           :employees="employees"
           :isAdmin="isAdmin"
           @edit="openEditModal"
-          @delete="deleteEmployee"
         />
       </div>
     </div>
