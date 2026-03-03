@@ -72,7 +72,7 @@ onMounted(async () => {
   if (!isAdmin.value) {
     fetchError.value = 'Only administrators can access this page'
     isLoading.value = false
-    return
+    return navigateTo('/dashboard')
   }
   await fetchEmployees()
 })
