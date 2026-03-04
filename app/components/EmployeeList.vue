@@ -35,7 +35,7 @@ const onEdit = (e, emp) => {
               >
                 {{ employee.status }}
               </span>
-              <Button v-if="isAdmin" @click="onEdit($event, employee)" variant="link" size="sm">Edit</Button>
+              <Button v-if="isAdmin" @click.prevent="onEdit($event, employee)" variant="link" size="sm">Edit</Button>
             </div>
           </div>
         </div>
