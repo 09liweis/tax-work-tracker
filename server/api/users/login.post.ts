@@ -14,6 +14,8 @@ export default defineEventHandler(async (event) => {
 
   const data = { email, password };
 
+  //console.log(await bcrypt.hash(data.password, 10))
+
   const user = await User.findOne({ email: data.email });
 
   if (!user) {
