@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
   const data = { email, password, name, role, status }
 
   try {
-    const userId = event.context.params?.id;
+    const userId = event.context.params?.userId;
 
     const user = await User.findById(userId);
 
@@ -40,8 +40,10 @@ export default defineEventHandler(async (event) => {
       return { success: false, error: 'User not found' };
     }
 
-    if (data.password) {
+    if (data.password != '') {
       data.password = await bcrypt.hash(data.password, 10);
+    } else {
+      delete data.password;
     }
 
     await User.updateOne({_id:userId},data);
