@@ -1,5 +1,5 @@
 import { defineEventHandler, readBody } from 'h3';
-import { User } from '../../models/user.schema';
+import { User, UserType } from '../../models/user.schema';
 import bcrypt from 'bcrypt';
 import { getLoginToken } from '~~/server/utils/jwt';
 
@@ -22,14 +22,14 @@ export default defineEventHandler(async (event) => {
     return { success: false, error: 'Invalid credentials' };
   }
 
-  const isPasswordValid = await bcrypt.compare(data.password, user.password);
+  const isPasswordValid = await bcrypt.compare(data.password, user.password.toString());
 
   if (!isPasswordValid) {
     return { success: false, error: 'Invalid credentials' };
   }
 
   // Update user's last timestamp (lts) on successful login
-  user.lts = new Date();
+  user.lts = new Date() as any;
   await user.save();
 
   const token = await getLoginToken({userId: user._id});
