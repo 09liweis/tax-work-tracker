@@ -1,5 +1,7 @@
 import { defineEventHandler } from 'h3';
 import { Client } from '../../models/client.schema';
+import { Corporation } from '../../models/corporation.schema';
+import { PersonalTax } from '../../models/personalTax.schema';
 import { verifyToken } from '~~/server/utils/jwt';
 
 export default defineEventHandler(async (event) => {
@@ -17,8 +19,10 @@ export default defineEventHandler(async (event) => {
   try {
     const client = await Client.findById(id);
     const relatives = await Client.find({ clientId: id });
+    const corporations = await Corporation.find({ clientId: id });
+    const personalTaxes = await PersonalTax.find({ clientId: id });
     if (!client) return { success: false, error: 'Client not found' };
-    return { success: true, client, relatives };
+    return { success: true, client, relatives, corporations, personalTaxes };
   } catch (error) {
     return { success: false, error: 'Invalid client ID' };
   }

@@ -80,6 +80,8 @@ const fetchClient = async () => {
     client.value = { ...res.client, id: res.client._id || res.client.id }
 
     relatives.value = (res.relatives || [])
+    corporations.value = (res.corporations || [])
+    personalTaxes.value = (res.personalTaxes || [])
   } catch (err) {
     fetchError.value = err?.message || 'An error occurred while loading client'
   } finally {
@@ -90,8 +92,6 @@ const fetchClient = async () => {
 
 onMounted(async () => {
   await fetchClient()
-  await fetchPersonalTaxes()
-  await fetchCorporations()
 })
 
 const fetchPersonalTaxes = async (year = '') => {
@@ -106,20 +106,6 @@ const fetchPersonalTaxes = async (year = '') => {
     personalTaxesError.value = err?.message || 'An error occurred while loading personal taxes'
   } finally {
     personalTaxesLoading.value = false
-  }
-}
-
-const fetchCorporations = async () => {
-  corporationsLoading.value = true
-  corporationsError.value = ''
-  try {
-    const res = await apiGet(`/api/corporations?clientId=${clientId}`)
-    if (!res.success) throw new Error(res.error || 'Failed to load corporations')
-    corporations.value = (res.corporations || []).map(c => ({ ...c, id: c._id || c.id }))
-  } catch (err) {
-    corporationsError.value = err?.message || 'An error occurred while loading corporations'
-  } finally {
-    corporationsLoading.value = false
   }
 }
 
@@ -156,7 +142,7 @@ const handleCorpSave = async (corpData) => {
     console.error('Error saving corporation', err)
   }
 
-  await fetchCorporations()
+  await fetchClient()
   closeCorpModal()
 }
 
