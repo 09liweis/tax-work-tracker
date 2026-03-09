@@ -1,7 +1,7 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { apiPost } from '~/utils/api'
-import { STATUS_OPTIONS, MARITAL_STATUS_OPTIONS, GENDER_OPTIONS } from '~/components/utils/formOptions'
+import { MARITAL_STATUS_OPTIONS, GENDER_OPTIONS } from '~/components/utils/formOptions'
 
 const props = defineProps({
   visible: {
@@ -15,14 +15,25 @@ const props = defineProps({
   isEditing: {
     type: Boolean,
     default: false
+  },
+  isRelative: {
+    type: Boolean,
+    default: false
+  },
+  mainClientId: {
+    type: String,
+    default: ''
   }
 })
 
 const emit = defineEmits(['close', 'saved'])
 
 const isEditing = ref(props.isEditing)
+const isRelative = ref(props.isRelative)
 const currentClient = ref({
   id: null,
+  clientId: '',
+  relationShipToClient: '',
   name: '',
   dob: '',
   sin: '',
@@ -35,15 +46,39 @@ const currentClient = ref({
   gender: ''
 })
 
+const modalTitle = computed(() => {
+  if (isRelative.value) {
+    return isEditing.value ? 'Edit Relative' : 'Add Relative'
+  }
+  return isEditing.value ? 'Edit Client' : 'Add New Client'
+})
+
+const modalDescription = computed(() => {
+  if (isRelative.value) {
+    return isEditing.value ? 'Update relative information' : 'Enter relative details'
+  }
+  return isEditing.value ? 'Update client information' : 'Enter client details'
+})
+
+const submitButtonText = computed(() => {
+  if (isRelative.value) {
+    return isEditing.value ? 'Update Relative' : 'Add Relative'
+  }
+  return isEditing.value ? 'Update Client' : 'Add Client'
+})
+
 watch(() => props.visible, (newVal) => {
   if (newVal) {
     isEditing.value = props.isEditing
+    isRelative.value = props.isRelative
     if (props.client) {
       currentClient.value = { ...props.client, id: props.client.id || props.client._id }
       if (!currentClient.value.address) currentClient.value.address = ''
     } else {
       currentClient.value = {
         id: null,
+        clientId: props.mainClientId,
+        relationShipToClient: '',
         name: '',
         dob: '',
         sin: '',
@@ -62,6 +97,10 @@ watch(() => props.visible, (newVal) => {
 const saveClient = async () => {
   try {
     const payload = { ...currentClient.value }
+    if (isRelative.value && payload.clientId) {
+      // This is a relative, ensure clientId is set
+      payload.clientId = props.mainClientId || payload.clientId
+    }
     const res = await apiPost('/api/clients/upsert', payload)
     if (!res.success) throw new Error(res.error || 'Save failed')
 
@@ -82,16 +121,34 @@ const closeModal = () => {
   <div v-if="visible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 transform transition-all duration-300 scale-100">
       <div class="px-6 py-4 border-b border-gray-200">
-        <h2 class="text-2xl font-bold text-gray-900">{{ isEditing ? 'Edit Client' : 'Add New Client' }}</h2>
-        <p class="text-sm text-gray-600 mt-1">{{ isEditing ? 'Update client information' : 'Enter client details' }}</p>
+        <h2 class="text-2xl font-bold text-gray-900">{{ modalTitle }}</h2>
+        <p class="text-sm text-gray-600 mt-1">{{ modalDescription }}</p>
       </div>
       <form @submit.prevent="saveClient" class="px-6 py-6">
         <div class="space-y-4">
+          <!-- Relationship field for relatives -->
+          <div v-if="isRelative">
+            <label for="relationShipToClient" class="block text-sm font-semibold text-gray-700 mb-2">Relationship</label>
+            <select id="relationShipToClient" v-model="currentClient.relationShipToClient" required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white">
+              <option value="">Select relationship</option>
+              <option value="son">Son</option>
+              <option value="daughter">Daughter</option>
+              <option value="father">Father</option>
+              <option value="mother">Mother</option>
+              <option value="husband">Husband</option>
+              <option value="wife">Wife</option>
+              <option value="brother">Brother</option>
+              <option value="sister">Sister</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
           <div>
             <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
             <input id="name" v-model="currentClient.name" type="text" required
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 placeholder-gray-400"
-              placeholder="Enter client's full name">
+              placeholder="Enter full name">
           </div>
 
           <div class="grid grid-cols-2 gap-4">
@@ -116,7 +173,7 @@ const closeModal = () => {
           <div>
             <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
             <input id="email" v-model="currentClient.email" type="email"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="client@example.com">
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="example@email.com">
           </div>
 
           <div>
@@ -163,7 +220,7 @@ const closeModal = () => {
         </div>
         <div class="flex justify-end space-x-3 mt-6">
           <Button variant="outline" @click="closeModal">Cancel</Button>
-          <Button variant="primary" type="submit">{{ isEditing ? 'Update Client' : 'Add Client' }}</Button>
+          <Button variant="primary" type="submit">{{ submitButtonText }}</Button>
         </div>
       </form>
     </div>

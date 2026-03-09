@@ -17,6 +17,7 @@ import ClientDetails from '~/components/client/ClientDetails.vue'
 import ClientTabs from '~/components/client/ClientTabs.vue'
 import ClientTabContent from '~/components/client/ClientTabContent.vue'
 import ClientModal from '~/components/client/ClientModal.vue'
+import RelativesSection from '~/components/client/RelativesSection.vue'
 import TaskModal from '~/components/TaskModal.vue'
 import CorporationModal from '~/components/corporation/CorporationModal.vue'
 import { apiGet, apiPost } from '~/utils/api'
@@ -39,6 +40,11 @@ const corporations = ref([])
 const corporationsLoading = ref(false)
 const corporationsError = ref('')
 
+// relatives state
+const relatives = ref([])
+const relativesLoading = ref(false)
+const relativesError = ref('')
+
 // tab state
 const activeTab = ref('personal-tax')
 
@@ -55,6 +61,11 @@ const corpEditing = ref(false)
 const showClientModal = ref(false)
 const modalClient = ref(null)
 const clientEditing = ref(false)
+
+// relative modal state
+const showRelativeModal = ref(false)
+const modalRelative = ref(null)
+const relativeEditing = ref(false)
 
 
 const fetchClient = async () => {
@@ -75,6 +86,7 @@ onMounted(async () => {
   await fetchClient()
   await fetchPersonalTaxes()
   await fetchCorporations()
+  await fetchRelatives()
 })
 
 const fetchPersonalTaxes = async (year = '') => {
@@ -103,6 +115,23 @@ const fetchCorporations = async () => {
     corporationsError.value = err?.message || 'An error occurred while loading corporations'
   } finally {
     corporationsLoading.value = false
+  }
+}
+
+const fetchRelatives = async () => {
+  relativesLoading.value = true
+  relativesError.value = ''
+  try {
+    const res = await apiGet(`/api/clients?clientId=${clientId}`)
+    if (!res.success) throw new Error(res.error || 'Failed to load relatives')
+    // Filter out the main client (where clientId matches their own _id or is empty)
+    relatives.value = (res.clients || [])
+      .filter(c => c.clientId === clientId && c._id !== clientId)
+      .map(c => ({ ...c, id: c._id || c.id }))
+  } catch (err) {
+    relativesError.value = err?.message || 'An error occurred while loading relatives'
+  } finally {
+    relativesLoading.value = false
   }
 }
 
@@ -179,6 +208,39 @@ const handleEditCorporation = (corp) => {
   showCorpModal.value = true
 }
 
+// Relative handlers
+const handleAddRelative = () => {
+  relativeEditing.value = false
+  modalRelative.value = null
+  showRelativeModal.value = true
+}
+
+const handleEditRelative = (relative) => {
+  relativeEditing.value = true
+  modalRelative.value = { ...relative }
+  showRelativeModal.value = true
+}
+
+const closeRelativeModal = () => {
+  showRelativeModal.value = false
+  modalRelative.value = null
+}
+
+const handleRelativeSave = async () => {
+  await fetchRelatives()
+  closeRelativeModal()
+}
+
+const handleDeleteRelative = async (relative) => {
+  try {
+    const res = await apiPost('/api/clients/delete', { id: relative.id || relative._id })
+    if (!res.success) throw new Error(res.error || 'Failed to delete relative')
+    await fetchRelatives()
+  } catch (err) {
+    alert(err?.message || 'Error deleting relative')
+  }
+}
+
 </script>
 
 <template>
@@ -224,8 +286,16 @@ const handleEditCorporation = (corp) => {
       <!-- Two Column Layout -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Personal Information Sidebar -->
-        <div class="lg:col-span-1">
+        <div class="lg:col-span-1 space-y-6">
           <ClientDetails :client="client" />
+          <RelativesSection
+            :relatives="relatives"
+            :loading="relativesLoading"
+            :error="relativesError"
+            @new="handleAddRelative"
+            @edit="handleEditRelative"
+            @delete="handleDeleteRelative"
+          />
         </div>
 
         <!-- Main Content Area with Tabs -->
@@ -273,6 +343,16 @@ const handleEditCorporation = (corp) => {
       :is-editing="clientEditing"
       @close="closeClientModal"
       @saved="handleClientSave"
+    />
+
+    <ClientModal
+      :visible="showRelativeModal"
+      :client="modalRelative"
+      :is-editing="relativeEditing"
+      :is-relative="true"
+      :main-client-id="clientId"
+      @close="closeRelativeModal"
+      @saved="handleRelativeSave"
     />
   </div>
 </template>
