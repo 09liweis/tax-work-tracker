@@ -69,16 +69,22 @@ const relativeEditing = ref(false)
 
 
 const fetchClient = async () => {
+  relativesLoading.value = true
+  relativesError.value = ''
+
   isLoading.value = true
   fetchError.value = ''
   try {
     const res = await apiGet(`/api/clients/${clientId}`)
     if (!res.success) throw new Error(res.error || 'Failed to load client')
     client.value = { ...res.client, id: res.client._id || res.client.id }
+
+    relatives.value = (res.relatives || [])
   } catch (err) {
     fetchError.value = err?.message || 'An error occurred while loading client'
   } finally {
     isLoading.value = false
+    relativesLoading.value = false
   }
 }
 
@@ -86,7 +92,6 @@ onMounted(async () => {
   await fetchClient()
   await fetchPersonalTaxes()
   await fetchCorporations()
-  await fetchRelatives()
 })
 
 const fetchPersonalTaxes = async (year = '') => {
@@ -115,23 +120,6 @@ const fetchCorporations = async () => {
     corporationsError.value = err?.message || 'An error occurred while loading corporations'
   } finally {
     corporationsLoading.value = false
-  }
-}
-
-const fetchRelatives = async () => {
-  relativesLoading.value = true
-  relativesError.value = ''
-  try {
-    const res = await apiGet(`/api/clients?clientId=${clientId}`)
-    if (!res.success) throw new Error(res.error || 'Failed to load relatives')
-    // Filter out the main client (where clientId matches their own _id or is empty)
-    relatives.value = (res.clients || [])
-      .filter(c => c.clientId === clientId && c._id !== clientId)
-      .map(c => ({ ...c, id: c._id || c.id }))
-  } catch (err) {
-    relativesError.value = err?.message || 'An error occurred while loading relatives'
-  } finally {
-    relativesLoading.value = false
   }
 }
 
@@ -227,7 +215,7 @@ const closeRelativeModal = () => {
 }
 
 const handleRelativeSave = async () => {
-  await fetchRelatives()
+  await fetchClient()
   closeRelativeModal()
 }
 
@@ -235,7 +223,7 @@ const handleDeleteRelative = async (relative) => {
   try {
     const res = await apiPost('/api/clients/delete', { id: relative.id || relative._id })
     if (!res.success) throw new Error(res.error || 'Failed to delete relative')
-    await fetchRelatives()
+    await fetchClient()
   } catch (err) {
     alert(err?.message || 'Error deleting relative')
   }

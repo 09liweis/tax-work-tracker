@@ -16,8 +16,9 @@ export default defineEventHandler(async (event) => {
 
   try {
     const client = await Client.findById(id);
+    const relatives = await Client.find({ clientId: id });
     if (!client) return { success: false, error: 'Client not found' };
-    return { success: true, client };
+    return { success: true, client, relatives };
   } catch (error) {
     return { success: false, error: 'Invalid client ID' };
   }
