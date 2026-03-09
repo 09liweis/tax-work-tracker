@@ -1,4 +1,5 @@
 <script setup>
+import RelativeCard from '~/components/client/RelativeCard.vue'
 const props = defineProps({
   relatives: {
     type: Array,
