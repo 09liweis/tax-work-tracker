@@ -37,12 +37,12 @@ const formatCurrency = (amount) => {
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ tax.taskDescription || '-' }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ tax.taxYear || '-' }}</td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" :class="getStatusColor(tax.status, 'tax')">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded" :class="getStatusColor(tax.status, 'tax')">
                 {{ tax.status || '-' }}
               </span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" :class="getPriorityColor(tax.priority)">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded" :class="getPriorityColor(tax.priority)">
                 {{ tax.priority || '-' }}
               </span>
             </td>

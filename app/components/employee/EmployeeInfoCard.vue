@@ -27,7 +27,7 @@ const formatCurrency = (amount) => {
         </div>
         <div>
           <p class="text-sm font-medium text-gray-500">Status</p>
-          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium"
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded text-sm font-medium"
             :class="user.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'">
             {{ user.status }}
           </span>

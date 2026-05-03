@@ -28,12 +28,12 @@ const props = defineProps({
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ payroll.corpId || '-' }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ payroll.year || '-' }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-50 text-indigo-700">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded bg-indigo-50 text-indigo-700">
                 {{ payroll.payrollFrequency || '-' }}
               </span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" :class="getStatusColor(payroll.payrollStatus, 'payroll')">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded" :class="getStatusColor(payroll.payrollStatus, 'payroll')">
                 {{ payroll.payrollStatus || '-' }}
               </span>
             </td>

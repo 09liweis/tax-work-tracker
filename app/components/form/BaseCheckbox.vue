@@ -25,7 +25,7 @@ const toggle = () => {
   >
     <!-- Toggle Container -->
     <div
-      class="relative w-14 h-8 rounded-full transition-all duration-500 ease-out overflow-hidden"
+      class="relative w-14 h-8 rounded transition-all duration-500 ease-out overflow-hidden"
       :class="[
         modelValue
           ? 'bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 shadow-lg shadow-cyan-500/30'
@@ -34,13 +34,13 @@ const toggle = () => {
     >
       <!-- Animated Background Particles -->
       <div v-if="modelValue" class="absolute inset-0">
-        <div class="absolute w-20 h-20 -top-4 -left-4 bg-white/10 rounded-full animate-pulse"></div>
-        <div class="absolute w-16 h-16 -bottom-3 -right-3 bg-white/15 rounded-full animate-pulse" style="animation-delay: 0.5s;"></div>
+        <div class="absolute w-20 h-20 -top-4 -left-4 bg-white/10 rounded animate-pulse"></div>
+        <div class="absolute w-16 h-16 -bottom-3 -right-3 bg-white/15 rounded animate-pulse" style="animation-delay: 0.5s;"></div>
       </div>
 
       <!-- Toggle Knob -->
       <div
-        class="absolute top-1 left-1 w-6 h-6 rounded-full transition-all duration-500 ease-out flex items-center justify-center shadow-xl"
+        class="absolute top-1 left-1 w-6 h-6 rounded transition-all duration-500 ease-out flex items-center justify-center shadow-xl"
         :class="[
           modelValue
             ? 'translate-x-6 bg-white'
@@ -89,7 +89,7 @@ const toggle = () => {
         {{ label }}
         <span
           v-if="modelValue"
-          class="inline-block ml-1.5 text-xs px-2 py-0.5 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-medium"
+          class="inline-block ml-1.5 text-xs px-2 py-0.5 rounded bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-medium"
         >
           Active
         </span>
