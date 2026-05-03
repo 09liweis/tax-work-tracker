@@ -19,7 +19,7 @@ const onEdit = (e, emp) => {
           <div class="flex items-center justify-between">
             <div class="flex items-center">
               <div class="flex-shrink-0 h-10 w-10">
-                <div class="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center">
+                <div class="h-10 w-10 rounded bg-indigo-500 flex items-center justify-center">
                   <span class="text-sm font-medium text-white">{{ employee.email.charAt(0) }}</span>
                 </div>
               </div>
@@ -31,7 +31,7 @@ const onEdit = (e, emp) => {
             <div class="flex items-center space-x-3">
               <span
                 :class="employee.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'"
-                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium"
               >
                 {{ employee.status }}
               </span>
