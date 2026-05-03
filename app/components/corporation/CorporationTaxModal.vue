@@ -237,7 +237,7 @@ const saveTask = async () => {
                   <div class="flex items-center">
                     <div
                       :class="[
-                        'w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-200',
+                        'w-8 h-8 rounded flex items-center justify-center text-sm font-semibold transition-all duration-200',
                         step >= stepNum ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-600'
                       ]"
                     >

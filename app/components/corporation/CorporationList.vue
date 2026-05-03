@@ -12,7 +12,7 @@ const props = defineProps({
           <div class="flex items-start justify-between">
             <div class="flex items-start">
               <div class="flex-shrink-0 h-12 w-12">
-                <div class="h-12 w-12 rounded-full bg-purple-500 flex items-center justify-center">
+                <div class="h-12 w-12 rounded bg-purple-500 flex items-center justify-center">
                   <span class="text-base font-medium text-white">{{ corp.name.charAt(0) }}</span>
                 </div>
               </div>
@@ -21,7 +21,7 @@ const props = defineProps({
                   <p class="text-base font-semibold text-gray-900">{{ corp.name }}</p>
                   <span
                     :class="corp.status === 'Active' ? 'bg-green-100 text-green-800' : corp.status === 'Under Review' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'"
-                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium">
+                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium">
                     {{ corp.status }}
                   </span>
                 </div>

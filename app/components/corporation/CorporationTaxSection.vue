@@ -98,10 +98,10 @@ const emit = defineEmits(["new", "edit"])
           </div>
 
           <div class="flex items-center gap-3 flex-shrink-0">
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium" :class="getStatusColor(t.status, 'tax')">
+            <span class="inline-flex items-center px-3 py-1 rounded text-xs font-medium" :class="getStatusColor(t.status, 'tax')">
               {{ t.status }}
             </span>
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium" :class="getPriorityColor(t.priority)">
+            <span class="inline-flex items-center px-3 py-1 rounded text-xs font-medium" :class="getPriorityColor(t.priority)">
               {{ t.priority }}
             </span>
             <button

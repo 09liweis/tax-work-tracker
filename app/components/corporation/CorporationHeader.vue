@@ -27,9 +27,9 @@
               'bg-yellow-100 text-yellow-700 border-yellow-200': corp.status === 'Under Review',
               'bg-gray-100 text-gray-700 border-gray-200': corp.status === 'Inactive'
             }"
-            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold border"
+            class="inline-flex items-center px-3 py-1 rounded text-sm font-semibold border"
           >
-            <span class="w-2 h-2 rounded-full mr-2" :class="{
+            <span class="w-2 h-2 rounded mr-2" :class="{
               'bg-green-500': corp.status === 'Active',
               'bg-yellow-500': corp.status === 'Under Review',
               'bg-gray-500': corp.status === 'Inactive'

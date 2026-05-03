@@ -27,7 +27,7 @@
         <label class="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2 block">Associated Client</label>
         <NuxtLink :to="`/dashboard/clients/${client._id || client.id}`" class="block p-3 rounded-lg bg-indigo-50 hover:bg-indigo-100 transition-colors">
           <div class="flex items-center">
-            <div class="flex-shrink-0 h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center">
+            <div class="flex-shrink-0 h-8 w-8 rounded bg-indigo-600 flex items-center justify-center">
               <span class="text-sm font-medium text-white">{{ client.name.charAt(0) }}</span>
             </div>
             <div class="ml-3">

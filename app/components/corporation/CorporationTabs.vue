@@ -44,7 +44,7 @@ const setActiveTab = (tabId) => {
           {{ tab.label }}
           <span v-if="tab.count > 0" :class="[
             modelValue === tab.id ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600',
-            'ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium'
+            'ml-2 inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium'
           ]">
             {{ tab.count }}
           </span>
