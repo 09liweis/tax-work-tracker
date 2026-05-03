@@ -234,7 +234,7 @@ onMounted(fetchAdminData)
             <div>
               <dt class="text-sm font-medium text-gray-500">Role</dt>
               <dd class="mt-1">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">
                   Admin
                 </span>
               </dd>
@@ -242,7 +242,7 @@ onMounted(fetchAdminData)
             <div>
               <dt class="text-sm font-medium text-gray-500">Account Status</dt>
               <dd class="mt-1">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
                   {{ loginUser?.status || 'Active' }}
                 </span>
               </dd>

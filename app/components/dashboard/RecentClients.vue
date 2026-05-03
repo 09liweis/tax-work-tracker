@@ -28,7 +28,7 @@ defineProps({
           class="flex items-center p-3 sm:p-4 rounded-lg border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-all group"
         >
           <div class="flex-shrink-0">
-            <div class="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-blue-600 flex items-center justify-center">
+            <div class="h-9 w-9 sm:h-10 sm:w-10 rounded bg-blue-600 flex items-center justify-center">
               <span class="text-sm font-medium text-white">{{ client.name.charAt(0) }}</span>
             </div>
           </div>

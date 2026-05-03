@@ -28,7 +28,7 @@ const handleDelete = () => {
     <div class="flex-1 min-w-0">
       <div class="flex items-center gap-3 mb-2">
         <p class="font-semibold text-gray-900 text-lg">{{ relative.name }}</p>
-        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">
           {{ relative.relationShipToClient }}
         </span>
       </div>

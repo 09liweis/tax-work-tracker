@@ -133,7 +133,7 @@ onMounted(fetchServices)
             <div class="flex-1 min-w-0">
               <div class="flex items-center gap-2">
                 <h3 class="text-base sm:text-lg font-semibold text-slate-900 truncate">{{ service.name }}</h3>
-                <span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700 flex-shrink-0">
+                <span class="inline-flex items-center rounded bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700 flex-shrink-0">
                   {{ formatCurrency(service.price) }}
                 </span>
               </div>

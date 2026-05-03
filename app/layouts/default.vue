@@ -6,7 +6,7 @@
         <div class="flex justify-between items-center py-4">
           <div class="flex items-center">
             <NuxtLink to="/dashboard" class="flex items-center text-gray-900 hover:text-gray-600 mr-6">
-              <div class="h-8 w-8 bg-indigo-600 rounded-full flex items-center justify-center mr-2">
+              <div class="h-8 w-8 bg-indigo-600 rounded flex items-center justify-center mr-2">
                 <span class="text-white text-sm font-bold">T</span>
               </div>
               <span class="text-xl font-bold text-gray-900">Tax Tracker</span>
