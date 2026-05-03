@@ -34,7 +34,7 @@ const getAvatarColor = (name) => {
       <div class="p-5 bg-white rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200">
         <div class="flex items-start gap-4">
           <div class="flex-shrink-0">
-            <div :class="['h-12 w-12 rounded-full flex items-center justify-center', getAvatarColor(client.name)]">
+            <div :class="['h-12 w-12 rounded flex items-center justify-center', getAvatarColor(client.name)]">
               <span class="text-base font-semibold text-white">{{ getInitials(client.name) }}</span>
             </div>
           </div>
