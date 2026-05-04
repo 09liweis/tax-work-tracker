@@ -45,7 +45,7 @@ const getAvatarColor = (name) => {
                 @click.prevent.stop="emit('edit', client)"
                 variant="ghost"
                 size="sm"
-                class="flex-shrink-0 opacity-0 group-hover:opacity-100 p-1.5 text-gray-400 hover:text-blue-600 rounded-lg"
+                class="flex-shrink-0 opacity-0 group-hover:opacity-100 p-1.5 text-gray-400 hover:text-blue-600 rounded"
                 title="Edit client"
               >
                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

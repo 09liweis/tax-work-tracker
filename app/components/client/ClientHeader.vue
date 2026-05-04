@@ -59,7 +59,7 @@ const formatDate = (date) => {
             <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">SIN</div>
             <div class="text-lg font-semibold text-gray-900">{{ client.sin || '—' }}</div>
           </div>
-          <div class="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
+          <div class="h-12 w-12 bg-green-100 rounded flex items-center justify-center">
             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path>
             </svg>
@@ -72,7 +72,7 @@ const formatDate = (date) => {
             <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Date of Birth</div>
             <div class="text-lg font-semibold text-gray-900">{{ client.dob ? new Date(client.dob).toLocaleDateString() : '—' }}</div>
           </div>
-          <div class="h-12 w-12 bg-amber-100 rounded-lg flex items-center justify-center">
+          <div class="h-12 w-12 bg-amber-100 rounded flex items-center justify-center">
             <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
             </svg>
@@ -85,7 +85,7 @@ const formatDate = (date) => {
             <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Marital Status</div>
             <div class="text-lg font-semibold text-gray-900">{{ client.maritalStatus || '—' }}</div>
           </div>
-          <div class="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center">
+          <div class="h-12 w-12 bg-purple-100 rounded flex items-center justify-center">
             <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
             </svg>
@@ -98,7 +98,7 @@ const formatDate = (date) => {
             <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Last Updated</div>
             <div class="text-sm font-semibold text-gray-900">{{ formatDate(client.lts) }}</div>
           </div>
-          <div class="h-12 w-12 bg-gray-100 rounded-lg flex items-center justify-center">
+          <div class="h-12 w-12 bg-gray-100 rounded flex items-center justify-center">
             <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>

@@ -130,7 +130,7 @@ const closeModal = () => {
           <div v-if="isRelative">
             <label for="relationShipToClient" class="block text-sm font-semibold text-gray-700 mb-2">Relationship</label>
             <select id="relationShipToClient" v-model="currentClient.relationShipToClient" required
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white">
+              class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500 bg-white">
               <option value="">Select relationship</option>
               <option value="son">Son</option>
               <option value="daughter">Daughter</option>
@@ -147,7 +147,7 @@ const closeModal = () => {
           <div>
             <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
             <input id="name" v-model="currentClient.name" type="text" required
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 placeholder-gray-400"
+              class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 placeholder-gray-400"
               placeholder="Enter full name">
           </div>
 
@@ -155,43 +155,43 @@ const closeModal = () => {
             <div>
               <label for="dob" class="block text-sm font-semibold text-gray-700 mb-2">DOB</label>
               <input id="dob" v-model="currentClient.dob" type="date"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" />
+                class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500" />
             </div>
             <div>
               <label for="sin" class="block text-sm font-semibold text-gray-700 mb-2">SIN</label>
               <input id="sin" v-model="currentClient.sin" type="text"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="SIN">
+                class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500" placeholder="SIN">
             </div>
           </div>
 
           <div>
             <label for="telephone" class="block text-sm font-semibold text-gray-700 mb-2">Telephone No.</label>
             <input id="telephone" v-model="currentClient.telephone" type="text"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="e.g., +1 555-555-5555">
+              class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500" placeholder="e.g., +1 555-555-5555">
           </div>
 
           <div>
             <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
             <input id="email" v-model="currentClient.email" type="email"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="example@email.com">
+              class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500" placeholder="example@email.com">
           </div>
 
           <div>
             <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">Address</label>
             <input id="address" v-model="currentClient.address" type="text"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="Street address, PO box, etc.">
+              class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500" placeholder="Street address, PO box, etc.">
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label for="city" class="block text-sm font-semibold text-gray-700 mb-2">City</label>
               <input id="city" v-model="currentClient.city" type="text"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" />
+                class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500" />
             </div>
             <div>
               <label for="province" class="block text-sm font-semibold text-gray-700 mb-2">Province</label>
               <input id="province" v-model="currentClient.province" type="text"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" />
+                class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500" />
             </div>
           </div>
 
@@ -199,7 +199,7 @@ const closeModal = () => {
             <div>
               <label for="maritalStatus" class="block text-sm font-semibold text-gray-700 mb-2">Marital Status</label>
               <select id="maritalStatus" v-model="currentClient.maritalStatus"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white">
+                class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500 bg-white">
                 <option value="">Select</option>
                 <option v-for="option in MARITAL_STATUS_OPTIONS" :key="option.value" :value="option.value">
                   {{ option.label }}
@@ -209,7 +209,7 @@ const closeModal = () => {
             <div>
               <label for="gender" class="block text-sm font-semibold text-gray-700 mb-2">Gender</label>
               <select id="gender" v-model="currentClient.gender"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white">
+                class="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500 bg-white">
                 <option value="">Select</option>
                 <option v-for="option in GENDER_OPTIONS" :key="option.value" :value="option.value">
                   {{ option.label }}
