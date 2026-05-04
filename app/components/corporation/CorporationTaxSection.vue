@@ -18,7 +18,7 @@ const emit = defineEmits(["new", "edit"])
     <div class="px-6 py-4 bg-gradient-to-r from-indigo-50 to-purple-50 border-b border-gray-200">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="p-2 bg-indigo-100 rounded-lg">
+          <div class="p-2 bg-indigo-100 rounded">
             <svg class="w-5 h-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
             </svg>
@@ -30,7 +30,7 @@ const emit = defineEmits(["new", "edit"])
         </div>
         <button
           @click="emit('new')"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-sm hover:shadow-md"
+          class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors duration-200 shadow-sm hover:shadow-md"
         >
           <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -49,14 +49,14 @@ const emit = defineEmits(["new", "edit"])
         <p class="text-sm font-medium">Loading tasks...</p>
       </div>
 
-      <div v-else-if="error" class="flex items-center gap-3 p-4 rounded-lg bg-red-50 border border-red-200">
+      <div v-else-if="error" class="flex items-center gap-3 p-4 rounded bg-red-50 border border-red-200">
         <svg class="w-5 h-5 text-red-500 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <p class="text-sm text-red-700">{{ error }}</p>
       </div>
 
-      <div v-else-if="tasks.length === 0" class="flex flex-col items-center justify-center py-12 text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
+      <div v-else-if="tasks.length === 0" class="flex flex-col items-center justify-center py-12 text-gray-500 bg-gray-50 rounded border-2 border-dashed border-gray-200">
         <svg class="w-12 h-12 mb-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
         </svg>
@@ -68,7 +68,7 @@ const emit = defineEmits(["new", "edit"])
         <div
           v-for="t in tasks"
           :key="t._id"
-          class="flex items-center gap-4 p-4 bg-white rounded-lg border border-gray-200 hover:border-indigo-300 hover:shadow-md transition-all duration-200"
+          class="flex items-center gap-4 p-4 bg-white rounded border border-gray-200 hover:border-indigo-300 hover:shadow-md transition-all duration-200"
         >
           <div class="flex-shrink-0 text-2xl">
             {{ getTaskTypeIcon(t.taskType) }}
@@ -106,7 +106,7 @@ const emit = defineEmits(["new", "edit"])
             </span>
             <button
               @click="emit('edit', t)"
-              class="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors duration-200"
+              class="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded transition-colors duration-200"
               title="Edit task"
             >
               <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
