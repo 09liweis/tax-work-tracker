@@ -27,12 +27,12 @@ const calculateCorporationTaxTotal = () => {
 <template>
   <div class="space-y-6">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="bg-gray-50 rounded-lg p-4">
+      <div class="bg-gray-50 rounded p-4">
         <h3 class="text-lg font-semibold text-gray-900 mb-3">Personal Tax Payments</h3>
         <p class="text-2xl font-bold text-indigo-600">{{ formatCurrency(calculatePersonalTaxTotal()) }}</p>
         <p class="text-sm text-gray-500">{{ stats.personalTaxCount }} records</p>
       </div>
-      <div class="bg-gray-50 rounded-lg p-4">
+      <div class="bg-gray-50 rounded p-4">
         <h3 class="text-lg font-semibold text-gray-900 mb-3">Corporation Tax Payments</h3>
         <p class="text-2xl font-bold text-green-600">{{ formatCurrency(calculateCorporationTaxTotal()) }}</p>
         <p class="text-sm text-gray-500">{{ stats.corporationTaxCount }} records</p>

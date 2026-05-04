@@ -24,7 +24,7 @@ const handleClear = () => {
 </script>
 
 <template>
-  <div class="bg-white shadow rounded-lg p-6">
+  <div class="bg-white shadow rounded p-6">
     <div class="flex flex-wrap items-center gap-4">
       <div class="flex-1 min-w-[200px]">
         <label for="startDate" class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>

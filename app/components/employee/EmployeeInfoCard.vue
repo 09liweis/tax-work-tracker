@@ -14,7 +14,7 @@ const formatCurrency = (amount) => {
 </script>
 
 <template>
-  <div class="bg-white shadow rounded-lg overflow-hidden">
+  <div class="bg-white shadow rounded overflow-hidden">
     <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-indigo-500 to-purple-600">
       <h2 class="text-xl font-semibold text-white">{{ user.name }}</h2>
       <p class="text-indigo-100">{{ user.email }}</p>
