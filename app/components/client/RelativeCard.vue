@@ -16,9 +16,9 @@ const handleDelete = () => {
 </script>
 
 <template>
-  <div class="flex items-center gap-4 p-4 bg-white rounded-lg border border-gray-200 hover:border-purple-300 hover:shadow-md transition-all duration-200">
+  <div class="flex items-center gap-4 p-4 bg-white rounded border border-gray-200 hover:border-purple-300 hover:shadow-md transition-all duration-200">
     <div class="flex-shrink-0">
-      <div class="p-3 bg-purple-100 rounded-lg">
+      <div class="p-3 bg-purple-100 rounded">
         <svg class="w-5 h-5 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
         </svg>
@@ -43,7 +43,7 @@ const handleDelete = () => {
     <div class="flex-shrink-0 flex items-center gap-2">
       <button
         @click="emit('edit')"
-        class="p-2.5 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors duration-200"
+        class="p-2.5 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded transition-colors duration-200"
         title="Edit relative"
       >
         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -52,7 +52,7 @@ const handleDelete = () => {
       </button>
       <button
         @click="handleDelete"
-        class="p-2.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+        class="p-2.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors duration-200"
         title="Delete relative"
       >
         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
