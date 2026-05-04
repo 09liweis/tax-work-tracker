@@ -48,8 +48,8 @@ const variantClasses = computed(() => {
 const sizeClasses = computed(() => {
   const sizes = {
     sm: 'px-3 py-1.5 text-xs font-medium rounded-md',
-    md: 'px-4 py-2 text-sm font-medium rounded-lg',
-    lg: 'px-6 py-3 text-sm font-semibold rounded-lg',
+    md: 'px-4 py-2 text-sm font-medium rounded',
+    lg: 'px-6 py-3 text-sm font-semibold rounded',
   }
   return sizes[props.size]
 })
