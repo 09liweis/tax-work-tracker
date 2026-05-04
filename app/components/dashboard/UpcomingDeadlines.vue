@@ -47,7 +47,7 @@ defineProps({
         <div
           v-for="(deadline, idx) in upcomingDeadlines"
           :key="idx"
-          class="p-3 rounded-lg border border-gray-200 hover:shadow-sm transition-shadow"
+          class="p-3 rounded border border-gray-200 hover:shadow-sm transition-shadow"
         >
           <div class="flex items-start justify-between mb-2">
             <span class="text-xs font-medium text-gray-500">{{ deadline.type }}</span>

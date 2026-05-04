@@ -101,7 +101,7 @@ const save = async () => {
               id="serviceName"
               v-model="formData.name"
               type="text"
-              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="e.g., Personal Tax Return"
               required
             >
@@ -115,7 +115,7 @@ const save = async () => {
               type="number"
               step="0.01"
               min="0"
-              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="e.g., 65.00"
               required
             >

@@ -205,7 +205,7 @@ onMounted(async () => {
 
     <!-- Error State -->
     <div v-else-if="fetchError" class="max-w-7xl mx-auto px-4 py-12">
-      <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+      <div class="bg-red-50 border border-red-200 rounded p-6 text-center">
         <svg class="h-12 w-12 mx-auto mb-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>

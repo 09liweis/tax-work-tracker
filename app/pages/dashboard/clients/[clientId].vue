@@ -232,7 +232,7 @@ const handleDeleteRelative = async (relative) => {
 
     <!-- Error State -->
     <div v-else-if="fetchError" class="max-w-7xl mx-auto px-4 py-12">
-      <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+      <div class="bg-red-50 border border-red-200 rounded p-6">
         <div class="flex items-center justify-between">
           <div class="flex items-center">
             <svg class="h-8 w-8 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

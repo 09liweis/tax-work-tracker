@@ -25,7 +25,7 @@ defineProps({
           v-for="client in recentClients"
           :key="client._id"
           :to="`/dashboard/clients/${client._id}`"
-          class="flex items-center p-3 sm:p-4 rounded-lg border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-all group"
+          class="flex items-center p-3 sm:p-4 rounded border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-all group"
         >
           <div class="flex-shrink-0">
             <div class="h-9 w-9 sm:h-10 sm:w-10 rounded bg-blue-600 flex items-center justify-center">

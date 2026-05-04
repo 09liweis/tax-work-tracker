@@ -6,7 +6,7 @@
         <div class="flex justify-between items-center py-4">
           <div class="flex items-center">
             <NuxtLink to="/dashboard/admin" class="flex items-center text-white hover:text-gray-200 mr-6">
-              <div class="h-8 w-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mr-2">
+              <div class="h-8 w-8 bg-white/20 backdrop-blur-sm rounded flex items-center justify-center mr-2">
                 <span class="text-white text-sm font-bold">A</span>
               </div>
               <span class="text-xl font-bold text-white">Admin Panel</span>
@@ -15,7 +15,7 @@
             <nav class="hidden md:flex space-x-1">
               <NuxtLink
                 to="/dashboard/admin"
-                class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2"
+                class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded text-sm font-medium transition-all duration-200 flex items-center gap-2"
                 active-class="bg-white/20 text-white"
               >
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -25,7 +25,7 @@
               </NuxtLink>
               <NuxtLink
                 to="/dashboard/admin/employees"
-                class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2"
+                class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded text-sm font-medium transition-all duration-200 flex items-center gap-2"
                 active-class="bg-white/20 text-white"
               >
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -35,7 +35,7 @@
               </NuxtLink>
               <NuxtLink
                 to="/dashboard/admin/personal-tax-services"
-                class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2"
+                class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded text-sm font-medium transition-all duration-200 flex items-center gap-2"
                 active-class="bg-white/20 text-white"
               >
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -48,7 +48,7 @@
           <!-- Back to Dashboard -->
           <NuxtLink
             to="/dashboard"
-            class="inline-flex items-center px-4 py-2 border border-white/20 text-sm font-medium rounded-lg text-white bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-600 focus:ring-white transition-all duration-200"
+            class="inline-flex items-center px-4 py-2 border border-white/20 text-sm font-medium rounded text-white bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-600 focus:ring-white transition-all duration-200"
           >
             <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -64,21 +64,21 @@
       <nav class="flex space-x-2 overflow-x-auto">
         <NuxtLink
           to="/dashboard/admin"
-          class="flex-shrink-0 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 flex items-center gap-1"
+          class="flex-shrink-0 px-3 py-2 rounded text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 flex items-center gap-1"
           active-class="bg-indigo-100 text-indigo-700"
         >
           Overview
         </NuxtLink>
         <NuxtLink
           to="/dashboard/admin/employees"
-          class="flex-shrink-0 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 flex items-center gap-1"
+          class="flex-shrink-0 px-3 py-2 rounded text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 flex items-center gap-1"
           active-class="bg-indigo-100 text-indigo-700"
         >
           Employees
         </NuxtLink>
         <NuxtLink
           to="/dashboard/admin/personal-tax-services"
-          class="flex-shrink-0 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 flex items-center gap-1"
+          class="flex-shrink-0 px-3 py-2 rounded text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 flex items-center gap-1"
           active-class="bg-indigo-100 text-indigo-700"
         >
           Tax Services

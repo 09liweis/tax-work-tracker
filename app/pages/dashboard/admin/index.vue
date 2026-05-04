@@ -100,7 +100,7 @@ onMounted(fetchAdminData)
       <!-- System Stats Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Total Users -->
-        <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="bg-white overflow-hidden shadow rounded">
           <div class="p-5">
             <div class="flex items-center">
               <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
@@ -121,7 +121,7 @@ onMounted(fetchAdminData)
         </div>
 
         <!-- Admin Users -->
-        <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="bg-white overflow-hidden shadow rounded">
           <div class="p-5">
             <div class="flex items-center">
               <div class="flex-shrink-0 bg-purple-500 rounded-md p-3">
@@ -143,26 +143,26 @@ onMounted(fetchAdminData)
       </div>
 
       <!-- User Status Breakdown -->
-      <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div class="bg-white shadow overflow-hidden sm:rounded">
         <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
           <h3 class="text-lg leading-6 font-medium text-gray-900">User Status Breakdown</h3>
           <p class="mt-1 max-w-2xl text-sm text-gray-500">Overview of user roles and account status</p>
         </div>
         <div class="px-4 py-5 sm:p-6">
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="text-center p-4 bg-indigo-50 rounded-lg">
+            <div class="text-center p-4 bg-indigo-50 rounded">
               <div class="text-3xl font-bold text-indigo-600">{{ userStats.regular }}</div>
               <div class="text-sm text-gray-600 mt-1">Regular Users</div>
             </div>
-            <div class="text-center p-4 bg-purple-50 rounded-lg">
+            <div class="text-center p-4 bg-purple-50 rounded">
               <div class="text-3xl font-bold text-purple-600">{{ userStats.admin }}</div>
               <div class="text-sm text-gray-600 mt-1">Admin Users</div>
             </div>
-            <div class="text-center p-4 bg-green-50 rounded-lg">
+            <div class="text-center p-4 bg-green-50 rounded">
               <div class="text-3xl font-bold text-green-600">{{ userStats.active }}</div>
               <div class="text-sm text-gray-600 mt-1">Active</div>
             </div>
-            <div class="text-center p-4 bg-red-50 rounded-lg">
+            <div class="text-center p-4 bg-red-50 rounded">
               <div class="text-3xl font-bold text-red-600">{{ userStats.inactive }}</div>
               <div class="text-sm text-gray-600 mt-1">Inactive</div>
             </div>
@@ -171,14 +171,14 @@ onMounted(fetchAdminData)
       </div>
 
       <!-- Quick Actions -->
-      <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div class="bg-white shadow overflow-hidden sm:rounded">
         <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
           <h3 class="text-lg leading-6 font-medium text-gray-900">Quick Actions</h3>
           <p class="mt-1 max-w-2xl text-sm text-gray-500">Common administrative tasks</p>
         </div>
         <div class="px-4 py-5 sm:p-6">
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <NuxtLink to="/dashboard/admin/employees" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <NuxtLink to="/dashboard/admin/employees" class="flex items-center p-4 border border-gray-200 rounded hover:bg-gray-50 transition-colors">
               <div class="flex-shrink-0 bg-indigo-100 rounded-md p-2">
                 <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -189,7 +189,7 @@ onMounted(fetchAdminData)
                 <p class="text-sm text-gray-500">Add, edit, or remove team members</p>
               </div>
             </NuxtLink>
-            <NuxtLink to="/dashboard/admin/personal-tax-services" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <NuxtLink to="/dashboard/admin/personal-tax-services" class="flex items-center p-4 border border-gray-200 rounded hover:bg-gray-50 transition-colors">
               <div class="flex-shrink-0 bg-green-100 rounded-md p-2">
                 <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
@@ -200,7 +200,7 @@ onMounted(fetchAdminData)
                 <p class="text-sm text-gray-500">Manage personal tax services and pricing</p>
               </div>
             </NuxtLink>
-            <NuxtLink to="/dashboard/admin/payroll-services" class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <NuxtLink to="/dashboard/admin/payroll-services" class="flex items-center p-4 border border-gray-200 rounded hover:bg-gray-50 transition-colors">
               <div class="flex-shrink-0 bg-blue-100 rounded-md p-2">
                 <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -216,7 +216,7 @@ onMounted(fetchAdminData)
       </div>
 
       <!-- Current Admin Info -->
-      <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div class="bg-white shadow overflow-hidden sm:rounded">
         <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
           <h3 class="text-lg leading-6 font-medium text-gray-900">Current Session</h3>
           <p class="mt-1 max-w-2xl text-sm text-gray-500">Information about the currently logged in admin</p>

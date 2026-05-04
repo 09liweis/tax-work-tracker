@@ -42,7 +42,7 @@ const clearFilter = () => {
     <h3 class="text-lg leading-6 font-medium text-gray-900">Personal Tax Records</h3>
 
     <!-- Year Filter -->
-    <div class="mb-4 flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
+    <div class="mb-4 flex items-center gap-3 bg-gray-50 p-3 rounded">
       <label for="year-filter" class="text-sm font-medium text-gray-700">Filter by Year:</label>
       <select
         id="year-filter"
