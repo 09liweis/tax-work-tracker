@@ -25,6 +25,12 @@ const getYearOptions = () => {
   return years
 }
 
+const formatDate = (value) => {
+  if (!value) return '—'
+  const date = new Date(value)
+  return isNaN(date.getTime()) ? '—' : date.toLocaleDateString('en-CA')
+}
+
 // Apply year filter
 const applyFilter = () => {
   emit('filter', { year: filterYear.value })
@@ -78,31 +84,88 @@ const clearFilter = () => {
     <!-- task list -->
     <div v-else>
       <Button @click="emit('new')" class="mb-4">New Record</Button>
-      <table class="w-full table-auto border-collapse">
-        <thead>
-          <tr class="bg-gray-100">
-            <th class="border px-2 py-1 text-left">Description</th>
-            <th class="border px-2 py-1">Year</th>
-            <th class="border px-2 py-1">Status</th>
-            <th class="border px-2 py-1">Priority</th>
-            <th class="border px-2 py-1">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="task in personalTaxes" :key="task._id">
-            <td class="border px-2 py-1">{{ task.taskDescription }}</td>
-            <td class="border px-2 py-1 text-center">{{ task.taxYear }}</td>
-            <td class="border px-2 py-1 text-center">{{ task.status }}</td>
-            <td class="border px-2 py-1 text-center">{{ task.priority }}</td>
-            <td class="border px-2 py-1 text-center">
-              <Button @click="emit('edit', task)" variant="link">Edit</Button>
-            </td>
-          </tr>
-          <tr v-if="personalTaxes.length === 0">
-            <td class="border px-2 py-2 text-center" colspan="5">No records found.</td>
-          </tr>
-        </tbody>
-      </table>
+
+      <div v-if="personalTaxes.length === 0" class="rounded-lg border border-gray-200 bg-white p-6 text-center text-gray-500">
+        No records found.
+      </div>
+
+      <div v-else class="space-y-4">
+        <div
+          v-for="task in personalTaxes"
+          :key="task._id || task.id"
+          class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
+        >
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <h4 class="text-lg font-semibold text-gray-900">{{ task.taskDescription || 'Untitled Task' }}</h4>
+              <p class="text-sm text-gray-500">Year: {{ task.taxYear || '—' }}</p>
+            </div>
+            <Button @click="emit('edit', task)" variant="link" class="whitespace-nowrap">
+              Edit
+            </Button>
+          </div>
+
+          <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <div class="rounded-lg bg-gray-50 p-3">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Status</p>
+              <p class="mt-1 text-sm text-gray-900">{{ task.status || '—' }}</p>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-3">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Priority</p>
+              <p class="mt-1 text-sm text-gray-900">{{ task.priority || '—' }}</p>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-3">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Case Worker</p>
+              <p class="mt-1 text-sm text-gray-900">{{ task.caseWorker || '—' }}</p>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-3">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Supervisor</p>
+              <p class="mt-1 text-sm text-gray-900">{{ task.supervisorId || '—' }}</p>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-3">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Start Date</p>
+              <p class="mt-1 text-sm text-gray-900">{{ formatDate(task.startDate) }}</p>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-3">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Documents From</p>
+              <p class="mt-1 text-sm text-gray-900">{{ task.documentsFrom || '—' }}</p>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-3">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Target Due</p>
+              <p class="mt-1 text-sm text-gray-900">{{ formatDate(task.targetDueDate) }}</p>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-3">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Completed Date</p>
+              <p class="mt-1 text-sm text-gray-900">{{ formatDate(task.actualCompletedDate) }}</p>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-3">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Blocker</p>
+              <p class="mt-1 text-sm text-gray-900">{{ task.blocker || '—' }}</p>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-3">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Receivable</p>
+              <p class="mt-1 text-sm text-gray-900">{{ task.receivable != null ? `$${task.receivable.toFixed(2)}` : '—' }}</p>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-3">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Invoice</p>
+              <p class="mt-1 text-sm text-gray-900">{{ task.invoice ? 'Yes' : 'No' }}</p>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-3">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Paid</p>
+              <p class="mt-1 text-sm text-gray-900">{{ task.paid ? 'Yes' : 'No' }}</p>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-3">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Payment</p>
+              <p class="mt-1 text-sm text-gray-900">{{ task.payment != null ? `$${task.payment.toFixed(2)}` : '—' }}</p>
+            </div>
+          </div>
+
+          <div class="mt-4 rounded-lg bg-gray-50 p-4">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Notes</p>
+            <p class="mt-2 text-sm text-gray-900 whitespace-pre-line">{{ task.notes || 'No notes available.' }}</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
