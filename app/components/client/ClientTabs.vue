@@ -11,6 +11,10 @@ const props = defineProps({
   corporationCount: {
     type: Number,
     default: 0
+  },
+  relativesCount: {
+    type: Number,
+    default: 0
   }
 })
 
@@ -18,7 +22,8 @@ const emit = defineEmits(['update:modelValue'])
 
 const tabs = computed(() => [
   { id: 'personal-tax', label: 'Personal Tax Records', count: props.personalTaxCount },
-  { id: 'corporations', label: 'Corporations', count: props.corporationCount }
+  { id: 'corporations', label: 'Corporations', count: props.corporationCount },
+  { id: 'relatives', label: 'Relatives', count: props.relativesCount }
 ])
 
 const setActiveTab = (tabId) => {
