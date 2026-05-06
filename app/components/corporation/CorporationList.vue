@@ -7,7 +7,7 @@ const props = defineProps({
 <template>
   <ul role="list" class="divide-y divide-gray-200">
     <li v-for="corp in corporations" :key="corp.id">
-      <NuxtLink :to="`/dashboard/corporations/${corp.id}`" class="block hover:bg-gray-50">
+      <NuxtLink :to="`/dashboard/corporations/${corp._id}`" class="block hover:bg-gray-50">
         <div class="px-4 py-4 sm:px-6">
           <div class="flex items-start justify-between">
             <div class="flex items-start">
