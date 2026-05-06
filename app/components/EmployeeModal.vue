@@ -135,8 +135,8 @@ const save = async () => {
               <BaseInput id="email" type="email" v-model="formData.email" label="Email Address"
                 placeholder="employee@company.com" :error="formErrors.email" />
               <BaseSelect id="status" v-model="formData.status" label="Employment Status" :options="EMPLOYEE_STATUS_OPTIONS" />
-              <BasePasswordInput v-if="!isEditing" id="password" v-model="formData.password" label="Password"
-                placeholder="Create a password" :error="formErrors.password" />
+              <BasePasswordInput id="password" v-model="formData.password" label="Password"
+                placeholder="Enter a password" :error="formErrors.password" />
             </div>
 
             <div

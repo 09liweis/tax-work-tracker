@@ -44,11 +44,12 @@ export default defineEventHandler(async (event) => {
       data.password = await bcrypt.hash(data.password, 10);
     } else {
       delete data.password;
-    }
+    }    
 
     await User.updateOne({_id:userId},data);
     return { success: true, user };
   } catch (error) {
+    console.error(error)
     return { success: false, error };
   }
 });
