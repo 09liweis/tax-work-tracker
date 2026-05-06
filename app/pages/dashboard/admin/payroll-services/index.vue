@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { apiGet, apiPost, apiPut, apiDelete } from '~/utils/api'
 import PayrollServiceModal from '~/components/PayrollServiceModal.vue'
+import { SITE_TITLE } from '~/utils/constants'
 
 definePageMeta({
   layout: 'default',
@@ -9,7 +10,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Payroll Services - Admin',
+  title: `Payroll Services - Admin - ${SITE_TITLE}`,
   meta: [
     { name: 'description', content: 'Manage payroll services' },
     { name: 'robots', content: 'noindex, nofollow' }

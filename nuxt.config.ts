@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { SITE_TITLE } from './app/utils/constants'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
@@ -11,7 +13,7 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      title: 'Tax Work Tracker',
+      title: SITE_TITLE,
       meta: [
         { name: 'description', content: 'Professional tax work tracking and client management system.' },
         { name: 'author', content: 'Tax Work Tracker Team' },

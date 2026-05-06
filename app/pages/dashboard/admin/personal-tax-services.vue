@@ -4,6 +4,7 @@ import PersonalTaxServiceList from '~/components/PersonalTaxServiceList.vue'
 import PersonalTaxServiceModal from '~/components/PersonalTaxServiceModal.vue'
 import { useUser } from '~/composables/useUser'
 import { apiGet, apiDelete } from '~/utils/api'
+import { SITE_TITLE } from '~/utils/constants'
 
 definePageMeta({
   layout: 'admin',
@@ -11,7 +12,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Personal Tax Services - Admin - Tax Work Tracker',
+  title: `Personal Tax Services - Admin - ${SITE_TITLE}`,
   meta: [
     { name: 'description', content: 'Manage personal tax services and pricing.' },
     { name: 'robots', content: 'noindex, nofollow' }

@@ -4,6 +4,7 @@ import EmployeeList from '~/components/EmployeeList.vue'
 import EmployeeModal from '~/components/EmployeeModal.vue'
 import { useUser } from '~/composables/useUser'
 import { apiGet } from '~/utils/api'
+import { SITE_TITLE } from '~/utils/constants'
 
 definePageMeta({
   layout: 'admin',
@@ -11,7 +12,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Employees - Tax Work Tracker',
+  title: `Employees - ${SITE_TITLE}`,
   meta: [
     { name: 'description', content: 'Manage your team members and employees in the tax work tracker.' },
     { name: 'robots', content: 'noindex, nofollow' }

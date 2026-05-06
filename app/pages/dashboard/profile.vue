@@ -1,11 +1,13 @@
 <script setup>
+import { SITE_TITLE } from '~/utils/constants'
+
 definePageMeta({
   layout: 'default',
   middleware: 'auth'
 })
 
 useHead({
-  title: 'My Profile - Tax Work Tracker',
+  title: `My Profile - ${SITE_TITLE}`,
   meta: [
     { name: 'description', content: 'View your personal profile and work records.' },
     { name: 'robots', content: 'noindex, nofollow' }

@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { SITE_TITLE } from '~/utils/constants'
 
 definePageMeta({
   layout: 'default',
@@ -7,7 +8,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Corporation Details - Tax Work Tracker',
+  title: `Corporation Details - ${SITE_TITLE}`,
   meta: [
     { name: 'description', content: 'View detailed information about a corporate client.' },
     { name: 'robots', content: 'noindex, nofollow' }

@@ -1,6 +1,8 @@
 <script setup>
+import { SITE_TITLE } from '../utils/constants'
+
 useHead({
-  title: 'Tax Work Tracker',
+  title: SITE_TITLE,
   meta: [
     { name: 'description', content: 'Professional tax work tracking and client management system.' },
     { name: 'robots', content: 'index, follow' }

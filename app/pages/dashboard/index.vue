@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useUser } from '~/composables/useUser'
 import { apiGet } from '~/utils/api'
+import { SITE_TITLE } from '~/utils/constants'
 import DashboardWelcome from '~/components/dashboard/DashboardWelcome.vue'
 import DashboardStats from '~/components/dashboard/DashboardStats.vue'
 import RecentClients from '~/components/dashboard/RecentClients.vue'
@@ -14,7 +15,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Dashboard - Tax Work Tracker',
+  title: `Dashboard - ${SITE_TITLE}`,
   meta: [
     { name: 'description', content: 'View your tax work dashboard with client statistics, recent activities, and project management tools.' },
     { name: 'robots', content: 'noindex, nofollow' }

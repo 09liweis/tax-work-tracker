@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useUser } from '~/composables/useUser'
 import { apiGet } from '~/utils/api'
+import { SITE_TITLE } from '~/utils/constants'
 
 definePageMeta({
   layout: 'admin',
@@ -9,7 +10,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Admin Panel - Tax Work Tracker',
+  title: `Admin Panel - ${SITE_TITLE}`,
   meta: [
     { name: 'description', content: 'Admin panel for system management and configuration.' },
     { name: 'robots', content: 'noindex, nofollow' }

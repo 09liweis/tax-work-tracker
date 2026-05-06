@@ -2,6 +2,7 @@
 import CorporationList from '~/components/corporation/CorporationList.vue'
 import CorporationModal from '~/components/corporation/CorporationModal.vue'
 import { apiGet, apiPost } from '~/utils/api'
+import { SITE_TITLE } from '~/utils/constants'
 
 definePageMeta({
   layout: 'default',
@@ -9,7 +10,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Corporations - Tax Work Tracker',
+  title: `Corporations - ${SITE_TITLE}`,
   meta: [
     { name: 'description', content: 'Handle corporate accounts and business clients in the tax work tracker.' },
     { name: 'robots', content: 'noindex, nofollow' }

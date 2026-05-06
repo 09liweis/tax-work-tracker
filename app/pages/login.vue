@@ -9,7 +9,7 @@
           </svg>
         </div>
         <h1 class="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
-        <p class="text-gray-600">Sign in to Tax Work Tracker</p>
+        <p class="text-gray-600">Sign in to {{ SITE_TITLE }}</p>
       </div>
 
       <!-- Login Form Card -->
