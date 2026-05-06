@@ -246,7 +246,7 @@ const handleDeleteRelative = async (relative) => {
     </div>
 
     <!-- Client Details -->
-    <div v-else-if="client" class="max-w-7xl mx-auto px-4 py-6 space-y-6">
+    <div v-else-if="client" class="max-w-10xl mx-auto px-4 py-6 space-y-6">
       <!-- Client Header -->
       <ClientHeader :client="client" @edit="openEditClientModal" />
 
